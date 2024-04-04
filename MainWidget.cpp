@@ -1,32 +1,23 @@
 #include "MainWidget.h"
-
+#include "MapWidget.h"
 #include <QtWidgets>
 
 MainWidget::MainWidget(QWidget* parent) : QWidget(parent){
-    
-    map = new QLabel();
-    map->setPixmap(QPixmap("BlankMap-World-noborders.png"));
-    
-    selector = new QLabel();
-    selector->setPixmap(QPixmap("DotSelector.png"));
-    
-    taskDescription = new QLabel();
+
+    map = new MapWidget(QPixmap("BlankMap-World-noborders.png"), QSize(10, 10), this);
+ 
+    taskDescription = new QLabel(this);
     taskDescription->setText("Answer the following question: ");
     
-    answerLine = new QLineEdit();
+    answerLine = new QLineEdit(this);
     acceptButton = new QPushButton(tr("Push this button"));
 
-    QGridLayout* mainLayout = new QGridLayout();
-    QStackedLayout* layout = new QStackedLayout();
-    layout->addWidget(map);
-    layout->addWidget(selector);
-//    layout->setCurrentWidget(selector);
-    mainLayout->addLayout(layout, 0, 0);
-    mainLayout->addWidget(taskDescription, 1, 0);
-    QGridLayout* answerSublayout = new QGridLayout();
-    answerSublayout->addWidget(answerLine, 0, 0);
-    answerSublayout->addWidget(acceptButton, 0, 1);
-    mainLayout->addLayout(answerSublayout, 2, 0);
+    QGridLayout* mainLayout = new QGridLayout(this);
+    mainLayout->addWidget(map, 0, 0, 1, 2);
+    mainLayout->addWidget(taskDescription, 1, 0, 1, 2);
+    
+    mainLayout->addWidget(answerLine, 2, 0);
+    mainLayout->addWidget(acceptButton, 2, 1);
 
     setLayout(mainLayout);
     setWindowTitle(tr("A simple geography learner"));
@@ -36,7 +27,6 @@ MainWidget::MainWidget(QWidget* parent) : QWidget(parent){
 
 MainWidget::~MainWidget(){
     delete map;
-    delete selector;
     delete taskDescription;
     delete answerLine;
     delete acceptButton;

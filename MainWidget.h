@@ -9,6 +9,7 @@ class QTextBrowser;
 class QLabel;
 class QTextLine;
 class QLineEdit;
+class MapWidget;
 
 class MainWidget : public QWidget
 {
@@ -17,16 +18,15 @@ class MainWidget : public QWidget
 public:
     explicit MainWidget(QWidget* parent = nullptr);
     ~MainWidget();
-
 private slots:
     void onButtonReleased();
 
 private:
-    QLabel* map;
+    MapWidget* map;
     QLabel* selector;
     QLabel* taskDescription;
     QLineEdit* answerLine;
-    QPushButton* acceptButton;
+    QPushButton* acceptButton; 
 };
 
 #endif //MAIN_WIDGET_H

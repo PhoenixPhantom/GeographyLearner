@@ -1,11 +1,10 @@
 #include <QApplication>
-#include <QLabel>
+#include "MainWidget.h"
 
 int main(int argc, char **argv)
 {
     QApplication app(argc, argv);
-    QLabel hello("Hello world!");
-
-    hello.show();
+    MainWidget mainWidget;
+    mainWidget.show();
     return app.exec();
 }
