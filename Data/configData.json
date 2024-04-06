@@ -1,0 +1,16 @@
+{
+    "Zürich": {
+        "Alias": [
+            "Zurich",
+            "Zuerich"
+        ],
+        "InternalCoordinates": [
+            599,
+            152
+        ],
+        "State": [
+            "Switzerland"
+        ],
+        "Type": "City"
+    }
+}

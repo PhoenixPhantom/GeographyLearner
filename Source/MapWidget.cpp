@@ -1,5 +1,4 @@
 #include "MapWidget.h"
-#include "qgridlayout.h"
 
 #include <QtWidgets>
 
@@ -15,7 +14,7 @@ MapWidget::MapWidget(const QPixmap& mapImage, const QSize& selectorSize, QWidget
     setLayout(gridLayout);
 
     selector = new QLabel(this);
-    QPixmap selectorImg(":/Images/DotSelector.png");
+    QPixmap selectorImg(":/Data/DotSelector.png");
     selector->setPixmap(selectorImg.scaled(selectorSize, Qt::KeepAspectRatio));
     selector->setFixedSize(selectorSize);
     selector->move(100, 100);

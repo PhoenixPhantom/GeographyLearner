@@ -11,6 +11,7 @@ public:
     explicit MapWidget(const QPixmap& mapImage, const QSize& selectorSize, QWidget* parent = nullptr);
     ~MapWidget();
 
+    QPoint getSelectorPos() const{ return selector->pos(); }
 private:
     QLabel* map;
     QLabel* selector;

@@ -1,6 +1,7 @@
 <!DOCTYPE RCC><RCC version="1.0">
 <qresource>
-    <file>Images/BlankMap-World-noborders.png</file>
-    <file>Images/DotSelector.png</file>
+    <file>Data/BlankMap-World-noborders.png</file>
+    <file>Data/DotSelector.png</file>
+    <file>Data/configData.json</file>
 </qresource>
 </RCC>
