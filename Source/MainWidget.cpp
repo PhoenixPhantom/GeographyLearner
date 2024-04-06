@@ -8,8 +8,12 @@
 
 MainWidget::MainWidget(QWidget *parent) : QWidget(parent) {
 
-    map = new MapWidget(QPixmap(":/Data/BlankMap-World-noborders.png"),
+    map = new MapWidget(":/Data/BlankMap-World-noborders.png",
             QSize(10, 10), this);
+    QSizePolicy sizePolicy;
+    sizePolicy.setVerticalPolicy(QSizePolicy::Expanding);
+    sizePolicy.setHorizontalPolicy(QSizePolicy::Expanding);
+    map->setSizePolicy(sizePolicy);
 
     taskDescription = new QLabel(this);
     taskDescription->setText("Answer the following question: ");

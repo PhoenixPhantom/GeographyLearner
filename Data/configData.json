@@ -12,5 +12,11 @@
             "Switzerland"
         ],
         "Type": "City"
+    },
+    "dummy": {
+        "InternalCoordinates": [
+            350,
+            758
+        ]
     }
 }

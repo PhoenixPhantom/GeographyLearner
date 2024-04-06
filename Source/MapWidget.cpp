@@ -2,14 +2,17 @@
 
 #include <QtWidgets>
 
-MapWidget::MapWidget(const QPixmap& mapImage, const QSize& selectorSize, QWidget* parent) :
+MapWidget::MapWidget(const QString& pathToMap, const QSize& selectorSize, QWidget* parent) :
     QFrame(parent)
-{  
+{
+
     setAcceptDrops(true);
 
-    QGridLayout* gridLayout = new QGridLayout(this);
+    mapImage = new QPixmap(pathToMap);
+
+    QVBoxLayout* gridLayout = new QVBoxLayout(this);
     map = new QLabel(this);
-    map->setPixmap(mapImage);
+    map->setPixmap(*mapImage);
     gridLayout->addWidget(map);
     setLayout(gridLayout);
 
@@ -17,15 +20,39 @@ MapWidget::MapWidget(const QPixmap& mapImage, const QSize& selectorSize, QWidget
     QPixmap selectorImg(":/Data/DotSelector.png");
     selector->setPixmap(selectorImg.scaled(selectorSize, Qt::KeepAspectRatio));
     selector->setFixedSize(selectorSize);
-    selector->move(100, 100);
-    selector->show();
- 
-    setWindowTitle(tr("A simple geography learner"));
 
+    localPos = QPoint(100, 100);
+    selector->move(map->mapToParent(localPos).toPoint());
+    selector->show();
 }
 
 MapWidget::~MapWidget(){
     delete selector;
+}
+
+void MapWidget::resizeEvent(QResizeEvent* event)
+{
+    //ATTENTION: this has the potential to scale the application towards infinity if QSize()
+    const QPixmap& temp = mapImage->scaled(size()-QSize(20, 20), Qt::KeepAspectRatio);
+    map->setPixmap(temp);
+    scaledImgSize = temp.size();
+    QFrame::resizeEvent(event);
+    
+    updateSelectorPos();
+}
+
+void MapWidget::updateSelectorPos(){
+    selector->move((map->mapToParent(localPos*(double(scaledImgSize.width()/double(mapImage->width()))))
+                + QPointF(double(map->width() - scaledImgSize.width())*0.5, double(map->height() - scaledImgSize.height())*0.5)).toPoint());
+}
+
+
+void MapWidget::setLocalPosFromLocal(const QPoint& newLocalPos){
+    localPos = map->mapFromParent(QPointF(newLocalPos) -
+            QPointF(double(map->width() - scaledImgSize.width())*0.5, double(map->height() - scaledImgSize.height())*0.5))*
+        (double(mapImage->width())/double(scaledImgSize.width()));
+
+
 }
 
 void MapWidget::dragEnterEvent(QDragEnterEvent *event)
@@ -67,10 +94,14 @@ void MapWidget::dropEvent(QDropEvent *event)
         dataStream >> pixmap >> offset;
         
         if(pixmap.toImage() != selector->pixmap().toImage()) return;
-        selector->move(event->position().toPoint() - offset);
+        const QPoint& newLocalPos = event->position().toPoint() - offset;
+        selector->move(newLocalPos);
         selector->setVisible(true);
 
-        if (event->source() == this) {
+        setLocalPosFromLocal(newLocalPos);
+
+
+       if (event->source() == this) {
             event->setDropAction(Qt::MoveAction);
             event->accept();
         } else {
@@ -104,4 +135,9 @@ void MapWidget::mousePressEvent(QMouseEvent* event)
 
     drag->exec(Qt::CopyAction | Qt::MoveAction, Qt::CopyAction);
 
+}
+
+QPoint MapWidget::getReference(const QPixmap& temp) const
+{
+    return pos()+QPoint(temp.width()*0.5, temp.height()*0.5);
 }
