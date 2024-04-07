@@ -12,13 +12,17 @@ public:
     explicit MapWidget(const QString& pathToMap, const QSize& selectorSize, QWidget* parent = nullptr);
     ~MapWidget();
 
-    QPoint getSelectorPos() const{ return selector->pos(); }
+    QPointF getSelectorPos() const{ return localPos; }
+    void setCanMoveSelector(bool canMove){ bCanMove = canMove; }
+
+    void setSelectorPos(const QPointF& newPos){ setLocalPos(newPos); updateSelectorPos(); }
 protected:
     void resizeEvent(QResizeEvent* event) override;
     void setLocalPos(const QPointF& newL){ localPos = newL; };
     void updateSelectorPos();
     void setLocalPosFromLocal(const QPoint& newlocalPos);
 private:
+    int8_t bCanMove:1;
     QPointF localPos;
     QSize scaledImgSize;
     QPixmap* mapImage;

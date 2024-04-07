@@ -3,7 +3,7 @@
 #include <QtWidgets>
 
 MapWidget::MapWidget(const QString& pathToMap, const QSize& selectorSize, QWidget* parent) :
-    QFrame(parent)
+    QFrame(parent), bCanMove(false)
 {
 
     setAcceptDrops(true);
@@ -115,8 +115,7 @@ void MapWidget::dropEvent(QDropEvent *event)
 void MapWidget::mousePressEvent(QMouseEvent* event)
 {
     QLabel *child = static_cast<QLabel*>(childAt(event->position().toPoint()));
-    if (!child) return;
-    if (child != selector) return;
+    if (!bCanMove || !child || child != selector) return;
 
     QPixmap pixmap = selector->pixmap();
 

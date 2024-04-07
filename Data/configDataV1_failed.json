@@ -169,7 +169,6 @@
         },
         {
             "Name": [
-                "Mexiko-Stadt",
                 "Mexico City",
                 "Mexiko-City"
             ],
@@ -207,7 +206,6 @@
         },
         {
             "Name": [
-                "New York",
                 "New York City"
             ],
             "Position": [
@@ -270,7 +268,6 @@
         },
         {
             "Name": [
-                "Santiago de Chile",
                 "Santiago"
             ],
             "Position": [
@@ -283,7 +280,6 @@
         },
         {
             "Name": [
-                "Sao Paulo",
                 "S^ao Paulo"
             ],
             "Position": [
@@ -355,7 +351,6 @@
         },
         {
             "Name": [
-                "Antarktika",
                 "Antarktis"
             ],
             "Position": [
@@ -466,7 +461,6 @@
         },
         {
             "Name": [
-                "Kalimantan",
                 "Teil von Borneo"
             ],
             "Position": [
@@ -549,12 +543,13 @@
             ]
         },
         {
+           
             "Name": [
                 "Anden"
             ],
             "Position": [
-                432.98004987531175,
-                493.2980049875312
+                431.1097256857856,
+                490.4925187032419
             ]
         },
         {
@@ -651,9 +646,7 @@
     "Nation": [
         {
             "Name": [
-                "Vereinigtes Königreich",
-                "Grossbritannien",
-                "GB"
+                "Vereinigtes Königreich"
             ],
             "Position": [
                 702.3067331670824,
@@ -662,7 +655,6 @@
         },
         {
             "Name": [
-                "Mexico",
                 "Mexiko"
             ],
             "Position": [
@@ -672,7 +664,6 @@
         },
         {
             "Name": [
-                "USA",
                 "Vereinigte Staaten von Amerika",
                 "United States of America",
                 "Vereinigte Staaten",
@@ -689,7 +680,6 @@
     "Ocean": [
         {
             "Name": [
-                "Atlantischer Ozean",
                 "Atlantik"
             ],
             "Position": [
@@ -699,7 +689,6 @@
         },
         {
             "Name": [
-                "Pazifischer Ozean",
                 "Pazifik"
             ],
             "Position": [
@@ -720,7 +709,6 @@
         },
         {
             "Name": [
-                "Arabien",
                 "Arabische Halbinsel"
             ],
             "Position": [
@@ -908,7 +896,6 @@
         {
             "FlowsInto": "Atlantischer Ozean",
             "Name": [
-                "Parana",
                 "Paran´a"
             ],
             "Position": [
@@ -948,7 +935,6 @@
         },
         {
             "Name": [
-                "Indischer Ozean",
                 "Indik"
             ],
             "Position": [
@@ -958,7 +944,6 @@
         },
         {
             "Name": [
-                "Karibischses Meer",
                 "Karibik"
             ],
             "Position": [
