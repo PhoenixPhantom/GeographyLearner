@@ -581,7 +581,7 @@ void MainWidget::generateQuestion()
 void MainWidget::updateProgress()
 {
     std::stringstream outText;
-    outText << "Vortschritt: " << allUsed.size() - allPending.size() << " / " << allUsed.size();
+    outText << "Fortschritt: " << allUsed.size() - allPending.size() << " / " << allUsed.size();
     progressInfo->setText(QString::fromStdString(outText.str()));
 }
 
