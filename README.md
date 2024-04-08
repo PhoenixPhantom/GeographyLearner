@@ -1,7 +1,7 @@
 # Geography Learner App
 Es gibt verschiedene Varianten, sich auf Toppografieprüfungen vorzubereiten und diese Applikation ist eine Option, dies zu tun.
 Die Geography-Learner app wurde spezifisch kreiert, um die Grundzüge der Welttoppografie zu lernen und wiederholen.
-[Direkt zu den Downloads](README.md#Download)
+[Direkt zu den Downloads](#Download)
 ## Aufgabentypen
 Unterstützt werden die "typischen" Toppografiefragen, bei denen ein Punkt gegeben ist und der Name der Ortschaft, der Insel,
 des Meeres, des Kontinentes, des Flusses oder des Gebirges eingegeben werden müssen.
