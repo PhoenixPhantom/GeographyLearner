@@ -15,6 +15,7 @@ public:
     QPointF getSelectorPos() const{ return localPos; }
     void setCanMoveSelector(bool canMove){ bCanMove = canMove; }
 
+    void setSelectorColor(const QColor& color);
     void setSelectorPos(const QPointF& newPos){ setLocalPos(newPos); updateSelectorPos(); }
 protected:
     void resizeEvent(QResizeEvent* event) override;
@@ -23,6 +24,7 @@ protected:
     void setLocalPosFromLocal(const QPoint& newlocalPos);
 private:
     int8_t bCanMove:1;
+    double mapAspectRatio;
     QPointF localPos;
     QSize scaledImgSize;
     QPixmap* mapImage;

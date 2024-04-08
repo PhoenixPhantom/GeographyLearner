@@ -1,4 +1,5 @@
 #include "MapWidget.h"
+#include "qnamespace.h"
 
 #include <QtWidgets>
 
@@ -9,6 +10,7 @@ MapWidget::MapWidget(const QString& pathToMap, const QSize& selectorSize, QWidge
     setAcceptDrops(true);
 
     mapImage = new QPixmap(pathToMap);
+    mapAspectRatio = double(mapImage->width())/double(mapImage->height());
 
     QVBoxLayout* gridLayout = new QVBoxLayout(this);
     map = new QLabel(this);
@@ -17,9 +19,9 @@ MapWidget::MapWidget(const QString& pathToMap, const QSize& selectorSize, QWidge
     setLayout(gridLayout);
 
     selector = new QLabel(this);
-    QPixmap selectorImg(":/Data/DotSelector.png");
-    selector->setPixmap(selectorImg.scaled(selectorSize, Qt::KeepAspectRatio));
     selector->setFixedSize(selectorSize);
+    setSelectorColor(QColor(255, 0, 0));
+
 
     localPos = QPoint(100, 100);
     selector->move(map->mapToParent(localPos).toPoint());
@@ -30,10 +32,24 @@ MapWidget::~MapWidget(){
     delete selector;
 }
 
+void MapWidget::setSelectorColor(const QColor& color)
+{
+    const QSize localSize = selector->size()*51.2;
+    QPixmap selectorImg(localSize);
+    selectorImg.fill(QColor(0, 0, 0, 0));
+    QPainter p(&selectorImg);
+    p.setRenderHint(QPainter::Antialiasing, true);
+    p.setPen(QPen(color));
+    p.setBrush(QBrush(color));
+    p.drawEllipse(localSize.width()*0.1, localSize.height()*0.1, localSize.width()*0.8, localSize.height()*0.8);
+    selector->setPixmap(selectorImg.scaled(selector->size(), Qt::KeepAspectRatio)); 
+}
+
+
 void MapWidget::resizeEvent(QResizeEvent* event)
 {
-    //ATTENTION: this has the potential to scale the application towards infinity if QSize()
-    const QPixmap& temp = mapImage->scaled(size()-QSize(20, 20), Qt::KeepAspectRatio);
+    //ATTENTION: this has the potential to scale the application towards +infinity or -infinity
+    const QPixmap& temp = mapImage->scaled(size()-QSize(18.0/mapAspectRatio, 18), Qt::KeepAspectRatio);
     map->setPixmap(temp);
     scaledImgSize = temp.size();
     QFrame::resizeEvent(event);
@@ -42,15 +58,17 @@ void MapWidget::resizeEvent(QResizeEvent* event)
 }
 
 void MapWidget::updateSelectorPos(){
-    selector->move((map->mapToParent(localPos*(double(scaledImgSize.width()/double(mapImage->width()))))
-                + QPointF(double(map->width() - scaledImgSize.width())*0.5, double(map->height() - scaledImgSize.height())*0.5)).toPoint());
+    selector->move((map->mapToParent(localPos*(double(map->width()/double(mapImage->width()))))
+                + QPointF(qMax(double(map->width() - scaledImgSize.width())*0.5, 0.0),
+                    qMax(double(map->height() - scaledImgSize.height())*0.5, 0.0))).toPoint());
 }
 
 
 void MapWidget::setLocalPosFromLocal(const QPoint& newLocalPos){
     localPos = map->mapFromParent(QPointF(newLocalPos) -
-            QPointF(double(map->width() - scaledImgSize.width())*0.5, double(map->height() - scaledImgSize.height())*0.5))*
-        (double(mapImage->width())/double(scaledImgSize.width()));
+            QPointF(qMax(double(map->width() - scaledImgSize.width())*0.5, 0.0),
+                qMax(double(map->height() - scaledImgSize.height())*0.5, 0.0)))*
+       (double(mapImage->width())/double(map->width()));
 
 
 }

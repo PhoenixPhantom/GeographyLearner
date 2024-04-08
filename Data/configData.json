@@ -308,7 +308,7 @@
         },
         {
             "Name": [
-                "Sidney"
+                "Sydney"
             ],
             "Position": [
                 1261.5336658354115,
@@ -332,7 +332,8 @@
         },
         {
             "Name": [
-                "Tokio"
+                "Tokio",
+                "Tokyo"
             ],
             "Position": [
                 1222.2568578553617,
@@ -448,7 +449,8 @@
         },
         {
             "Name": [
-                "Japanische Inseln"
+                "Japanische Inseln",
+                "japanische Inseln"
             ],
             "Position": [
                 1214.775561097257,
@@ -577,7 +579,8 @@
         },
         {
             "Name": [
-                "Brasilianisches Bergland"
+                "Brasilianisches Bergland",
+                "brasilianisches Bergland"
             ],
             "Position": [
                 521.8204488778055,
@@ -699,6 +702,16 @@
         },
         {
             "Name": [
+                "Indischer Ozean",
+                "Indik"
+            ],
+            "Position": [
+                1012.780548628429,
+                420.35536159600997
+            ]
+        },
+        {
+            "Name": [
                 "Pazifischer Ozean",
                 "Pazifik"
             ],
@@ -806,7 +819,7 @@
             ]
         },
         {
-            "FlowsInto": "Atlantischer Ozean",
+            "FlowsInto": "Pazifischer Ozean",
             "Name": [
                 "Huang He"
             ],
@@ -944,16 +957,6 @@
             "Position": [
                 356.29675810473816,
                 284.7568578553616
-            ]
-        },
-        {
-            "Name": [
-                "Indischer Ozean",
-                "Indik"
-            ],
-            "Position": [
-                1012.780548628429,
-                420.35536159600997
             ]
         },
         {
