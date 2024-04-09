@@ -20,7 +20,7 @@ da aufgrunde von limitationen des verwendeten Grafik-Frameworks die normale Schr
 Zurzeit ist der Geography-Learner nur für Windows direkt erhältlich.
 * [Windows](Installer/Geography-Learner.msi)
 * Mac: Kann theoretisch lokal kompiliert werden
-* Android & IOS: Kann theoretisch local kompilliert werden
+* Android & IOS: Kann theoretisch lokal kompilliert werden
 
 ## Verbesserungen
 Sollte eine gebräuchliche Antwort nicht akzeptiert sein, oder die ein Fehler gefunden werden,
