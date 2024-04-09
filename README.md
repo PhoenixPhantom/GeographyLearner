@@ -23,5 +23,5 @@ Zurzeit ist der Geography-Learner nur für Windows direkt erhältlich.
 * Android & IOS: Kann theoretisch lokal kompilliert werden
 
 ## Verbesserungen
-Sollte eine gebräuchliche Antwort nicht akzeptiert sein, oder die ein Fehler gefunden werden,
+Sollte eine gebräuchliche Antwort nicht akzeptiert sein, oder ein anderer Fehler gefunden werden,
 bin ich froh, wenn ein Fehlerreport in Github erstellt wird, sodass ich ihn korrigieren kann.
