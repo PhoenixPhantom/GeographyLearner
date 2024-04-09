@@ -90,7 +90,7 @@ private:
     json* currentQuestion;
     json& getCurrentQuestion(){ return *currentQuestion; }
     void validateInput();
-    void toggleType(const std::vector<std::string>& types, bool include);
+    void toggleType(std::vector<std::string> types, bool include);
     void toggleAdvancedType(const std::vector<std::string>& types, bool include);
     void generateQuestion();
     void updateProgress();

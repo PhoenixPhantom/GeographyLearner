@@ -178,7 +178,7 @@
                 310.9413965087282
             ],
             "State": [
-                "Mexico"
+                "Mexiko"
             ]
         },
         {
@@ -465,17 +465,7 @@
                 1151.1845386533666,
                 442.7992518703242
             ]
-        },
-        {
-            "Name": [
-                "Kalimantan",
-                "Teil von Borneo"
-            ],
-            "Position": [
-                1166.147132169576,
-                411.93890274314214
-            ]
-        },
+        }, 
         {
             "Name": [
                 "Korea"
@@ -537,6 +527,17 @@
             "Position": [
                 1227.8678304239402,
                 623.2855361596011
+            ]
+        }
+    ],
+    "IslandRegion": [
+        {
+            "Name": [
+                "Kalimantan"
+            ],
+            "Position": [
+                1166.147132169576,
+                411.93890274314214
             ]
         }
     ],
@@ -665,8 +666,8 @@
         },
         {
             "Name": [
-                "Mexico",
-                "Mexiko"
+                "Mexiko",
+                "Mexico"
             ],
             "Position": [
                 315.14962593516213,
@@ -693,6 +694,7 @@
         {
             "Name": [
                 "Atlantischer Ozean",
+                "atlantischer Ozean",
                 "Atlantik"
             ],
             "Position": [
@@ -703,6 +705,7 @@
         {
             "Name": [
                 "Indischer Ozean",
+                "indischer Ozean",
                 "Indik"
             ],
             "Position": [
@@ -713,6 +716,7 @@
         {
             "Name": [
                 "Pazifischer Ozean",
+                "pazifischer Ozean",
                 "Pazifik"
             ],
             "Position": [
@@ -734,7 +738,8 @@
         {
             "Name": [
                 "Arabien",
-                "Arabische Halbinsel"
+                "Arabische Halbinsel",
+                "arabische Halbinsel"
             ],
             "Position": [
                 890.2743142144639,
@@ -743,7 +748,8 @@
         },
         {
             "Name": [
-                "Iberische Halbinsel"
+                "Iberische Halbinsel",
+                "iberische Halbinsel"
             ],
             "Position": [
                 687.3441396508729,
@@ -770,7 +776,8 @@
         },
         {
             "Name": [
-                "Skandinavische Halbinsel"
+                "Skandinavische Halbinsel",
+                "skandinavische Halbinsel"
             ],
             "Position": [
                 759.351620947631,
@@ -899,7 +906,7 @@
             ]
         },
         {
-            "FlowsInto": "Mittelmeer",
+            "FlowsInto": "Mittel",
             "Name": [
                 "Nil"
             ],
@@ -943,7 +950,8 @@
     "Sea": [
         {
             "Name": [
-                "Arabisches Meer"
+                "Arabisches Meer",
+                "arabisches Meer"
             ],
             "Position": [
                 951.995012468828,
@@ -961,7 +969,8 @@
         },
         {
             "Name": [
-                "Karibischses Meer",
+                "Karibisches Meer",
+                "karibisches Meer",
                 "Karibik"
             ],
             "Position": [
@@ -998,7 +1007,8 @@
         },
         {
             "Name": [
-                "Rotes Meer"
+                "Rotes Meer",
+                "rotes Meer"
             ],
             "Position": [
                 860.349127182045,
@@ -1007,7 +1017,8 @@
         },
         {
             "Name": [
-                "Schwarzes Meer"
+                "Schwarzes Meer",
+                "schwarzes Meer"
             ],
             "Position": [
                 828.5536159600998,
@@ -1016,7 +1027,8 @@
         },
         {
             "Name": [
-                "Südchinesisches Meer"
+                "Südchinesisches Meer",
+                "südchinesisches Meer"
             ],
             "Position": [
                 1157.7306733167084,

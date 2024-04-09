@@ -405,7 +405,9 @@ void MainWidget::validateInput(){
         else if(type == "River"){
             std::string flowsInto = getCurrentQuestion()["FlowsInto"].template get<std::string>();
             if(flowsInto != input){
-                if(!existsCoNamed(configData, input, flowsInto, "River")){
+                if(!existsCoNamed(configData, input, flowsInto, "River") &&
+                        !existsCoNamed(configData, input, flowsInto, "Ocean") &&
+                        !existsCoNamed(configData, input, flowsInto, "Sea")){
                     taskDescription->setText(QString::fromStdString("Falsch. Eine richtige Antwort wäre " + flowsInto));
                     taskDescription->setStyleSheet("QLabel { color : red; }");
                     currentQuestion = nullptr;
@@ -438,9 +440,10 @@ void MainWidget::validateInput(){
     }
 }
 
-void MainWidget::toggleType(const std::vector<std::string>& types, bool include)
+void MainWidget::toggleType(std::vector<std::string> types, bool include)
 {
     std::vector<json*> foundInstances;
+    if(std::find(types.begin(), types.end(), "Island") != types.end()) types.push_back("IslandRegion");
     for(const std::string& type : types){
         std::vector<json*> newInstances = getAllOfType(configData, type);
         foundInstances.insert(foundInstances.end(), newInstances.begin(), newInstances.end());
@@ -506,7 +509,7 @@ void MainWidget::generateQuestion()
         return;
     }
 
-    std::uniform_int_distribution<size_t> Distribution(0, allPending.size());
+    std::uniform_int_distribution<size_t> Distribution(0, allPending.size() - 1);
     size_t chosenIndex = Distribution(RandomGenerator);
     currentQuestion = allPending[chosenIndex];
  
@@ -548,6 +551,10 @@ void MainWidget::generateQuestion()
         }
         else if(type == "Island"){
             name = "die Insel, die";
+            map->setSelectorColor(QColor(138,43,226));
+        }
+        else if(type == "IslandRegion"){
+            name = "die Inselregion, die";
             map->setSelectorColor(QColor(138,43,226));
         }
         else if(type == "Ocean"){
