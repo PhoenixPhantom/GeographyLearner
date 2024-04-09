@@ -126,7 +126,7 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent)
 #endif
 
     setLayout(mainLayout);
-    setWindowTitle(tr("Ein einfacher Geographie-Learner"));
+    setWindowTitle(tr("Geography-Learner"));
 
     connect(answerLine, SIGNAL(returnPressed()), this, SLOT(onInputSubmitted()));
     

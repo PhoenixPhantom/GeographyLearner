@@ -422,7 +422,8 @@
         },
         {
             "Name": [
-                "Britische Inseln"
+                "Britische Inseln",
+                "britische Inseln"
             ],
             "Position": [
                 695.7605985037407,
@@ -767,7 +768,8 @@
         },
         {
             "Name": [
-                "Labrador"
+                "Labrador",
+                "Labrador-Halbinsel"
             ],
             "Position": [
                 487.2194513715711,
@@ -906,7 +908,7 @@
             ]
         },
         {
-            "FlowsInto": "Mittel",
+            "FlowsInto": "Mittelmeer",
             "Name": [
                 "Nil"
             ],
