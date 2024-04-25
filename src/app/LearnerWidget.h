@@ -1,19 +1,15 @@
-#ifndef MAIN_WIDGET_H
-#define MAIN_WIDGET_H
+#ifndef LEARNER_WIDGET_H
+#define LEARNER_WIDGET_H
 
 #include <QWidget>
 #include <QProcess>
-#include "json.hpp"
+#include "../utils/json.hpp"
+using json = nlohmann::json;
 
-//#define EDITDATA "Data/configData.json"
-
-#ifndef EDITDATA
 #include <QCheckBox>
 #include <random>
 #include "pcg/include/pcg_random.hpp"
-#endif
 
-using json = nlohmann::json;
 
 class QPushButton;
 class QTextBrowser;
@@ -23,19 +19,18 @@ class QLineEdit;
 class MapWidget;
 class QFile;
 
-class MainWidget : public QWidget
+class LearnerWidget : public QWidget
 {
     Q_OBJECT
 
 public:
-    explicit MainWidget(QWidget* parent = nullptr);
-    ~MainWidget();
+    explicit LearnerWidget(QWidget* parent = nullptr);
+    ~LearnerWidget();
 
 protected:
     void resizeEvent(QResizeEvent* event) override;
 private slots:
     void onInputSubmitted();
-#ifndef EDITDATA
     void onRestart();
     void onCitiesToggled(){ toggleType({"City"}, useCities->isChecked()); }
     void onSeaOceansToggled(){ toggleType({"Sea", "Ocean"}, useSeaOceans->isChecked()); }
@@ -45,7 +40,6 @@ private slots:
     void onContinentsToggled(){ toggleType({"Continent"}, useContinents->isChecked()); }
     void onCityAdvancedToggled(){ toggleAdvancedType({"City"}, advancedCityQuestions->isChecked()); }
     void onRiverAdvancedToggled(){ toggleAdvancedType({"River"}, advancedRiverQuestions->isChecked()); }
-#endif
 private:
     MapWidget* map;
     QLabel* selector;
@@ -54,20 +48,6 @@ private:
     QPushButton* acceptButton; 
 
     json configData;
-    static std::string getType(const json& information, json const* entry);
-    static json& getNamed(json& target, const std::string& name, const std::string& type = "");
-    static bool existsCoNamed(json& target, const std::string& name1, const std::string& name2,
-            const std::string& type = "");
-    static std::vector<json*> getAllOfType(json& target, const std::string& type);
-#ifdef EDITDATA
-    QTextBrowser* fileBrowser;
-
-    void onEditDataInputSubmitted();
-    void updateJson();
-    static json restructureJson(const json& target);
-    static std::string extractArgument(const std::string& container, const std::string& finder);
-    static void extractArgumentList(const std::string& container, const std::string& finder, std::vector<std::string>& located);
-#else
     QLabel* progressInfo;
     QPushButton* restartButton;
     QCheckBox* useCities;
@@ -96,7 +76,6 @@ private:
     void updateProgress();
     std::vector<json*>::const_iterator findAsTemporary(const std::string& type, const std::string& name) const;
     std::vector<json*>::const_iterator findAsTemporary(const std::string& type, json* data) const;
-#endif
 };
 
 #endif //MAIN_WIDGET_H

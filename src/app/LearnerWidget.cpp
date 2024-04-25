@@ -1,27 +1,19 @@
-#include "MainWidget.h"
-#include "MapWidget.h"
-#include "json.hpp"
-#include "qlogging.h"
-#include "qnamespace.h"
+#include "LearnerWidget.h"
+
 #include <cstring>
-#include <random>
-
-#ifdef EDITDATA
-#include <fstream>
-#else
-#include "qboxlayout.h"
-#endif
-
 #include <cstdlib>
 #include <sstream>
-#include <algorithm>
 #include <QtWidgets>
 #include <QTextStream>
+#include "../utils/jsonDataInterpreter.h"
+#include "../utils/MapWidget.h"
 
-MainWidget::MainWidget(QWidget *parent) : QWidget(parent)
-#ifndef EDITDATA
+#include "qboxlayout.h"
+#include <random>
+#include <algorithm>
+
+LearnerWidget::LearnerWidget(QWidget *parent) : QWidget(parent)
     , currentQuestion(nullptr)
-#endif
 {
 
     map = new MapWidget(":/Data/WorldMap.png", QSize(15, 15), this);
@@ -45,18 +37,6 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent)
     mainLayout->addWidget(answerLine, 2, 0);
     mainLayout->addWidget(acceptButton, 2, 1);
 
-#ifdef EDITDATA
-    //NOTE: this usage of the path assumes the executable is located at the same location that the Data folder is
-    map->setCanMoveSelector(true);
-    std::ifstream inputStream(EDITDATA);
-    inputStream >> configData;
-    fileBrowser = new QTextBrowser();
-    std::stringstream str;
-    str << std::setw(4) << configData;
-    fileBrowser->setText(QString::fromStdString(str.str()));
-    mainLayout->addWidget(fileBrowser, 0, 2, 1, 3);
-    fileBrowser->setMinimumSize(QSize(200, 400));
-#else
     QFile configFile(":/Data/configData.json");
     configFile.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream textStream(&configFile);
@@ -123,7 +103,6 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent)
     connect(useContinents, SIGNAL(clicked(bool)), this, SLOT(onContinentsToggled()));
     connect(advancedCityQuestions, SIGNAL(clicked(bool)), this, SLOT(onCityAdvancedToggled()));
     connect(advancedRiverQuestions, SIGNAL(clicked(bool)), this, SLOT(onRiverAdvancedToggled()));
-#endif
 
     setLayout(mainLayout);
     setWindowTitle(tr("Geography-Learner"));
@@ -133,7 +112,7 @@ MainWidget::MainWidget(QWidget *parent) : QWidget(parent)
     connect(acceptButton, SIGNAL(released()), this, SLOT(onInputSubmitted()));
 }
 
-MainWidget::~MainWidget() {
+LearnerWidget::~LearnerWidget() {
     for(json* temp : temporary){
         delete temp;
     }
@@ -144,226 +123,18 @@ MainWidget::~MainWidget() {
 }
 
 
-void MainWidget::resizeEvent(QResizeEvent* event)
+void LearnerWidget::resizeEvent(QResizeEvent* event)
 {
     QWidget::resizeEvent(event);
 }
 
-void MainWidget::onInputSubmitted()
+void LearnerWidget::onInputSubmitted()
 {
-#ifdef EDITDATA
-   onEditDataInputSubmitted(); 
-#else
     validateInput(); 
     answerLine->setText("");
-#endif
 }
 
-std::string MainWidget::getType(const json& information, json const* entry)
-{
-    for(auto& [key, value] : information.items()){
-        if(!value.is_array()){
-            qDebug() << key << "doesn't specify a value. Consider running \"restructureJson\" first";
-            continue;
-        }
-
-        for(auto& arrayElement : value){
-            if(arrayElement == *entry) return key;
-        }
-    }
-    return "";
-}
-
-
-json& MainWidget::getNamed(json& target, const std::string& name, const std::string& type){
-    for(auto& [key, value] : target.items()){
-        if(!type.empty() && key != type) continue;
-        if(!value.is_array()){
-            qDebug() << key << "doesn't specify a value. Consider running \"restructureJson\" first";
-            continue;
-        }
-        
-        for(auto& element : value){
-            if(!element.contains("Name")) continue;
-            std::vector<std::string> aliases = element["Name"].template get<std::vector<std::string>>();
-            if(std::find(aliases.begin(), aliases.end(), name) != aliases.end()) return element;
-        }
-    }
-
-    json& targetObject = target[type];
-    if(!target.contains(type)) targetObject = json::array();
-    json newObject = json::object();
-    newObject["Name"] = json::array();
-    newObject["Name"].push_back(name);
-    targetObject.push_back(newObject);
-    return targetObject.at(targetObject.size() - 1);
-}
-
-
-bool MainWidget::existsCoNamed(json& target, const std::string& name1, const std::string& name2,
-        const std::string& type){
-    for(auto& [key, value] : target.items()){
-        if(!type.empty() && key != type) continue;
-        if(!value.is_array()){
-            qDebug() << key << "doesn't specify a value. Consider running \"restructureJson\" first";
-            continue;
-        }
-        
-        for(auto& element : value){
-            if(!element.contains("Name")) continue;
-            std::vector<std::string> aliases = element["Name"].template get<std::vector<std::string>>();
-            if(std::find(aliases.begin(), aliases.end(), name1) != aliases.end() &&
-                    std::find(aliases.begin(), aliases.end(), name2) != aliases.end()) return true;
-        }
-    }
-    return false;
-}
-
-std::vector<json*> MainWidget::getAllOfType(json& target, const std::string& type)
-{
-    std::vector<json*> foundInstances;
-    for(auto& [key, value] : target.items()){
-        if(key != type) continue;
-
-        if(!value.is_array()){
-            qDebug() << key << "doesn't specify a value. Consider running \"restructureJson\" first";
-            continue;
-        }
-        for(auto& arrayElement : value){
-            foundInstances.push_back(&arrayElement);
-        }
-    }
-    return foundInstances;
-}
-
-
-#ifdef EDITDATA
-void MainWidget::onEditDataInputSubmitted()
-{
-    std::string input = answerLine->text().toStdString();
-    if(input.empty()) return;
-
-    if(input.find("RestructureJson") != std::string::npos){
-        configData = restructureJson(configData);
-        updateJson();
-        return;
-    }
-
-    size_t firstArgEnd = input.find(";");
-    if(firstArgEnd == std::string::npos) firstArgEnd = input.length() - 1;
-    std::string objectName = input.substr(0, firstArgEnd);
-    std::string additionalInformation = input.substr(firstArgEnd, input.length() - firstArgEnd);
-
-
-    std::string type = extractArgument(additionalInformation, "Type=");
-    json& objectConfig = getNamed(configData, objectName, type);
-
-    if(additionalInformation.find("Delete") > firstArgEnd){
-        std::vector<std::string> stateArguments;
-        extractArgumentList(additionalInformation, "State=", stateArguments); 
-        
-        std::vector<std::string> aliasArguments;
-        extractArgumentList(additionalInformation, "Alias=", aliasArguments); 
-
-       if(additionalInformation.find("Position") != std::string::npos)
-           objectConfig["Position"] = {map->getSelectorPos().x(), map->getSelectorPos().y()};
-       if(stateArguments.size() > 0)
-           objectConfig["State"] = stateArguments;
-       if(aliasArguments.size() > 0)
-           objectConfig["Name"] = aliasArguments;
- 
-       std::string extractedArgument = extractArgument(additionalInformation, "FlowsInto=");
-       if(extractedArgument.length() > 0){
-           if(extractedArgument.find("Delete") != std::string::npos) objectConfig.erase("FlowsInto");
-           else objectConfig["FlowsInto"] = extractedArgument;
-       }
-    }
-    else {
-        for(auto& data : configData[type].items()){
-            if(data.key() != objectName &&
-                    (!data.value().contains("Alias") || data.value()["Alias"] != objectName)) continue;
-            if(data.value().is_array()) continue;
-            configData[type].erase(data.key());
-            break;
-        }
-    }
-
-
-    updateJson();
-}
-
-void MainWidget::updateJson(){
-    std::ofstream outStream(EDITDATA);
-    outStream << std::setw(4) << configData << std::endl; 
-    answerLine->setText("");
-
-    std::stringstream str;
-    str << std::setw(4) << configData;
-    fileBrowser->setText(QString::fromStdString(str.str()));
-}
-
-json MainWidget::restructureJson(const json& target)
-{
-    json restructuredData = json::object();
-    for(const auto& [key, value] : target.items()){ 
-        if(!value.contains("Type")){
-            qDebug() << key << "doesn't contain a type";
-            continue;
-        }
-
-        std::string type = value["Type"].template get<std::string>();
-        //ensure the type exists and is an array
-        if(!restructuredData.contains(type)){
-            restructuredData[type] = json::array();
-        }
-
-        json dataToAdd = json::object();
-        if(value.contains("InternalCoordinates")){
-            dataToAdd["Position"] = value["InternalCoordinates"];
-        }
-        else qDebug() << key << "has no associated position";
-
-        if(value.contains("State")) dataToAdd["State"] = value["State"];
-        std::vector<std::string> names = {key};
-        if(value.contains("Alias")){
-            std::vector<std::string> aliases = value["Alias"].template get<std::vector<std::string>>();
-            names.insert(names.end(), aliases.begin(), aliases.end());
-        }
-        dataToAdd["Name"] = names;
-        if(value.contains("FlowsInto")) dataToAdd["FlowsInto"] = value["FlowsInto"];
-
-        restructuredData[type].push_back(dataToAdd);
-    }
-    return restructuredData;
-}
-
-std::string MainWidget::extractArgument(const std::string& container, const std::string& finder)
-{
-    if(container.empty()) return "";
-
-    size_t start = container.find(finder);
-    if(start == std::string::npos) return "";
-    start += finder.length();
-    size_t end = container.find(";", start);
-    if(end == std::string::npos) end = container.length();
-    return container.substr(start, end - start);
-}
-
-void MainWidget::extractArgumentList(const std::string& container, const std::string& finder, std::vector<std::string>& located)
-{
-
-    std::string total = extractArgument(container, finder);
-    if(total.empty()) return;
-    size_t start = 0;
-    size_t end = 0;
-
-    while ((start = total.find_first_not_of(", ", end)) != std::string::npos) {
-        end = total.find(",", start);
-        located.push_back(total.substr(start, end - start));
-    }
-}
-#else
-void MainWidget::onRestart()
+void LearnerWidget::onRestart()
 {
     allDone.clear();
     allPending = allUsed;
@@ -371,7 +142,7 @@ void MainWidget::onRestart()
     generateQuestion();
 }
 
-void MainWidget::validateInput(){
+void LearnerWidget::validateInput(){
     if(currentQuestion == nullptr) {
         generateQuestion();
         return;
@@ -385,11 +156,11 @@ void MainWidget::validateInput(){
 
     std::string input = answerLine->text().toStdString();
     if(std::find(temporary.begin(), temporary.end(), currentQuestion) != temporary.end()){
-        std::string type = getType(configData, currentQuestion);
+        std::string type = jsonDataInterpreter::getType(configData, currentQuestion);
         if(type == "City"){
             std::vector<std::string> states = getCurrentQuestion()["State"].template get<std::vector<std::string>>();
             if(states[0] != input){
-                if(!existsCoNamed(configData, input, states[0], "Nation")){
+                if(!jsonDataInterpreter::existsCoNamed(configData, input, states[0], "Nation")){
                     taskDescription->setText(QString::fromStdString("Falsch. Eine richtige Antwort wäre " + states[0]));
                     taskDescription->setStyleSheet("QLabel { color : red; }");
                     currentQuestion = nullptr;
@@ -405,9 +176,9 @@ void MainWidget::validateInput(){
         else if(type == "River"){
             std::string flowsInto = getCurrentQuestion()["FlowsInto"].template get<std::string>();
             if(flowsInto != input){
-                if(!existsCoNamed(configData, input, flowsInto, "River") &&
-                        !existsCoNamed(configData, input, flowsInto, "Ocean") &&
-                        !existsCoNamed(configData, input, flowsInto, "Sea")){
+                if(!jsonDataInterpreter::existsCoNamed(configData, input, flowsInto, "River") &&
+                        !jsonDataInterpreter::existsCoNamed(configData, input, flowsInto, "Ocean") &&
+                        !jsonDataInterpreter::existsCoNamed(configData, input, flowsInto, "Sea")){
                     taskDescription->setText(QString::fromStdString("Falsch. Eine richtige Antwort wäre " + flowsInto));
                     taskDescription->setStyleSheet("QLabel { color : red; }");
                     currentQuestion = nullptr;
@@ -440,12 +211,12 @@ void MainWidget::validateInput(){
     }
 }
 
-void MainWidget::toggleType(std::vector<std::string> types, bool include)
+void LearnerWidget::toggleType(std::vector<std::string> types, bool include)
 {
     std::vector<json*> foundInstances;
     if(std::find(types.begin(), types.end(), "Island") != types.end()) types.push_back("IslandRegion");
     for(const std::string& type : types){
-        std::vector<json*> newInstances = getAllOfType(configData, type);
+        std::vector<json*> newInstances = jsonDataInterpreter::getAllOfType(configData, type);
         foundInstances.insert(foundInstances.end(), newInstances.begin(), newInstances.end());
     }
     
@@ -466,11 +237,11 @@ void MainWidget::toggleType(std::vector<std::string> types, bool include)
     generateQuestion();
 }
 
-void MainWidget::toggleAdvancedType(const std::vector<std::string>& types, bool include)
+void LearnerWidget::toggleAdvancedType(const std::vector<std::string>& types, bool include)
 {
 
     for(const std::string& type : types){
-        std::vector<json*> newInstances = getAllOfType(configData, type);
+        std::vector<json*> newInstances = jsonDataInterpreter::getAllOfType(configData, type);
         for(json* instance : newInstances){
             if(instance == nullptr || (!instance->contains("State") && !instance->contains("FlowsInto"))) continue;
             auto it = findAsTemporary(type, instance);
@@ -500,7 +271,7 @@ void MainWidget::toggleAdvancedType(const std::vector<std::string>& types, bool 
 }
 
 
-void MainWidget::generateQuestion()
+void LearnerWidget::generateQuestion()
 {
     if(allPending.empty()){
         map->setSelectorColor(QColor(0, 0, 0, 0)); //make invisible
@@ -513,7 +284,7 @@ void MainWidget::generateQuestion()
     size_t chosenIndex = Distribution(RandomGenerator);
     currentQuestion = allPending[chosenIndex];
  
-    std::string type = getType(configData, currentQuestion);
+    std::string type = jsonDataInterpreter::getType(configData, currentQuestion);
     if(std::find(temporary.begin(), temporary.end(), currentQuestion) != temporary.end()){
         taskDescription->setStyleSheet("QLabel { color : blue; }");
         answerLine->setText("");
@@ -585,31 +356,30 @@ void MainWidget::generateQuestion()
 
 
 
-void MainWidget::updateProgress()
+void LearnerWidget::updateProgress()
 {
     std::stringstream outText;
     outText << "Fortschritt: " << allUsed.size() - allPending.size() << " / " << allUsed.size();
     progressInfo->setText(QString::fromStdString(outText.str()));
 }
 
-std::vector<json*>::const_iterator MainWidget::findAsTemporary(const std::string& type, const std::string& name) const
+std::vector<json*>::const_iterator LearnerWidget::findAsTemporary(const std::string& type, const std::string& name) const
 {
     for(auto it = temporary.begin(); it < temporary.end(); it++){
         json* temp = *it;
-        if(type != getType(configData, temp)) continue;
+        if(type != jsonDataInterpreter::getType(configData, temp)) continue;
         std::vector<std::string> names = (*temp)["Name"].template get<std::vector<std::string>>();
         if(std::find(names.begin(), names.end(), name) != names.end()) return it;
     }
     return temporary.end();
 }
 
-std::vector<json*>::const_iterator MainWidget::findAsTemporary(const std::string& type, json* data) const
+std::vector<json*>::const_iterator LearnerWidget::findAsTemporary(const std::string& type, json* data) const
 {
     for(auto it = temporary.begin(); it < temporary.end(); it++){
         json* temp = *it;
-        if(type != getType(configData, temp)) continue;
+        if(type != jsonDataInterpreter::getType(configData, temp)) continue;
         if(*temp == *data) return it;
     }
     return temporary.end();
 }
-#endif
