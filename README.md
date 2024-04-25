@@ -28,7 +28,7 @@ Unterstützte Plattformen:
   Grundsätzlich ist die Antwort aber *ja*.
   Die Ressourcen sind auf dieser Seite vorhanden und können für alle dieser Plattformen *lokal kompilliert* werden.
 
-  <details><summary><h3>Lokal kompilieren</h3></summary>
+  <details><summary><h5>Lokal kompilieren</h5></summary>
   
 1. Lade das vollständige `GeographyLearner` Repository herunter 
 2. Lade den [Qt Creator](https://www.qt.io/download) auf das zu verwendende Gerät herunter & installiere die Applikation (die Standardinstallation reicht aus)
@@ -41,10 +41,14 @@ Unterstützte Plattformen:
       5. Die ausführbare Datei befindet sich nun unter 'build/\[Compilername\]/GeographyLearner'
    * Installation über die Command Line (NICHT EMPFOHLEN)
       1. Öffne ein terminal, das Zugang zur Qt installation und dem zur Installation passenden C++ Compiler hat
-      2. Versichere dich, das die Buildtools CMake und Ninja installiert sind
+      2. Versichere dich, das `CMake` installiert ist
       3. Wechsle in den `GeographyLearner`-Ordner 
-      4. Führe `cmake -S. -Bbuild -G Ninja` aus
-      5. Führe `ninja -C build` aus
+      4. Ist `ninja` installiert:
+         1. Führe `cmake -S. -Bbuild -G Ninja` aus
+         2. Führe `ninja -C build` aus
+      5. Ansonsten:
+         1. Führe `cmake -S. -Bbuild` aus
+         2. Führe `cmake --build build` aus
       6. Die ausführbare Datei befindet sich nun unter 'build/GeographyLearner'
 
 </details>
