@@ -44,10 +44,10 @@ Unterstützte Plattformen:
       2. Versichere dich, das `CMake` installiert ist
       3. Wechsle in den `GeographyLearner`-Ordner 
       4. Ist `ninja` installiert:
-         1. Führe `cmake -S. -Bbuild -G Ninja` aus
+         1. Führe `cmake -DCMAKE_BUILD_TYPE=Release -S. -Bbuild -G Ninja` aus
          2. Führe `ninja -C build` aus
       5. Ansonsten:
-         1. Führe `cmake -S. -Bbuild` aus
+         1. Führe `cmake -DCMAKE_BUILD_TYPE=Release -S. -Bbuild` aus
          2. Führe `cmake --build build` aus
       6. Die ausführbare Datei befindet sich nun unter 'build/GeographyLearner'
 
