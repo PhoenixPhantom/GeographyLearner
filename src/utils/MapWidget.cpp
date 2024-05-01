@@ -1,7 +1,7 @@
 #include "MapWidget.h"
 #include <QtWidgets>
 
-MapWidget::MapWidget(const QString& pathToMap, const QSize& selectorSize, QWidget* parent) :
+MapWidget::MapWidget(const QString& pathToMap, const QSize& selectorSize, bool compatibilityMode, QWidget* parent) :
     QFrame(parent), bCanMove(false)
 {
 
@@ -18,7 +18,7 @@ MapWidget::MapWidget(const QString& pathToMap, const QSize& selectorSize, QWidge
 
     selector = new QLabel(this);
     selector->setFixedSize(selectorSize);
-    setSelectorColor(QColor(255, 0, 0));
+    setSelectorColor(QColor(255, 0, 0), compatibilityMode);
 
 
     localPos = QPoint(100, 100);
@@ -30,9 +30,9 @@ MapWidget::~MapWidget(){
     delete selector;
 }
 
-void MapWidget::setSelectorColor(const QColor& color)
+void MapWidget::setSelectorColor(const QColor& color, bool compatibilityMode)
 {
-    const QSize localSize = selector->size()*51.2;
+    const QSize localSize = compatibilityMode ? selector->size()*51.2 : selector->size();
     QPixmap selectorImg(localSize);
     selectorImg.fill(QColor(0, 0, 0, 0));
     QPainter p(&selectorImg);
@@ -40,14 +40,16 @@ void MapWidget::setSelectorColor(const QColor& color)
     p.setPen(QPen(color));
     p.setBrush(QBrush(color));
     p.drawEllipse(localSize.width()*0.1, localSize.height()*0.1, localSize.width()*0.8, localSize.height()*0.8);
-    selector->setPixmap(selectorImg.scaled(selector->size(), Qt::KeepAspectRatio)); 
+    if(compatibilityMode) selector->setPixmap(selectorImg.scaled(selector->size(), Qt::KeepAspectRatio)); 
+    else selector->setPixmap(selectorImg);
 }
 
 
 void MapWidget::resizeEvent(QResizeEvent* event)
 {
     //ATTENTION: this has the potential to scale the application towards +infinity or -infinity
-    const QPixmap& temp = mapImage->scaled(size()-QSize(18.0/mapAspectRatio, 18), Qt::KeepAspectRatio);
+    
+    const QPixmap& temp = mapImage->scaled(map->size(), Qt::KeepAspectRatio);
     map->setPixmap(temp);
     scaledImgSize = temp.size();
     QFrame::resizeEvent(event);

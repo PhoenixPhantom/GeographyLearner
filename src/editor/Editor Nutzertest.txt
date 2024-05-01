@@ -1,0 +1,57 @@
+Szenario:
+ Du bist ein/e Geografielehrer/in an der Kantonsschule im Lee.
+ Für den letzten Jahrgang hat ein Kollege bereits ein Geografie-Lernset
+ für die Wichtigsten 'Eckdaten der Weltgeografie' mit der GeographyLearner App gemacht.
+ Du möchtest nun ein ähnliches Geografie-Lernset für deine Schüler erstellen,
+ legst aber nicht die gleichen Schwerpunkte wie dein Kollege und musst sein
+ Lernset daher bearbeiten.
+
+Generelles zum 'GeographyLearner: Editor':
+ * Mehrere Lösungsoptionen werden mit Semikolon(;) getrennt
+ * 'Metaelemente' sind Elemente, die nicht abgefragt werden, aber weitere Informationen zu einem existierenden Eintrag enthalten
+ * der Rest *sollte* selbsterklärend sein (deswegen der Test)
+
+
+ 🍁🍀 Viel Erfolg! 🍀🍁
+
+
+
+Aufgabe:
+ 1. Entferne den Eintrag für die Labrador-Halbinsel, Chicago, Mexiko-Stadt und Mexiko (den Staat)
+ 2. Verhindere, dass die 'Vereinigten Staaten von Amerika' auch mit der (faktisch inkorrekten) Bezeichnung 'Amerika' bezeichnet werden dürfen.
+ 3. Füge 'Taipeh', die Hauptstadt Taiwans hinzu
+ 4. 'Taipeh' wird häufig auch 'Taipei-City' 'Taihoku', oder 'Tai-pak' genannt. Auch diese Antworten sollen akzeptiert werden.
+ 5. Schüler sollen auch abgefragt werden, in welchem Staat Teipeh liegt: Taiwan --> füge diese Information hinzu
+ 6. Füge den Fluss Rhein hinzu
+ 7. Der Rhein fliesst in die Nordsee. Sorge dafür, dass diese Antwort akzeptiert wird
+ 8. Füge die Stadt Bern hinzu
+ 9. Bern befindet sich in der 'Schweiz', auch 'Suisse' genannt. Sorge dafür, dass beides als Antwort akzeptiert wird.
+ 10.(Nach 9.) Die Schüler sollen die Schweiz nur als Land, dessen Hauptstadt Bern ist kennen müssen.
+    Sorge dafür, dass das Land selbst nicht abgefragt wird.
+ 11.Speichere die Datei & schliesse das Programm
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Anmerkung: Das Programm speichert den Zwischenstatus automatisch. Speichern der Datei ist nur vor dem Schliessen des Programmes notwendig

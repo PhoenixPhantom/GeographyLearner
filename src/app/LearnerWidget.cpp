@@ -5,18 +5,17 @@
 #include <sstream>
 #include <QtWidgets>
 #include <QTextStream>
-#include "../utils/jsonDataInterpreter.h"
+#include "../utils/jsonFormatUtils.h"
 #include "../utils/MapWidget.h"
 
 #include "qboxlayout.h"
 #include <random>
 #include <algorithm>
 
-LearnerWidget::LearnerWidget(QWidget *parent) : QWidget(parent)
-    , currentQuestion(nullptr)
+LearnerWidget::LearnerWidget(QWidget *parent) : QWidget(parent), currentQuestion(nullptr)
 {
 
-    map = new MapWidget(":/Data/WorldMap.png", QSize(15, 15), this);
+    map = new MapWidget(":/Data/WorldMap.png", QSize(15, 15), true, this);
 // QSizePolicy sizePolicy;
 //    sizePolicy.setVerticalPolicy(QSizePolicy::Maximum);
  //   sizePolicy.setHorizontalPolicy(QSizePolicy::Maximum);
@@ -156,11 +155,11 @@ void LearnerWidget::validateInput(){
 
     std::string input = answerLine->text().toStdString();
     if(std::find(temporary.begin(), temporary.end(), currentQuestion) != temporary.end()){
-        std::string type = jsonDataInterpreter::getType(configData, currentQuestion);
+        std::string type = jsonFormatUtils::getType(configData, currentQuestion);
         if(type == "City"){
             std::vector<std::string> states = getCurrentQuestion()["State"].template get<std::vector<std::string>>();
             if(states[0] != input){
-                if(!jsonDataInterpreter::existsCoNamed(configData, input, states[0], "Nation")){
+                if(!jsonFormatUtils::existsCoNamed(configData, input, states[0], "Nation")){
                     taskDescription->setText(QString::fromStdString("Falsch. Eine richtige Antwort wäre " + states[0]));
                     taskDescription->setStyleSheet("QLabel { color : red; }");
                     currentQuestion = nullptr;
@@ -176,9 +175,9 @@ void LearnerWidget::validateInput(){
         else if(type == "River"){
             std::string flowsInto = getCurrentQuestion()["FlowsInto"].template get<std::string>();
             if(flowsInto != input){
-                if(!jsonDataInterpreter::existsCoNamed(configData, input, flowsInto, "River") &&
-                        !jsonDataInterpreter::existsCoNamed(configData, input, flowsInto, "Ocean") &&
-                        !jsonDataInterpreter::existsCoNamed(configData, input, flowsInto, "Sea")){
+                if(!jsonFormatUtils::existsCoNamed(configData, input, flowsInto, "River") &&
+                        !jsonFormatUtils::existsCoNamed(configData, input, flowsInto, "Ocean") &&
+                        !jsonFormatUtils::existsCoNamed(configData, input, flowsInto, "Sea")){
                     taskDescription->setText(QString::fromStdString("Falsch. Eine richtige Antwort wäre " + flowsInto));
                     taskDescription->setStyleSheet("QLabel { color : red; }");
                     currentQuestion = nullptr;
@@ -216,7 +215,7 @@ void LearnerWidget::toggleType(std::vector<std::string> types, bool include)
     std::vector<json*> foundInstances;
     if(std::find(types.begin(), types.end(), "Island") != types.end()) types.push_back("IslandRegion");
     for(const std::string& type : types){
-        std::vector<json*> newInstances = jsonDataInterpreter::getAllOfType(configData, type);
+        std::vector<json*> newInstances = jsonFormatUtils::getAllOfType(configData, type);
         foundInstances.insert(foundInstances.end(), newInstances.begin(), newInstances.end());
     }
     
@@ -241,7 +240,7 @@ void LearnerWidget::toggleAdvancedType(const std::vector<std::string>& types, bo
 {
 
     for(const std::string& type : types){
-        std::vector<json*> newInstances = jsonDataInterpreter::getAllOfType(configData, type);
+        std::vector<json*> newInstances = jsonFormatUtils::getAllOfType(configData, type);
         for(json* instance : newInstances){
             if(instance == nullptr || (!instance->contains("State") && !instance->contains("FlowsInto"))) continue;
             auto it = findAsTemporary(type, instance);
@@ -284,7 +283,7 @@ void LearnerWidget::generateQuestion()
     size_t chosenIndex = Distribution(RandomGenerator);
     currentQuestion = allPending[chosenIndex];
  
-    std::string type = jsonDataInterpreter::getType(configData, currentQuestion);
+    std::string type = jsonFormatUtils::getType(configData, currentQuestion);
     if(std::find(temporary.begin(), temporary.end(), currentQuestion) != temporary.end()){
         taskDescription->setStyleSheet("QLabel { color : blue; }");
         answerLine->setText("");
@@ -367,7 +366,7 @@ std::vector<json*>::const_iterator LearnerWidget::findAsTemporary(const std::str
 {
     for(auto it = temporary.begin(); it < temporary.end(); it++){
         json* temp = *it;
-        if(type != jsonDataInterpreter::getType(configData, temp)) continue;
+        if(type != jsonFormatUtils::getType(configData, temp)) continue;
         std::vector<std::string> names = (*temp)["Name"].template get<std::vector<std::string>>();
         if(std::find(names.begin(), names.end(), name) != names.end()) return it;
     }
@@ -378,7 +377,7 @@ std::vector<json*>::const_iterator LearnerWidget::findAsTemporary(const std::str
 {
     for(auto it = temporary.begin(); it < temporary.end(); it++){
         json* temp = *it;
-        if(type != jsonDataInterpreter::getType(configData, temp)) continue;
+        if(type != jsonFormatUtils::getType(configData, temp)) continue;
         if(*temp == *data) return it;
     }
     return temporary.end();

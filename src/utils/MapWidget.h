@@ -9,13 +9,13 @@ class MapWidget : public QFrame
     Q_OBJECT
 
 public:
-    explicit MapWidget(const QString& pathToMap, const QSize& selectorSize, QWidget* parent = nullptr);
+    explicit MapWidget(const QString& pathToMap, const QSize& selectorSize, bool compatibilityMode = true, QWidget* parent = nullptr);
     ~MapWidget();
 
     QPointF getSelectorPos() const{ return localPos; }
     void setCanMoveSelector(bool canMove){ bCanMove = canMove; }
 
-    void setSelectorColor(const QColor& color);
+    void setSelectorColor(const QColor& color, bool compatibilityMode = true);
     void setSelectorPos(const QPointF& newPos){ setLocalPos(newPos); updateSelectorPos(); }
 protected:
     void resizeEvent(QResizeEvent* event) override;

@@ -42,7 +42,6 @@ private slots:
     void onRiverAdvancedToggled(){ toggleAdvancedType({"River"}, advancedRiverQuestions->isChecked()); }
 private:
     MapWidget* map;
-    QLabel* selector;
     QLabel* taskDescription;
     QLineEdit* answerLine;
     QPushButton* acceptButton; 

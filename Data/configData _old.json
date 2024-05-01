@@ -1,7 +1,9 @@
 {
     "City": [
         {
-            "Name": [],
+            "Name": [
+                "Bangkok"
+            ],
             "Position": [
                 1103.491271820449,
                 335.2556109725686
@@ -11,7 +13,9 @@
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Berlin"
+            ],
             "Position": [
                 750.0,
                 163.1857855361596
@@ -21,7 +25,9 @@
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Buenos Aires"
+            ],
             "Position": [
                 477.8678304239402,
                 561.5648379052369
@@ -31,7 +37,9 @@
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Chicago"
+            ],
             "Position": [
                 391.83291770573567,
                 196.85162094763092
@@ -42,7 +50,9 @@
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Delhi"
+            ],
             "Position": [
                 998.7531172069826,
                 268.859102244389
@@ -52,14 +62,18 @@
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Hongkong"
+            ],
             "Position": [
                 1151.1845386533666,
                 296.9139650872818
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Jakarta"
+            ],
             "Position": [
                 1136.2219451371573,
                 438.1234413965087
@@ -69,7 +83,9 @@
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Kairo"
+            ],
             "Position": [
                 831.3591022443891,
                 269.7942643391521
@@ -79,7 +95,9 @@
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Kalkutta"
+            ],
             "Position": [
                 1052.0573566084788,
                 299.7194513715711
@@ -89,7 +107,9 @@
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Kapstadt"
+            ],
             "Position": [
                 775.2493765586036,
                 555.9538653366584
@@ -99,7 +119,9 @@
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Karachi"
+            ],
             "Position": [
                 963.216957605985,
                 289.4326683291771
@@ -109,7 +131,9 @@
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Lima"
+            ],
             "Position": [
                 388.0922693266833,
                 458.6970074812968
@@ -119,7 +143,9 @@
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "London"
+            ],
             "Position": [
                 706.9825436408978,
                 161.3154613466334
@@ -129,7 +155,9 @@
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Los Angeles"
+            ],
             "Position": [
                 261.8453865336659,
                 232.38778054862843
@@ -141,6 +169,7 @@
         },
         {
             "Name": [
+                "Mexiko-Stadt",
                 "Mexico City",
                 "Mexiko-City"
             ],
@@ -149,11 +178,13 @@
                 310.9413965087282
             ],
             "State": [
-                "Mexico"
+                "Mexiko"
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Moskau"
+            ],
             "Position": [
                 824.8129675810475,
                 151.9638403990025
@@ -163,7 +194,9 @@
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Mumbai"
+            ],
             "Position": [
                 997.8179551122195,
                 318.42269326683294
@@ -174,6 +207,7 @@
         },
         {
             "Name": [
+                "New York",
                 "New York City"
             ],
             "Position": [
@@ -186,7 +220,9 @@
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Paris"
+            ],
             "Position": [
                 717.2693266832918,
                 183.75935162094763
@@ -196,7 +232,9 @@
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Peking"
+            ],
             "Position": [
                 1130.6109725685785,
                 209.9438902743142
@@ -206,7 +244,9 @@
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Rio de Janeiro"
+            ],
             "Position": [
                 527.4314214463841,
                 506.3902743142145
@@ -216,7 +256,9 @@
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "San Francisco"
+            ],
             "Position": [
                 258.10473815461347,
                 211.81421446384041
@@ -228,6 +270,7 @@
         },
         {
             "Name": [
+                "Santiago de Chile",
                 "Santiago"
             ],
             "Position": [
@@ -240,6 +283,7 @@
         },
         {
             "Name": [
+                "Sao Paulo",
                 "S^ao Paulo"
             ],
             "Position": [
@@ -251,7 +295,9 @@
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Shanghai"
+            ],
             "Position": [
                 1163.3416458852869,
                 259.5074812967581
@@ -261,7 +307,9 @@
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Sydney"
+            ],
             "Position": [
                 1261.5336658354115,
                 588.6845386533666
@@ -271,7 +319,9 @@
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Singapur"
+            ],
             "Position": [
                 1119.3890274314215,
                 396.0411471321696
@@ -281,7 +331,10 @@
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Tokio",
+                "Tokyo"
+            ],
             "Position": [
                 1222.2568578553617,
                 222.10099750623442
@@ -293,7 +346,9 @@
     ],
     "Continent": [
         {
-            "Name": [],
+            "Name": [
+                "Afrika"
+            ],
             "Position": [
                 769.6384039900249,
                 327.77431421446386
@@ -301,6 +356,7 @@
         },
         {
             "Name": [
+                "Antarktika",
                 "Antarktis"
             ],
             "Position": [
@@ -309,35 +365,45 @@
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Asien"
+            ],
             "Position": [
                 966.9576059850375,
                 161.3154613466334
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Australien"
+            ],
             "Position": [
                 1204.488778054863,
                 535.3802992518704
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Europa"
+            ],
             "Position": [
                 794.8877805486285,
                 169.73192019950125
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Nordamerika"
+            ],
             "Position": [
                 318.8902743142145,
                 233.32294264339154
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Südamerika"
+            ],
             "Position": [
                 475.997506234414,
                 453.0860349127182
@@ -346,182 +412,241 @@
     ],
     "Island": [
         {
-            "Name": [],
+            "Name": [
+                "Borneo"
+            ],
             "Position": [
                 1168.0174563591022,
                 398.84663341645887
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Britische Inseln",
+                "britische Inseln"
+            ],
             "Position": [
                 695.7605985037407,
                 131.39027431421448
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Grönland"
+            ],
             "Position": [
                 608.7905236907731,
                 59.382793017456365
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Island"
+            ],
             "Position": [
                 659.2892768079801,
                 102.4002493765586
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Japanische Inseln",
+                "japanische Inseln"
+            ],
             "Position": [
                 1214.775561097257,
                 188.43516209476311
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Java"
+            ],
             "Position": [
                 1151.1845386533666,
                 442.7992518703242
             ]
-        },
+        }, 
         {
             "Name": [
-                "Teil von Borneo"
+                "Korea"
             ],
-            "Position": [
-                1166.147132169576,
-                411.93890274314214
-            ]
-        },
-        {
-            "Name": [],
             "Position": [
                 1176.43391521197,
                 221.16583541147133
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Madagaskar"
+            ],
             "Position": [
                 886.5336658354115,
                 496.1034912718205
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Neuguinea"
+            ],
             "Position": [
                 1274.6259351620947,
                 434.3827930174564
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Neuseeland"
+            ],
             "Position": [
                 1311.0972568578554,
                 636.3778054862843
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Sri Lanka"
+            ],
             "Position": [
                 1027.7431421446383,
                 370.7917705735661
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Sumatra"
+            ],
             "Position": [
                 1109.1022443890274,
                 401.65211970074813
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Tasmanien"
+            ],
             "Position": [
                 1227.8678304239402,
                 623.2855361596011
             ]
         }
     ],
+    "IslandRegion": [
+        {
+            "Name": [
+                "Kalimantan"
+            ],
+            "Position": [
+                1166.147132169576,
+                411.93890274314214
+            ]
+        }
+    ],
     "MountainRange": [
         {
-            "Name": [],
+            "Name": [
+                "Alpen"
+            ],
             "Position": [
                 738.778054862843,
                 192.17581047381546
             ]
         },
         {
-            "Name": []
+            "Name": [
+                "Anden"
+            ],
+            "Position": [
+                432.98004987531175,
+                493.2980049875312
+            ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Appalachen"
+            ],
             "Position": [
                 405.8603491271821,
                 221.16583541147133
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Atlas"
+            ],
             "Position": [
                 697.6309226932668,
                 254.83167082294264
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Brasilianisches Bergland",
+                "brasilianisches Bergland"
+            ],
             "Position": [
                 521.8204488778055,
                 450.28054862842896
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Drakensberge"
+            ],
             "Position": [
                 804.2394014962593,
                 540.9912718204489
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Great Dividing Range"
+            ],
             "Position": [
                 1275.561097256858,
                 552.213216957606
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Himalaya"
+            ],
             "Position": [
                 1018.3915211970075,
                 263.2481296758105
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Hochland von Äthiopien"
+            ],
             "Position": [
                 859.4139650872818,
                 361.4401496259352
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Kaukasus"
+            ],
             "Position": [
                 866.8952618453866,
                 207.13840399002495
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Rocky Mountains"
+            ],
             "Position": [
                 306.7331670822943,
                 198.72194513715712
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Ural"
+            ],
             "Position": [
                 902.4314214463841,
                 122.03865336658355
@@ -531,7 +656,9 @@
     "Nation": [
         {
             "Name": [
-                "Vereinigtes Königreich"
+                "Vereinigtes Königreich",
+                "Grossbritannien",
+                "GB"
             ],
             "Position": [
                 702.3067331670824,
@@ -540,7 +667,8 @@
         },
         {
             "Name": [
-                "Mexiko"
+                "Mexiko",
+                "Mexico"
             ],
             "Position": [
                 315.14962593516213,
@@ -549,6 +677,7 @@
         },
         {
             "Name": [
+                "USA",
                 "Vereinigte Staaten von Amerika",
                 "United States of America",
                 "Vereinigte Staaten",
@@ -565,6 +694,8 @@
     "Ocean": [
         {
             "Name": [
+                "Atlantischer Ozean",
+                "atlantischer Ozean",
                 "Atlantik"
             ],
             "Position": [
@@ -574,6 +705,19 @@
         },
         {
             "Name": [
+                "Indischer Ozean",
+                "indischer Ozean",
+                "Indik"
+            ],
+            "Position": [
+                1012.780548628429,
+                420.35536159600997
+            ]
+        },
+        {
+            "Name": [
+                "Pazifischer Ozean",
+                "pazifischer Ozean",
                 "Pazifik"
             ],
             "Position": [
@@ -584,7 +728,9 @@
     ],
     "Peninsula": [
         {
-            "Name": [],
+            "Name": [
+                "Alaska"
+            ],
             "Position": [
                 296.44638403990024,
                 66.8640897755611
@@ -592,7 +738,9 @@
         },
         {
             "Name": [
-                "Arabische Halbinsel"
+                "Arabien",
+                "Arabische Halbinsel",
+                "arabische Halbinsel"
             ],
             "Position": [
                 890.2743142144639,
@@ -600,35 +748,48 @@
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Iberische Halbinsel",
+                "iberische Halbinsel"
+            ],
             "Position": [
                 687.3441396508729,
                 220.23067331670825
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Kamtschatka"
+            ],
             "Position": [
                 1213.8403990024938,
                 124.84413965087282
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Labrador",
+                "Labrador-Halbinsel"
+            ],
             "Position": [
                 487.2194513715711,
                 141.6770573566085
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Skandinavische Halbinsel",
+                "skandinavische Halbinsel"
+            ],
             "Position": [
                 759.351620947631,
                 100.52992518703242
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Somali-Halbinsel"
+            ],
             "Position": [
                 897.7556109725687,
                 362.3753117206983
@@ -638,7 +799,9 @@
     "River": [
         {
             "FlowsInto": "Atlantischer Ozean",
-            "Name": [],
+            "Name": [
+                "Amazonas"
+            ],
             "Position": [
                 428.30423940149626,
                 415.67955112219454
@@ -646,7 +809,9 @@
         },
         {
             "FlowsInto": "Schwarzes Meer",
-            "Name": [],
+            "Name": [
+                "Donau"
+            ],
             "Position": [
                 754.6758104738155,
                 181.88902743142145
@@ -654,15 +819,19 @@
         },
         {
             "FlowsInto": "Indischer Ozean",
-            "Name": [],
+            "Name": [
+                "Ganges"
+            ],
             "Position": [
                 1025.8728179551122,
                 283.8216957605985
             ]
         },
         {
-            "FlowsInto": "Atlantischer Ozean",
-            "Name": [],
+            "FlowsInto": "Pazifischer Ozean",
+            "Name": [
+                "Huang He"
+            ],
             "Position": [
                 1118.4538653366585,
                 230.51745635910225
@@ -670,7 +839,9 @@
         },
         {
             "FlowsInto": "Arabisches Meer",
-            "Name": [],
+            "Name": [
+                "Indus"
+            ],
             "Position": [
                 975.3740648379053,
                 261.3778054862843
@@ -678,7 +849,9 @@
         },
         {
             "FlowsInto": "Arktischer Ozean",
-            "Name": [],
+            "Name": [
+                "Jenissej"
+            ],
             "Position": [
                 985.6608478802993,
                 114.55735660847881
@@ -686,7 +859,9 @@
         },
         {
             "FlowsInto": "Atlantischer Ozean",
-            "Name": [],
+            "Name": [
+                "Kongo"
+            ],
             "Position": [
                 776.1845386533666,
                 402.5872817955112
@@ -694,7 +869,9 @@
         },
         {
             "FlowsInto": "Südchinesisches Meer",
-            "Name": [],
+            "Name": [
+                "Mekong"
+            ],
             "Position": [
                 1120.3241895261847,
                 324.0336658354115
@@ -702,7 +879,9 @@
         },
         {
             "FlowsInto": "Golf von Mexiko",
-            "Name": [],
+            "Name": [
+                "Mississippi"
+            ],
             "Position": [
                 383.41645885286783,
                 194.04613466334166
@@ -710,7 +889,9 @@
         },
         {
             "FlowsInto": "Mississippi",
-            "Name": [],
+            "Name": [
+                "Missouri"
+            ],
             "Position": [
                 356.29675810473816,
                 173.47256857855362
@@ -718,7 +899,9 @@
         },
         {
             "FlowsInto": "Atlantischer Ozean",
-            "Name": [],
+            "Name": [
+                "Niger"
+            ],
             "Position": [
                 717.2693266832918,
                 353.95885286783044
@@ -726,7 +909,9 @@
         },
         {
             "FlowsInto": "Mittelmeer",
-            "Name": [],
+            "Name": [
+                "Nil"
+            ],
             "Position": [
                 832.2942643391522,
                 335.2556109725686
@@ -734,7 +919,9 @@
         },
         {
             "FlowsInto": "Arktischer Ozean",
-            "Name": [],
+            "Name": [
+                "Ob"
+            ],
             "Position": [
                 924.8753117206983,
                 121.10349127182046
@@ -743,6 +930,7 @@
         {
             "FlowsInto": "Atlantischer Ozean",
             "Name": [
+                "Parana",
                 "Paran´a"
             ],
             "Position": [
@@ -752,7 +940,9 @@
         },
         {
             "FlowsInto": "Kaspisches Meer",
-            "Name": [],
+            "Name": [
+                "Wolga"
+            ],
             "Position": [
                 856.6084788029925,
                 144.48254364089777
@@ -761,14 +951,19 @@
     ],
     "Sea": [
         {
-            "Name": [],
+            "Name": [
+                "Arabisches Meer",
+                "arabisches Meer"
+            ],
             "Position": [
                 951.995012468828,
                 340.8665835411471
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Golf von Mexiko"
+            ],
             "Position": [
                 356.29675810473816,
                 284.7568578553616
@@ -776,15 +971,8 @@
         },
         {
             "Name": [
-                "Indik"
-            ],
-            "Position": [
-                1012.780548628429,
-                420.35536159600997
-            ]
-        },
-        {
-            "Name": [
+                "Karibisches Meer",
+                "karibisches Meer",
                 "Karibik"
             ],
             "Position": [
@@ -793,42 +981,57 @@
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Mittelmeer"
+            ],
             "Position": [
                 770.573566084788,
                 243.60972568578555
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Nordsee"
+            ],
             "Position": [
                 720.0748129675811,
                 147.28802992518703
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Ostsee"
+            ],
             "Position": [
                 771.5087281795512,
                 146.35286783042395
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Rotes Meer",
+                "rotes Meer"
+            ],
             "Position": [
                 860.349127182045,
                 322.1633416458853
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Schwarzes Meer",
+                "schwarzes Meer"
+            ],
             "Position": [
                 828.5536159600998,
                 207.13840399002495
             ]
         },
         {
-            "Name": [],
+            "Name": [
+                "Südchinesisches Meer",
+                "südchinesisches Meer"
+            ],
             "Position": [
                 1157.7306733167084,
                 319.357855361596
