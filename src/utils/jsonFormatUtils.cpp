@@ -165,7 +165,7 @@ namespace jsonFormatUtils{
         }
     }
 
-    std::string getWording(uint8_t type){
+std::string getWording(uint8_t type){
         switch(type){
             case Stadt: return "die Stadt, die";
             case Region: return "die Region, die";
@@ -185,5 +185,25 @@ namespace jsonFormatUtils{
                         return "__FEHLER__";
             }
         }
+    }
+
+    bool existsElementWithNameInTypeset(const json& root, const std::string& name, const std::vector<std::string>& typeset){
+        bool exists = false; 
+        for(const std::string& typeName : typeset){
+            if(!root.contains(typeName)) continue;
+            const json& type = root[typeName];
+            if(!type.is_array()) continue;
+
+            for(const json& element : type){
+                if (!element.contains("Name")) continue;
+
+                std::vector<std::string> names = element["Name"].template get<std::vector<std::string>>();    
+                if(std::find(names.begin(), names.end(), name) == names.end()) continue;
+                exists = true;
+                break;
+            }
+        }
+
+        return exists;
     }
 }

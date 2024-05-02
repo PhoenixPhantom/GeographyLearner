@@ -21,6 +21,8 @@
 #include "../utils/MapWidget.h"
 #define deleteSafe(ptr) delete ptr; ptr = nullptr;
 
+using SupportedTypes = jsonFormatUtils::SupportedTypes;
+
 JsonBoundListItem::JsonBoundListItem(const elementRef& entry) : QListWidgetItem(), associatedEntry(entry){
 
 }
@@ -62,7 +64,7 @@ EditorWidget::EditorWidget(QWidget *parent) : QWidget(parent), currentListItem(n
     QHBoxLayout* searchBarLayout = new QHBoxLayout(elementsSearch);
 
     searchLine = new QLineEdit(elementsSearch);
-    connect(searchLine, &QLineEdit::returnPressed, this, &EditorWidget::onSearch);
+    connect(searchLine, &QLineEdit::editingFinished, this, &EditorWidget::onSearch);
     searchBarLayout->addWidget(searchLine);
 
     typeSearchFilter = new QComboBox(elementsSearch);
@@ -74,17 +76,26 @@ EditorWidget::EditorWidget(QWidget *parent) : QWidget(parent), currentListItem(n
 
     matchingElements = new QListWidget(elementsSearch);
     matchingElements->focusWidget();
+    matchingElements->setStyleSheet("\
+        QListWidget::item:selected {\
+            background-color: lightGray;\
+            border-width: 2px;\
+            border-radius: 10px;\
+            border-color: beige;\
+            font: bold 14px;\
+            min-width: 10em;\
+            padding: 6px;\
+        }\
+        QListWidget:focus {\
+            border: none;\
+            outline: none;\
+        }\
+    ");
     connect(matchingElements, &QListWidget::itemSelectionChanged, this, &EditorWidget::onSelectedElementChanged);
     elementsSearchLayout->addWidget(matchingElements);
 
     elementsSearch->setLayout(elementsSearchLayout);
     menuLayout->addWidget(elementsSearch);
-
-
-    addNewElementButton = new QPushButton(tr("Neues Element einfügen"), elementsSearch);
-    connect(addNewElementButton, &QPushButton::released, this, &EditorWidget::onAddNewElement);
-    menuLayout->addWidget(addNewElementButton);
-
 
     //edit properties related things
     elementSettings = new QGroupBox(tr("Element-Eigenschaften"), this); 
@@ -102,6 +113,14 @@ EditorWidget::EditorWidget(QWidget *parent) : QWidget(parent), currentListItem(n
     connect(elementType, &QComboBox::activated, this, &EditorWidget::onElementTypeChanged);
     elementSettingsLayout->addWidget(elementType, 1, 1);
 
+    elementIsMetadata = new QCheckBox(elementSettings);
+//    elementIsMetadata->setStyle
+    connect(elementIsMetadata, &QCheckBox::clicked, this, &EditorWidget::onElementIsMetadataChanged);
+    elementSettingsLayout->addWidget(new QLabel(tr("Metaelement"), elementSettings), 2, 0);
+    elementSettingsLayout->addWidget(elementIsMetadata, 2, 1, Qt::AlignRight);
+
+
+
     elementPosContainer = new QGroupBox(tr("Lage"), this);
     QHBoxLayout* posContainerLayout = new QHBoxLayout(elementPosContainer);
     setElementSelectorPos = new QPushButton(elementPosContainer); 
@@ -113,7 +132,7 @@ EditorWidget::EditorWidget(QWidget *parent) : QWidget(parent), currentListItem(n
     connect(getElementSelectorPos, &QPushButton::released, this, &EditorWidget::showPosition);
     posContainerLayout->addWidget(getElementSelectorPos);*/
     elementPosContainer->setLayout(posContainerLayout);
-    elementSettingsLayout->addWidget(elementPosContainer, 2, 0, 1, 2);
+    elementSettingsLayout->addWidget(elementPosContainer, 3, 0, 1, 2);
 
     stateGroup = new QGroupBox(tr("(Bundes)staat"), elementSettings);
     QVBoxLayout* stateGroupLayout = new QVBoxLayout(stateGroup);
@@ -138,20 +157,22 @@ EditorWidget::EditorWidget(QWidget *parent) : QWidget(parent), currentListItem(n
     flowsIntoGroup->setLayout(flowsIntoGroupLayout);
     elementSettingsLayout->addWidget(flowsIntoGroup, 5, 0, 1, 2);
 
-
-    elementIsMetadata = new QCheckBox(elementSettings);
-    connect(elementIsMetadata, &QCheckBox::clicked, this, &EditorWidget::onElementIsMetadataChanged);
-    elementSettingsLayout->addWidget(new QLabel(tr("Metaelement"), elementSettings), 6, 0);
-    elementSettingsLayout->addWidget(elementIsMetadata, 6, 1, Qt::AlignRight);
-
-    elementDelete = new QPushButton(tr("Eintrag löschen"), elementSettings);
-    connect(elementDelete, &QPushButton::released, this, &EditorWidget::onElementDeleted);
-    elementSettingsLayout->addWidget(elementDelete, 7, 0, 1, 2, Qt::AlignCenter);
-
     elementSettings->setLayout(elementSettingsLayout);
     menuLayout->addWidget(elementSettings);
 
-    menuLayout->addSpacing(25);
+
+    QGroupBox* box = new QGroupBox(tr("Aktionen"), this);
+    QVBoxLayout* actionsLayout = new QVBoxLayout(box);
+
+    addNewElementButton = new QPushButton(tr("Neues Element hinzufügen"), box);
+    connect(addNewElementButton, &QPushButton::released, this, &EditorWidget::onAddNewElement);
+    actionsLayout->addWidget(addNewElementButton);
+
+    elementDelete = new QPushButton(tr("Eintrag löschen"), elementsSearch);
+    connect(elementDelete, &QPushButton::released, this, &EditorWidget::onElementDeleted);
+    actionsLayout->addWidget(elementDelete);
+    box->setLayout(actionsLayout);
+    menuLayout->addWidget(box);
 
     confirmSettings = new QPushButton(this);
     confirmSettings->setText(tr("Alle Einträge speichern"));
@@ -197,7 +218,8 @@ void EditorWidget::resizeEvent(QResizeEvent* event)
 }
 
 void EditorWidget::onSearch(){
-    listFilter.nameFragment = searchLine->text().toLower().toStdString();
+    listFilter.nameFragment = searchLine->text().toStdString();
+    listFilter.nameFragmentLowercase = searchLine->text().toLower().toStdString();
     listFilter.targetType = uint8_t(typeSearchFilter->currentIndex() - 1);
 
     if(matchingElements->selectedItems().empty()) rebuildViewFromJson();
@@ -295,6 +317,11 @@ void EditorWidget::onElementTypeChanged(int index){
     currentListItem = nullptr;
     temp->removeEntry();
     deleteSafe(temp);
+
+    if(listFilter.targetType != uint8_t(-1) && listFilter.targetType != uint8_t(elementType->currentIndex() - 1)){
+        listFilter.targetType = uint8_t(-1);
+        typeSearchFilter->setCurrentIndex(0);
+    }
     
     rebuildViewFromJson(-1, newEntry);
 }
@@ -314,6 +341,21 @@ void EditorWidget::onElementNamesEdited(){
 
     currentListItem->getBoundObject()["Name"] = allNames;
     currentListItem->setText(QString::fromStdString(allNames[0]));
+
+    if(!listFilter.nameFragmentLowercase.empty()){
+        bool foundMatch = false;
+        for(std::string name : allNames){
+            std::transform(name.begin(), name.end(), name.begin(), [](unsigned char c){ return std::tolower(c);});
+            if(name.find(listFilter.nameFragmentLowercase) == std::string::npos) continue;
+            foundMatch = true;
+            break;
+        }
+        if(!foundMatch){
+            listFilter.nameFragmentLowercase = listFilter.nameFragment = "";
+            searchLine->setText("");
+            rebuildViewFromJson(-1, currentListItem->getBoundObject());
+        }
+    }
 }
 
 void EditorWidget::onElementIsMetadataChanged(bool checked){
@@ -365,7 +407,8 @@ void EditorWidget::onSearchState(){
         for(int i = 0; i < matchingElements->count(); i++){
             JsonBoundListItem* item = static_cast<JsonBoundListItem*>(matchingElements->item(i));
             int type = item->getAssociatedEntry().type;
-            if(type != jsonFormatUtils::Staat) continue;
+            if(type != jsonFormatUtils::Staat && type != jsonFormatUtils::Bundesstaat) continue;
+
             std::vector<std::string> stateNames = 
                 item->getBoundObject()["Name"].template get<std::vector<std::string>>();
             if(std::find(stateNames.begin(), stateNames.end(), stateSpecifier) == stateNames.end()) continue;
@@ -377,8 +420,7 @@ void EditorWidget::onSearchState(){
         }
 
         if(!hasFound){
-            elementState->setVisible(false);
-           //elementState->setStyleSheet("QPushButton { color : gray; }");
+            elementStateSet(stateSpecifier, false);
         }
     }
 }
@@ -392,7 +434,7 @@ void EditorWidget::onElementStateEdited(){
     if(newName.contains(";")){
         QMessageBox::warning(this, windowTitle(),
                 tr("Das Feld \"(Bundes)Staat\" unterstützt nur die Nennung eines einzelnen Eintrages. \
-                    Alternative Namen des (Bundes)Staates können in einem separaten Eintrag mit Typ \"Staat\" definiert werden."), 
+Kreiere einen separaten Eintrag mit Typ \"Staat\"/\"Bundesstaat\" trage die entsprechenden Daten dort ein."), 
                 QMessageBox::Close, QMessageBox::Close); 
         if(currentEntry.contains("liegtInStaat")){
             std::string state = currentEntry["liegtInStaat"].template get<std::string>();
@@ -421,6 +463,7 @@ void EditorWidget::onSearchFlowsInto(){
         std::string flowsIntoSpecifier = currentEntry["mündetIn"].template get<std::string>();
 
         resetFilter();
+        bool hasFound = false;
         for(int i = 0; i < matchingElements->count(); i++){
             JsonBoundListItem* item = static_cast<JsonBoundListItem*>(matchingElements->item(i));
             int type = item->getAssociatedEntry().type;
@@ -430,9 +473,15 @@ void EditorWidget::onSearchFlowsInto(){
             std::vector<std::string> flowsIntoNames = 
                 item->getBoundObject()["Name"].template get<std::vector<std::string>>();
             if(std::find(flowsIntoNames.begin(), flowsIntoNames.end(), flowsIntoSpecifier) == flowsIntoNames.end()) continue;
+
             matchingElements->scrollToItem(item);
             matchingElements->setCurrentItem(item);
+            hasFound = true;
             break;
+        }
+
+        if(!hasFound){
+            elementStateSet(flowsIntoSpecifier, false);
         }
     }
 }
@@ -446,8 +495,8 @@ void EditorWidget::onElementFlowsIntoEdited(){
     if(newName.contains(";")){
         QMessageBox::warning(this, windowTitle(),
                 tr("Das Feld \"Mündet in\" unterstützt nur die Nennung eines einzelnen Eintrages. \
-                    Alternative Namen des Mündungsgewässers können in einem separaten Eintrag mit Typ \
-                    \"Ozean\"/\"Meeresteil\"/\"See\"/\"Fluss\" definiert werden."), 
+Alternative Namen des Mündungsgewässers können in einem separaten Eintrag mit Typ \
+\"Ozean\"/\"Meeresteil\"/\"See\"/\"Fluss\" definiert werden."), 
                 QMessageBox::Close, QMessageBox::Close); 
         if(currentEntry.contains("mündetIn")){
             std::string flowsInto = currentEntry["mündetIn"].template get<std::string>();
@@ -509,7 +558,9 @@ void EditorWidget::onDocumentSaved(){
         JsonBoundListItem* item = static_cast<JsonBoundListItem*>(matchingElements->item(i));
         if(!item->getBoundObject().contains("Position")){
             QMessageBox::critical(this, windowTitle(),
-                    tr("Das Element ") + item->text() + tr(" hat keine zugeordnete Position. Ordne dem Element eine Position zu, um fortzufahren."), 
+                    item->text() + tr(" hat keine zugeordnete Position.\
+Wähle das entsprechende Element, setze die Markierung auf der Karte an den passenden Ort und wähle \
+'Markierung von Karte übernehmen', um fortzufahren."), 
                     QMessageBox::Close, QMessageBox::Close);
             matchingElements->setCurrentItem(item);
             matchingElements->scrollToItem(item);
@@ -531,7 +582,8 @@ void EditorWidget::resetFilter(){
     listFilter = FilterProperties();
     searchLine->setText("");
     typeSearchFilter->setCurrentIndex(0);
-    rebuildViewFromJson(-1, currentListItem->getBoundObject());
+    if(currentListItem == nullptr || matchingElements->selectedItems().empty()) rebuildViewFromJson();
+    else rebuildViewFromJson(-1, currentListItem->getBoundObject());
 }
 
 void EditorWidget::readJson(){
@@ -577,11 +629,11 @@ void EditorWidget::rebuildViewFromJson(int row, const json& target){
             if (!ofType[i].contains("Name")) continue;
             const json& object = ofType[i];
             std::vector<std::string> names = object["Name"].template get<std::vector<std::string>>();
-            if(!listFilter.nameFragment.empty()){
+            if(!listFilter.nameFragmentLowercase.empty()){
                 bool foundMatch = false;
                 for(std::string name : names){
                     std::transform(name.begin(), name.end(), name.begin(), [](unsigned char c){ return std::tolower(c);});
-                    if(name.find(listFilter.nameFragment) == std::string::npos) continue;
+                    if(name.find(listFilter.nameFragmentLowercase) == std::string::npos) continue;
                     foundMatch = true;
                     break;
                 }
@@ -685,27 +737,20 @@ void EditorWidget::updateJson(){
 void EditorWidget::elementStateSet(const std::string& str, bool shouldCheckExists){
     QList<QListWidgetItem*> list = matchingElements->selectedItems();
     if(list.isEmpty() || currentListItem == nullptr) return;
+
     JsonBoundListItem* currentItem = static_cast<JsonBoundListItem*>(list[0]);
     assertM(currentItem->getAssociatedEntry().type == jsonFormatUtils::Stadt ||
             currentItem->getAssociatedEntry().type == jsonFormatUtils::Bundesstaat,
             "Can only set state on compatible element");
+
     elementState->setText(QString::fromStdString(str));
 
     bool exists = false;
     if(shouldCheckExists){
-        for(auto& [typeString, ofType] : configData.items()){
-            int localType = jsonFormatUtils::getSupportedTypesIndex(typeString) & ~jsonFormatUtils::legacyFlag;
-            if(localType != jsonFormatUtils::Staat &&
-                localType != jsonFormatUtils::Bundesstaat) continue;
-            for(json& element : ofType){
-                if (!element.contains("Name")) continue;
-                std::vector<std::string> names = element["Name"].template get<std::vector<std::string>>();
-                
-                if(std::find(names.begin(), names.end(), str) == names.end()) continue;
-                exists = true;
-                break;
-            }
-        }
+        exists = jsonFormatUtils::existsElementWithNameInTypeset(configData, str, {
+            jsonFormatUtils::supportedTypes[jsonFormatUtils::Staat],
+            jsonFormatUtils::supportedTypes[jsonFormatUtils::Bundesstaat]
+        }); 
     }
 
     if(!exists){
@@ -741,19 +786,12 @@ void EditorWidget::elementFlowsIntoSet(const std::string& str, bool shouldCheck)
 
     bool exists = false;
     if(shouldCheck){
-        for(auto& [typeString, ofType] : configData.items()){
-            int type = jsonFormatUtils::getSupportedTypesIndex(typeString) & ~jsonFormatUtils::legacyFlag;
-            if(type != jsonFormatUtils::Fluss && type != jsonFormatUtils::See &&
-                    type != jsonFormatUtils::Ozean && type != jsonFormatUtils::Meeresteil) continue;
-
-           for(json& element : ofType){
-                std::vector<std::string> names = element["Name"].template get<std::vector<std::string>>();
-                
-                if(std::find(names.begin(), names.end(), str) == names.end()) continue;
-                exists = true;
-                break;
-            }
-        }
+        exists = jsonFormatUtils::existsElementWithNameInTypeset(configData, str, {
+            jsonFormatUtils::supportedTypes[jsonFormatUtils::Fluss],
+            jsonFormatUtils::supportedTypes[jsonFormatUtils::See],
+            jsonFormatUtils::supportedTypes[jsonFormatUtils::Ozean],
+            jsonFormatUtils::supportedTypes[jsonFormatUtils::Meeresteil]
+        }); 
     }
     
     if(!exists){

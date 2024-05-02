@@ -52,6 +52,8 @@ namespace jsonFormatUtils{
     uint8_t getSupportedTypesIndex(const std::string& type);
     QColor getAssociatedColor(uint8_t typeIndex);
     std::string getWording(uint8_t typeIndex);
+    //bool existsElementWithNameInTypeset(const std::string& name, const std::vector<json>& typeset);
+    bool existsElementWithNameInTypeset(const json& root, const std::string& name, const std::vector<std::string>& typeset);
 }
 
 #endif //JSON_DATA_INTERPRETER_H

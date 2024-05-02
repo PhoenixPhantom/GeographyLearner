@@ -56,6 +56,7 @@ private:
 
 struct FilterProperties{
     std::string nameFragment;
+    std::string nameFragmentLowercase;
     uint8_t targetType = uint8_t(-1);
 };
 
