@@ -121,17 +121,11 @@ private:
     void resetFilter();
     void readJson();
     void rebuildViewFromJson(int row = 0, const json& target = json());
-    void onEditDataInputSubmitted();
     void updateJson();
 
     void elementStateSet(const std::string& str, bool shouldCheckExists = true);
     void elementFlowsIntoSet(const std::string& str, bool shouldCheckExists = true);
     void setNeitherStateNorFlowsInto();
-
-    static json restructureJson(const json& target);
-    static std::string extractArgument(const std::string& container, const std::string& finder);
-    static void extractArgumentList(const std::string& container, const std::string& finder,
-            std::vector<std::string>& located); 
 };
 
 #endif //MAIN_WIDGET_H
