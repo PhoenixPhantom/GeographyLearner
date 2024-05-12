@@ -4,6 +4,7 @@ set(RESOURCES ${RESOURCES} Data/Position.ico Data/World.ico PARENT_SCOPE)
 set(EXECUTABLES ${EXECUTABLES}
     ${CMAKE_CURRENT_LIST_DIR}/EditorWidget.cpp 
     ${CMAKE_CURRENT_LIST_DIR}/ProjectEditWidget.cpp
+    ${CMAKE_CURRENT_LIST_DIR}/AcquireCredentialsWidget.cpp
     PARENT_SCOPE)
 #target_link_libraries(editor PRIVATE Qt6::Widgets)
 
