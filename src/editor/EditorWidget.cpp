@@ -1,5 +1,6 @@
 #include "EditorWidget.h"
 
+#include <filesystem>
 #include <algorithm>
 #include <cctype>
 #include <qboxlayout.h>
@@ -41,9 +42,13 @@ JsonBoundListItem::JsonBoundListItem(const elementRef& entry, const QIcon &icon,
 }
 
 
-EditorWidget::EditorWidget(QWidget *parent) : QWidget(parent), currentListItem(nullptr)
+EditorWidget::EditorWidget(const std::filesystem::path& projectConfigPath, QWidget *parent) :
+    QWidget(parent), currentListItem(nullptr), projectPath(projectConfigPath)
 {
-    map = new MapWidget(":/Data/WorldMap.png", QSize(15, 15), false, this);
+    QString projectImagePath = QString::fromStdString(projectPath.string());
+    projectImagePath.remove(".json");
+    projectImagePath.append(".png");
+    map = new MapWidget(projectImagePath, QSize(15, 15), false, this);
     map->setCanMoveSelector(true);
     QSizePolicy sizePolicy;
     sizePolicy.setVerticalPolicy(QSizePolicy::Expanding);
@@ -585,16 +590,21 @@ void EditorWidget::resetFilter(){
 
 void EditorWidget::readJson(){
     //NOTE: this usage of the path assumes the executable is located at a certain location
-    std::ifstream inputStream("F:/DevelopmentProjects/GeographyLearner/Data/configData.json");
+    std::ifstream inputStream(projectPath);
     if(!inputStream.is_open()) {
         QMessageBox::StandardButton retVal = QMessageBox::critical(this, windowTitle(),
                 tr("Konfigurationsdatei kann nicht geöffnet werden."), QMessageBox::Abort);
+        onAddNewElement();
         return;
     }
 
     inputStream >> configData;
 
-    rebuildViewFromJson();
+    if(configData.empty()){
+        configData["Version"] = "0.1.0";
+        onAddNewElement();
+    }
+    else rebuildViewFromJson();
 }
 
 void EditorWidget::rebuildViewFromJson(int row, const json& target){
@@ -666,7 +676,7 @@ void EditorWidget::rebuildViewFromJson(int row, const json& target){
 }
 
 void EditorWidget::updateJson(){
-    std::ofstream outStream("F:/DevelopmentProjects/GeographyLearner/Data/configData.json");
+    std::ofstream outStream(projectPath);
     outStream << std::setw(4) << configData << std::endl; 
 }
 
@@ -775,3 +785,5 @@ void EditorWidget::setNeitherStateNorFlowsInto(){
     searchFlowsInto->setVisible(false);
     flowsIntoGroup->setVisible(false);
 }
+
+#undef deleteSafe

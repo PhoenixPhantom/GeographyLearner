@@ -12,7 +12,7 @@ So kann beispielsweise gefragt werden, wohin der Mississippi fliesst, oder in we
 
 ## Antworten
 Die akzeptierten Antworten sind auf deutsch, und oft werden lokale Varianten ebenfalls akzeptiert.
-Im Falle eines Namens mit sonderzeichen wie "é", "à", "ã", etc. werden sowohl die Varianten ohne Akzent ("e", "a", "a"),
+Im Falle eines Namens mit Sonderzeichen wie "é", "à", "ã", etc. werden sowohl die Varianten ohne Akzent ("e", "a", "a"),
 als auch die Varianten mit vorgesetzten Akzenten ("´e", "`a", "~a") akzeptiert,
 da aufgrunde von limitationen des verwendeten Grafik-Frameworks die normale Schreibform solcher Sonderzeichen nicht akzeptiert wird.
 
@@ -54,6 +54,9 @@ Unterstützte Plattformen:
 </details>
   
 </details>
+
+## Geistiges Eigentum
+Der GeographyLearner ist ein C++20 basiertes Programm und verwendet für Darstellungszwecke das Grafikframework Qt. Einige der verwendeten grafischen Elemente sind wurden als externe Dateien beschafft und sind [hier](Data/Attributions.md) explizit aufgelistet. Ausserdem wird die [nlohmann json](https://github.com/nlohmann/json?tab=readme-ov-file) Bibliothek für Speicherzwecke und die [libgit2](https://github.com/libgit2/libgit2?tab=readme-ov-file) Bibliothek für Interaktionen mit Git verwendet.
 
 ## Verbesserungen
 Sollte eine gebräuchliche Antwort nicht akzeptiert sein, oder ein anderer Fehler gefunden werden,

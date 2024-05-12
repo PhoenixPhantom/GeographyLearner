@@ -18,7 +18,7 @@ public:
     void setSelectorColor(const QColor& color, bool compatibilityMode = true);
     void setSelectorPos(const QPointF& newPos){ setLocalPos(newPos); updateSelectorPos(); }
 protected:
-    void resizeEvent(QResizeEvent* event) override;
+    virtual void resizeEvent(QResizeEvent* event) override;
     void setLocalPos(const QPointF& newL){ localPos = newL; };
     void updateSelectorPos();
     void setLocalPosFromLocal(const QPoint& newlocalPos);

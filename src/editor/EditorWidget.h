@@ -4,6 +4,7 @@
 #include <QWidget>
 #include <QProcess>
 #include <qlistwidget.h>
+#include <filesystem>
 #include "../utils/json.hpp"
 
 using json = nlohmann::json;
@@ -65,7 +66,7 @@ class EditorWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit EditorWidget(QWidget* parent = nullptr);
+    explicit EditorWidget(const std::filesystem::path& projectConfigPath, QWidget* parent = nullptr);
     ~EditorWidget();
 
 protected:
@@ -114,6 +115,7 @@ private:
     //general functionality
     QPushButton* confirmSettings; 
 
+    std::filesystem::path projectPath;
     json configData;
     JsonBoundListItem* currentListItem;
     FilterProperties listFilter;

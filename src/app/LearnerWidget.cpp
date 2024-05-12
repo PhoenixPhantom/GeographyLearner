@@ -16,7 +16,6 @@ LearnerWidget::LearnerWidget(QWidget *parent) : QWidget(parent), currentQuestion
 {
 
     map = new MapWidget(":/Data/WorldMap.png", QSize(15, 15), true, this);
-// QSizePolicy sizePolicy;
 //    sizePolicy.setVerticalPolicy(QSizePolicy::Maximum);
  //   sizePolicy.setHorizontalPolicy(QSizePolicy::Maximum);
   //  map->setSizePolicy(sizePolicy);
