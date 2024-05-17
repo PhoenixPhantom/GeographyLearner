@@ -1,0 +1,1082 @@
+{
+    "Fluss": [
+        {
+            "Name": [
+                "Amazonas"
+            ],
+            "Position": [
+                428.30423940149626,
+                415.67955112219454
+            ],
+            "istMetaelement": false,
+            "mündetIn": "Atlantischer Ozean"
+        },
+        {
+            "Name": [
+                "Donau"
+            ],
+            "Position": [
+                754.6758104738155,
+                181.88902743142145
+            ],
+            "istMetaelement": false,
+            "mündetIn": "Schwarzes Meer"
+        },
+        {
+            "Name": [
+                "Ganges"
+            ],
+            "Position": [
+                1025.8728179551122,
+                283.8216957605985
+            ],
+            "istMetaelement": false,
+            "mündetIn": "Indischer Ozean"
+        },
+        {
+            "Name": [
+                "Huang He"
+            ],
+            "Position": [
+                1118.4538653366585,
+                230.51745635910225
+            ],
+            "istMetaelement": false,
+            "mündetIn": "Pazifischer Ozean"
+        },
+        {
+            "Name": [
+                "Indus"
+            ],
+            "Position": [
+                975.3740648379053,
+                261.3778054862843
+            ],
+            "istMetaelement": false,
+            "mündetIn": "Arabisches Meer"
+        },
+        {
+            "Name": [
+                "Jenissej"
+            ],
+            "Position": [
+                985.6608478802993,
+                114.55735660847881
+            ],
+            "istMetaelement": false,
+            "mündetIn": "Arktischer Ozean"
+        },
+        {
+            "Name": [
+                "Kongo"
+            ],
+            "Position": [
+                776.1845386533666,
+                402.5872817955112
+            ],
+            "istMetaelement": false,
+            "mündetIn": "Atlantischer Ozean"
+        },
+        {
+            "Name": [
+                "Mekong"
+            ],
+            "Position": [
+                1120.3241895261847,
+                324.0336658354115
+            ],
+            "istMetaelement": false,
+            "mündetIn": "Südchinesisches Meer"
+        },
+        {
+            "Name": [
+                "Mississippi"
+            ],
+            "Position": [
+                383.41645885286783,
+                194.04613466334166
+            ],
+            "istMetaelement": false,
+            "mündetIn": "Golf von Mexiko"
+        },
+        {
+            "Name": [
+                "Missouri"
+            ],
+            "Position": [
+                356.29675810473816,
+                173.47256857855362
+            ],
+            "istMetaelement": false,
+            "mündetIn": "Mississippi"
+        },
+        {
+            "Name": [
+                "Niger"
+            ],
+            "Position": [
+                717.2693266832918,
+                353.95885286783044
+            ],
+            "istMetaelement": false,
+            "mündetIn": "Atlantischer Ozean"
+        },
+        {
+            "Name": [
+                "Nil"
+            ],
+            "Position": [
+                832.2942643391522,
+                335.2556109725686
+            ],
+            "istMetaelement": false,
+            "mündetIn": "Mittelmeer"
+        },
+        {
+            "Name": [
+                "Ob"
+            ],
+            "Position": [
+                924.8753117206983,
+                121.10349127182046
+            ],
+            "istMetaelement": false,
+            "mündetIn": "Arktischer Ozean"
+        },
+        {
+            "Name": [
+                "Parana",
+                "Paran´a"
+            ],
+            "Position": [
+                476.9326683291771,
+                535.3802992518704
+            ],
+            "istMetaelement": false,
+            "mündetIn": "Atlantischer Ozean"
+        },
+        {
+            "Name": [
+                "Wolga"
+            ],
+            "Position": [
+                856.6084788029925,
+                144.48254364089777
+            ],
+            "istMetaelement": false,
+            "mündetIn": "Kaspisches Meer"
+        }
+    ],
+    "Gebirgskette": [
+        {
+            "Name": [
+                "Alpen"
+            ],
+            "Position": [
+                738.778054862843,
+                192.17581047381546
+            ],
+            "istMetaelement": false
+        },
+        {
+            "Name": [
+                "Anden"
+            ],
+            "Position": [
+                432.98004987531175,
+                493.2980049875312
+            ],
+            "istMetaelement": false
+        },
+        {
+            "Name": [
+                "Appalachen"
+            ],
+            "Position": [
+                405.8603491271821,
+                221.16583541147133
+            ],
+            "istMetaelement": false
+        },
+        {
+            "Name": [
+                "Atlas"
+            ],
+            "Position": [
+                697.6309226932668,
+                254.83167082294264
+            ],
+            "istMetaelement": false
+        },
+        {
+            "Name": [
+                "Brasilianisches Bergland",
+                "brasilianisches Bergland"
+            ],
+            "Position": [
+                521.8204488778055,
+                450.28054862842896
+            ],
+            "istMetaelement": false
+        },
+        {
+            "Name": [
+                "Drakensberge"
+            ],
+            "Position": [
+                804.2394014962593,
+                540.9912718204489
+            ],
+            "istMetaelement": false
+        },
+        {
+            "Name": [
+                "Great Dividing Range"
+            ],
+            "Position": [
+                1275.561097256858,
+                552.213216957606
+            ],
+            "istMetaelement": false
+        },
+        {
+            "Name": [
+                "Himalaya"
+            ],
+            "Position": [
+                1018.3915211970075,
+                263.2481296758105
+            ],
+            "istMetaelement": false
+        },
+        {
+            "Name": [
+                "Hochland von Äthiopien"
+            ],
+            "Position": [
+                859.4139650872818,
+                361.4401496259352
+            ],
+            "istMetaelement": false
+        },
+        {
+            "Name": [
+                "Kaukasus"
+            ],
+            "Position": [
+                866.8952618453866,
+                207.13840399002495
+            ],
+            "istMetaelement": false
+        },
+        {
+            "Name": [
+                "Rocky Mountains"
+            ],
+            "Position": [
+                306.7331670822943,
+                198.72194513715712
+            ],
+            "istMetaelement": false
+        },
+        {
+            "Name": [
+                "Ural"
+            ],
+            "Position": [
+                902.4314214463841,
+                122.03865336658355
+            ],
+            "istMetaelement": false
+        }
+    ],
+    "Halbinsel": [
+        {
+            "Name": [
+                "Alaska"
+            ],
+            "Position": [
+                296.44638403990024,
+                66.8640897755611
+            ],
+            "istMetaelement": false
+        },
+        {
+            "Name": [
+                "Arabien",
+                "Arabische Halbinsel",
+                "arabische Halbinsel"
+            ],
+            "Position": [
+                890.2743142144639,
+                304.39526184538653
+            ],
+            "istMetaelement": false
+        },
+        {
+            "Name": [
+                "Iberische Halbinsel",
+                "iberische Halbinsel"
+            ],
+            "Position": [
+                687.3441396508729,
+                220.23067331670825
+            ],
+            "istMetaelement": false
+        },
+        {
+            "Name": [
+                "Kamtschatka"
+            ],
+            "Position": [
+                1213.8403990024938,
+                124.84413965087282
+            ],
+            "istMetaelement": false
+        },
+        {
+            "Name": [
+                "Labrador",
+                "Labrador-Halbinsel"
+            ],
+            "Position": [
+                487.2194513715711,
+                141.6770573566085
+            ],
+            "istMetaelement": false
+        },
+        {
+            "Name": [
+                "Skandinavische Halbinsel",
+                "skandinavische Halbinsel"
+            ],
+            "Position": [
+                759.351620947631,
+                100.52992518703242
+            ],
+            "istMetaelement": false
+        },
+        {
+            "Name": [
+                "Somali-Halbinsel"
+            ],
+            "Position": [
+                897.7556109725687,
+                362.3753117206983
+            ],
+            "istMetaelement": false
+        }
+    ],
+    "Insel": [
+        {
+            "Name": [
+                "Borneo"
+            ],
+            "Position": [
+                1168.0174563591022,
+                398.84663341645887
+            ],
+            "istMetaelement": false
+        },
+        {
+            "Name": [
+                "Britische Inseln",
+                "britische Inseln"
+            ],
+            "Position": [
+                695.7605985037407,
+                131.39027431421448
+            ],
+            "istMetaelement": false
+        },
+        {
+            "Name": [
+                "Grönland"
+            ],
+            "Position": [
+                608.7905236907731,
+                59.382793017456365
+            ],
+            "istMetaelement": false
+        },
+        {
+            "Name": [
+                "Island"
+            ],
+            "Position": [
+                659.2892768079801,
+                102.4002493765586
+            ],
+            "istMetaelement": false
+        },
+        {
+            "Name": [
+                "Japanische Inseln",
+                "japanische Inseln"
+            ],
+            "Position": [
+                1214.775561097257,
+                188.43516209476311
+            ],
+            "istMetaelement": false
+        },
+        {
+            "Name": [
+                "Java"
+            ],
+            "Position": [
+                1151.1845386533666,
+                442.7992518703242
+            ],
+            "istMetaelement": false
+        },
+        {
+            "Name": [
+                "Korea"
+            ],
+            "Position": [
+                1176.43391521197,
+                221.16583541147133
+            ],
+            "istMetaelement": false
+        },
+        {
+            "Name": [
+                "Madagaskar"
+            ],
+            "Position": [
+                886.5336658354115,
+                496.1034912718205
+            ],
+            "istMetaelement": false
+        },
+        {
+            "Name": [
+                "Neuguinea"
+            ],
+            "Position": [
+                1274.6259351620947,
+                434.3827930174564
+            ],
+            "istMetaelement": false
+        },
+        {
+            "Name": [
+                "Neuseeland"
+            ],
+            "Position": [
+                1311.0972568578554,
+                636.3778054862843
+            ],
+            "istMetaelement": false
+        },
+        {
+            "Name": [
+                "Sri Lanka"
+            ],
+            "Position": [
+                1027.7431421446383,
+                370.7917705735661
+            ],
+            "istMetaelement": false
+        },
+        {
+            "Name": [
+                "Sumatra"
+            ],
+            "Position": [
+                1109.1022443890274,
+                401.65211970074813
+            ],
+            "istMetaelement": false
+        },
+        {
+            "Name": [
+                "Tasmanien"
+            ],
+            "Position": [
+                1227.8678304239402,
+                623.2855361596011
+            ],
+            "istMetaelement": false
+        }
+    ],
+    "Kontinent": [
+        {
+            "Name": [
+                "Afrika"
+            ],
+            "Position": [
+                769.6384039900249,
+                327.77431421446386
+            ],
+            "istMetaelement": false
+        },
+        {
+            "Name": [
+                "Antarktika",
+                "Antarktis"
+            ],
+            "Position": [
+                801.4339152119701,
+                755.143391521197
+            ],
+            "istMetaelement": false
+        },
+        {
+            "Name": [
+                "Asien"
+            ],
+            "Position": [
+                966.9576059850375,
+                161.3154613466334
+            ],
+            "istMetaelement": false
+        },
+        {
+            "Name": [
+                "Australien"
+            ],
+            "Position": [
+                1204.488778054863,
+                535.3802992518704
+            ],
+            "istMetaelement": false
+        },
+        {
+            "Name": [
+                "Europa"
+            ],
+            "Position": [
+                794.8877805486285,
+                169.73192019950125
+            ],
+            "istMetaelement": false
+        },
+        {
+            "Name": [
+                "Nordamerika"
+            ],
+            "Position": [
+                318.8902743142145,
+                233.32294264339154
+            ],
+            "istMetaelement": false
+        },
+        {
+            "Name": [
+                "Südamerika"
+            ],
+            "Position": [
+                475.997506234414,
+                453.0860349127182
+            ],
+            "istMetaelement": false
+        }
+    ],
+    "Meeresteil": [
+        {
+            "Name": [
+                "Arabisches Meer",
+                "arabisches Meer"
+            ],
+            "Position": [
+                951.995012468828,
+                340.8665835411471
+            ],
+            "istMetaelement": false
+        },
+        {
+            "Name": [
+                "Golf von Mexiko"
+            ],
+            "Position": [
+                356.29675810473816,
+                284.7568578553616
+            ],
+            "istMetaelement": false
+        },
+        {
+            "Name": [
+                "Karibisches Meer",
+                "karibisches Meer",
+                "Karibik"
+            ],
+            "Position": [
+                409.6009975062344,
+                329.64463840399003
+            ],
+            "istMetaelement": false
+        },
+        {
+            "Name": [
+                "Mittelmeer"
+            ],
+            "Position": [
+                770.573566084788,
+                243.60972568578555
+            ],
+            "istMetaelement": false
+        },
+        {
+            "Name": [
+                "Nordsee"
+            ],
+            "Position": [
+                720.0748129675811,
+                147.28802992518703
+            ],
+            "istMetaelement": false
+        },
+        {
+            "Name": [
+                "Ostsee"
+            ],
+            "Position": [
+                771.5087281795512,
+                146.35286783042395
+            ],
+            "istMetaelement": false
+        },
+        {
+            "Name": [
+                "Rotes Meer",
+                "rotes Meer"
+            ],
+            "Position": [
+                860.349127182045,
+                322.1633416458853
+            ],
+            "istMetaelement": false
+        },
+        {
+            "Name": [
+                "Schwarzes Meer",
+                "schwarzes Meer"
+            ],
+            "Position": [
+                828.5536159600998,
+                207.13840399002495
+            ],
+            "istMetaelement": false
+        },
+        {
+            "Name": [
+                "Südchinesisches Meer",
+                "südchinesisches Meer"
+            ],
+            "Position": [
+                1157.7306733167084,
+                319.357855361596
+            ],
+            "istMetaelement": false
+        }
+    ],
+    "Ozean": [
+        {
+            "Name": [
+                "Atlantischer Ozean",
+                "atlantischer Ozean",
+                "Atlantik"
+            ],
+            "Position": [
+                547.069825436409,
+                281.01620947630926
+            ],
+            "istMetaelement": false
+        },
+        {
+            "Name": [
+                "Indischer Ozean",
+                "indischer Ozean",
+                "Indik"
+            ],
+            "Position": [
+                1012.780548628429,
+                420.35536159600997
+            ],
+            "istMetaelement": false
+        },
+        {
+            "Name": [
+                "Pazifischer Ozean",
+                "pazifischer Ozean",
+                "Pazifik"
+            ],
+            "Position": [
+                1364.4014962593517,
+                270.72942643391525
+            ],
+            "istMetaelement": false
+        }
+    ],
+    "Region": [
+        {
+            "Name": [
+                "Kalimantan"
+            ],
+            "Position": [
+                1166.147132169576,
+                411.93890274314214
+            ],
+            "istMetaelement": false
+        }
+    ],
+    "Staat": [
+        {
+            "Name": [
+                "Vereinigtes Königreich",
+                "Grossbritannien",
+                "GB"
+            ],
+            "Position": [
+                702.3067331670824,
+                157.57481296758107
+            ],
+            "istMetaelement": true
+        },
+        {
+            "Name": [
+                "Mexiko",
+                "Mexico"
+            ],
+            "Position": [
+                315.14962593516213,
+                310.9413965087282
+            ],
+            "istMetaelement": true
+        },
+        {
+            "Name": [
+                "USA",
+                "Vereinigte Staaten von Amerika",
+                "United States of America",
+                "Vereinigte Staaten",
+                "US",
+                "United States",
+                "Amerika"
+            ],
+            "Position": [
+                317.9551122194514,
+                237.0635910224439
+            ],
+            "istMetaelement": true
+        }
+    ],
+    "Stadt": [
+        {
+            "Name": [
+                "Bangkok"
+            ],
+            "Position": [
+                1103.491271820449,
+                335.2556109725686
+            ],
+            "istMetaelement": false,
+            "liegtInStaat": "Thailand"
+        },
+        {
+            "Name": [
+                "Berlin"
+            ],
+            "Position": [
+                750.0,
+                163.1857855361596
+            ],
+            "istMetaelement": false,
+            "liegtInStaat": "Deutschland"
+        },
+        {
+            "Name": [
+                "Buenos Aires"
+            ],
+            "Position": [
+                477.8678304239402,
+                561.5648379052369
+            ],
+            "istMetaelement": false,
+            "liegtInStaat": "Argentinien"
+        },
+        {
+            "Name": [
+                "Chicago"
+            ],
+            "Position": [
+                391.83291770573567,
+                196.85162094763092
+            ],
+            "istMetaelement": false,
+            "liegtInStaat": "Illinois"
+        },
+        {
+            "Name": [
+                "Delhi"
+            ],
+            "Position": [
+                998.7531172069826,
+                268.859102244389
+            ],
+            "istMetaelement": false,
+            "liegtInStaat": "Indien"
+        },
+        {
+            "Name": [
+                "Hongkong"
+            ],
+            "Position": [
+                1151.1845386533666,
+                296.9139650872818
+            ],
+            "istMetaelement": false
+        },
+        {
+            "Name": [
+                "Jakarta"
+            ],
+            "Position": [
+                1136.2219451371573,
+                438.1234413965087
+            ],
+            "istMetaelement": false,
+            "liegtInStaat": "Indonesien"
+        },
+        {
+            "Name": [
+                "Kairo"
+            ],
+            "Position": [
+                831.3591022443891,
+                269.7942643391521
+            ],
+            "istMetaelement": false,
+            "liegtInStaat": "Ägypten"
+        },
+        {
+            "Name": [
+                "Kalkutta"
+            ],
+            "Position": [
+                1052.0573566084788,
+                299.7194513715711
+            ],
+            "istMetaelement": false,
+            "liegtInStaat": "Indien"
+        },
+        {
+            "Name": [
+                "Kapstadt"
+            ],
+            "Position": [
+                775.2493765586036,
+                555.9538653366584
+            ],
+            "istMetaelement": false,
+            "liegtInStaat": "Südafrika"
+        },
+        {
+            "Name": [
+                "Karachi"
+            ],
+            "Position": [
+                963.216957605985,
+                289.4326683291771
+            ],
+            "istMetaelement": false,
+            "liegtInStaat": "Pakistan"
+        },
+        {
+            "Name": [
+                "Lima"
+            ],
+            "Position": [
+                388.0922693266833,
+                458.6970074812968
+            ],
+            "istMetaelement": false,
+            "liegtInStaat": "Peru"
+        },
+        {
+            "Name": [
+                "London"
+            ],
+            "Position": [
+                706.9825436408978,
+                161.3154613466334
+            ],
+            "istMetaelement": false,
+            "liegtInStaat": "GB"
+        },
+        {
+            "Name": [
+                "Los Angeles"
+            ],
+            "Position": [
+                261.8453865336659,
+                232.38778054862843
+            ],
+            "istMetaelement": false,
+            "liegtInStaat": "Kalifornien"
+        },
+        {
+            "Name": [
+                "Mexiko-Stadt",
+                "Mexico City",
+                "Mexiko-City"
+            ],
+            "Position": [
+                315.14962593516213,
+                310.9413965087282
+            ],
+            "istMetaelement": false,
+            "liegtInStaat": "Mexiko"
+        },
+        {
+            "Name": [
+                "Moskau"
+            ],
+            "Position": [
+                824.8129675810475,
+                151.9638403990025
+            ],
+            "istMetaelement": false,
+            "liegtInStaat": "Russland"
+        },
+        {
+            "Name": [
+                "Mumbai"
+            ],
+            "Position": [
+                997.8179551122195,
+                318.42269326683294
+            ],
+            "istMetaelement": false,
+            "liegtInStaat": "Indien"
+        },
+        {
+            "Name": [
+                "New York",
+                "New York City"
+            ],
+            "Position": [
+                437.6558603491272,
+                209.00872817955113
+            ],
+            "istMetaelement": false,
+            "liegtInStaat": "New York"
+        },
+        {
+            "Name": [
+                "Paris"
+            ],
+            "Position": [
+                717.2693266832918,
+                183.75935162094763
+            ],
+            "istMetaelement": false,
+            "liegtInStaat": "Frankreich"
+        },
+        {
+            "Name": [
+                "Peking"
+            ],
+            "Position": [
+                1130.6109725685785,
+                209.9438902743142
+            ],
+            "istMetaelement": false,
+            "liegtInStaat": "China"
+        },
+        {
+            "Name": [
+                "Rio de Janeiro"
+            ],
+            "Position": [
+                527.4314214463841,
+                506.3902743142145
+            ],
+            "istMetaelement": false,
+            "liegtInStaat": "Brasilien"
+        },
+        {
+            "Name": [
+                "San Francisco"
+            ],
+            "Position": [
+                258.10473815461347,
+                211.81421446384041
+            ],
+            "istMetaelement": false,
+            "liegtInStaat": "Kalifornien"
+        },
+        {
+            "Name": [
+                "Santiago de Chile",
+                "Santiago"
+            ],
+            "Position": [
+                433.91521197007484,
+                560.6296758104738
+            ],
+            "istMetaelement": false,
+            "liegtInStaat": "Chile"
+        },
+        {
+            "Name": [
+                "Sao Paulo",
+                "S^ao Paulo"
+            ],
+            "Position": [
+                505.92269326683294,
+                512.9364089775561
+            ],
+            "istMetaelement": false,
+            "liegtInStaat": "Brasilien"
+        },
+        {
+            "Name": [
+                "Shanghai"
+            ],
+            "Position": [
+                1163.3416458852869,
+                259.5074812967581
+            ],
+            "istMetaelement": false,
+            "liegtInStaat": "China"
+        },
+        {
+            "Name": [
+                "Sydney"
+            ],
+            "Position": [
+                1261.5336658354115,
+                588.6845386533666
+            ],
+            "istMetaelement": false,
+            "liegtInStaat": "Australien"
+        },
+        {
+            "Name": [
+                "Singapur"
+            ],
+            "Position": [
+                1119.3890274314215,
+                396.0411471321696
+            ],
+            "istMetaelement": false,
+            "liegtInStaat": "Singapur"
+        },
+        {
+            "Name": [
+                "Tokio",
+                "Tokyo"
+            ],
+            "Position": [
+                1222.2568578553617,
+                222.10099750623442
+            ],
+            "istMetaelement": false,
+            "liegtInStaat": "Japan"
+        }
+    ],
+    "Version": "0.1.0"
+}
