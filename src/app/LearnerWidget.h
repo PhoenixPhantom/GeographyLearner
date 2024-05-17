@@ -24,7 +24,7 @@ class LearnerWidget : public QWidget
     Q_OBJECT
 
 public:
-    explicit LearnerWidget(QWidget* parent = nullptr);
+    explicit LearnerWidget(const std::filesystem::path& learningset, QWidget* parent = nullptr);
     ~LearnerWidget();
 
 protected:
@@ -32,14 +32,19 @@ protected:
 private slots:
     void onInputSubmitted();
     void onRestart();
-    void onCitiesToggled(){ toggleType({"City"}, useCities->isChecked()); }
-    void onSeaOceansToggled(){ toggleType({"Sea", "Ocean"}, useSeaOceans->isChecked()); }
-    void onIslandPeninsulasToggled(){ toggleType({"Island", "Peninsula"}, useIslandPeninsulas->isChecked()); }
-    void onMountainRangesToggled(){ toggleType({"MountainRange"}, useMountainRanges->isChecked()); }
-    void onRiversToggled(){ toggleType({"River"}, useRivers->isChecked()); }
-    void onContinentsToggled(){ toggleType({"Continent"}, useContinents->isChecked()); }
-    void onCityAdvancedToggled(){ toggleAdvancedType({"City"}, advancedCityQuestions->isChecked()); }
-    void onRiverAdvancedToggled(){ toggleAdvancedType({"River"}, advancedRiverQuestions->isChecked()); }
+    void onCitiesToggled(){ if(useCities == nullptr) return; toggleType({"Stadt"}, useCities->isChecked()); }
+    void onStatesToggled(){ if(useStates == nullptr) return;  toggleType({"Bundesstaat", "Staat"}, useStates->isChecked()); }
+    void onRegionsToggled(){ if(useRegions == nullptr) return;  toggleType({"Region"}, useRegions->isChecked()); }
+    void onSeaOceansToggled(){ if(useSeaOceans == nullptr) return;  toggleType({"Meeresteil", "Ozean"}, useSeaOceans->isChecked()); }
+    void onIslandPeninsulasToggled(){ if(useIslandPeninsulas == nullptr) return;  toggleType({"Insel", "Halbinsel"}, useIslandPeninsulas->isChecked()); }
+
+    void onMountainRangesToggled(){ if(useMountainRangesMountains == nullptr) return;  toggleType({"Gebirge", "Gebirgskette"}, useMountainRangesMountains->isChecked()); }
+    void onRiversToggled(){ if(useRivers == nullptr) return;  toggleType({"Fluss"}, useRivers->isChecked()); }
+    void onLakesToggled(){ if(useLakes == nullptr) return;  toggleType({"See"}, useLakes->isChecked()); }
+    void onContinentsToggled(){ if(useContinents == nullptr) return;  toggleType({"Kontinent"}, useContinents->isChecked()); }
+    void onCityAdvancedToggled(){ if(advancedCityQuestions == nullptr) return;  toggleAdvancedType({"Stadt"}, advancedCityQuestions->isChecked()); }
+    void onStateAdvancedToggled(){ if(advancedStateQuestions == nullptr) return;  toggleAdvancedType({"Bundesstaat"}, advancedStateQuestions->isChecked()); }
+    void onRiverAdvancedToggled(){ if(advancedRiverQuestions == nullptr) return;  toggleAdvancedType({"Fluss"}, advancedRiverQuestions->isChecked()); }
 private:
     MapWidget* map;
     QLabel* taskDescription;
@@ -50,13 +55,18 @@ private:
     QLabel* progressInfo;
     QPushButton* restartButton;
     QCheckBox* useCities;
+    QCheckBox* useRegions;
+    QCheckBox* useStates;
     QCheckBox* useSeaOceans;
+    QCheckBox* useLakes;
     QCheckBox* useIslandPeninsulas;
-    QCheckBox* useMountainRanges;
+    QCheckBox* useMountainRangesMountains;
+    QCheckBox* useMountains;
     QCheckBox* useRivers;
     QCheckBox* useContinents;
     QCheckBox* advancedRiverQuestions;
     QCheckBox* advancedCityQuestions;
+    QCheckBox* advancedStateQuestions;
 
 	inline static pcg_extras::seed_seq_from<std::random_device> SeedSource;
 	inline static pcg32 RandomGenerator = SeedSource;

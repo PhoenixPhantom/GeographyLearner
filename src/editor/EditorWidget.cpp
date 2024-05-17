@@ -188,7 +188,7 @@ EditorWidget::EditorWidget(const std::filesystem::path& projectConfigPath, QWidg
 }
 
 EditorWidget::~EditorWidget() {
-    delete map;
+    /*delete map;
 
     delete elementsSearch;
     delete searchLine;
@@ -210,7 +210,7 @@ EditorWidget::~EditorWidget() {
     delete searchState;
     delete elementState;
 
-    delete confirmSettings; 
+    delete confirmSettings; */
 }
 
 

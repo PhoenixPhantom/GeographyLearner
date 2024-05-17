@@ -1,4 +1,17 @@
 {
+    "Bundesstaat": [
+        {
+            "Name": [
+                "Example"
+            ],
+            "Position": [
+                0.0,
+                0.0
+            ],
+            "istMetaelement": false,
+            "liegtInStaat": "Examplestate"
+        }
+    ],
     "Fluss": [
         {
             "Name": [
@@ -761,6 +774,16 @@
                 237.0635910224439
             ],
             "istMetaelement": true
+        },
+        {
+            "Name": [
+                "Examplestate"
+            ],
+            "Position": [
+                0.0,
+                0.0
+            ],
+            "istMetaelement": false
         }
     ],
     "Stadt": [

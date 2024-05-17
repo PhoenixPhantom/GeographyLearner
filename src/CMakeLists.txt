@@ -5,10 +5,10 @@ if(MK_ED)
     add_subdirectory(editor)
     #set(COMPILE_OPTIONS ${COMPILE_OPTIONS} -DMAKE_EDITOR=1 PARENT_SCOPE)
     add_compile_options(-DMAKE_EDITOR=1)
-else()
-    add_subdirectory(app)
-    set(RESOURCES ${RESOURCESS} Data/configData.json PARENT_SCOPE)
 endif()
+
+add_subdirectory(app)
+set(RESOURCES ${RESOURCESS} Data/configData.json PARENT_SCOPE)
 
 set(COMPILE_OPTIONS ${COMPILE_OPTIONS} PARENT_SCOPE)
 

@@ -3,11 +3,6 @@
 #include <qicon.h>
 #include <qtranslator.h>
 #include <git2.h>
-#if MAKE_EDITOR
-#include "editor/EditorWidget.h"
-#else
-#include "app/LearnerWidget.h"
-#endif
 
 int main(int argc, char **argv)
 {
@@ -21,20 +16,6 @@ int main(int argc, char **argv)
 
     ProjectSelectorWidget selectorWidget;
     selectorWidget.show();
-
-#if !(MAKE_EDITOR)
-    LearnerWidget mainWidget;
-    mainWidget.showMaximized();
-    //mainWidget.setWindowState(Qt::WindowMaximized);
-#endif
-/*
-#if MAKE_EDITOR
-    ProjectSelectorWidget editor;
-    //editor.show();
-    editor.showMaximized();
-    //editor.setWindowState(Qt::WindowMaximized);
-#endif
-*/
 
     int retVal = app.exec();
     git_libgit2_shutdown();

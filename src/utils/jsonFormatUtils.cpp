@@ -69,8 +69,13 @@ namespace jsonFormatUtils{
 
     bool existsCoNamed(json& target, const std::string& name1, const std::string& name2,
             const std::string& type){
+        return existsCoNamed(target, name1, name2, getSupportedTypesIndex(type));
+    }
+
+    bool existsCoNamed(json& target, const std::string& name1, const std::string& name2,
+            uint8_t type){
         for(auto& [key, value] : target.items()){
-            if(!type.empty() && key != type) continue;
+            if(type != uint8_t(-1) && key != supportedTypes[type]) continue;
             if(!value.is_array()){
                 qDebug() << key << "doesn't specify a value. Consider running \"restructureJson\" first";
                 continue;
@@ -85,6 +90,8 @@ namespace jsonFormatUtils{
         }
         return false;
     }
+
+
 
     std::vector<json*> getAllOfType(json& target, const std::string& type)
     {
@@ -103,6 +110,17 @@ namespace jsonFormatUtils{
         return foundInstances;
     }
 
+    bool containsQuestionRegarding(const json& target, SupportedTypes type){
+        if(!target.contains(supportedTypes[type])) return false;
+
+        const json& ofType = target[supportedTypes[type]];
+        assertM(ofType.is_array(), "Element has to be an array");
+
+        for(const json& element : ofType){
+            if(!element["istMetaelement"].template get<bool>()) return true;
+        }
+        return false;
+    }
 
     uint8_t getSupportedTypesIndex(const std::string& type){ 
 #ifndef NDEBUG

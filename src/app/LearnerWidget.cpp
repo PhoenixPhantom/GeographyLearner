@@ -12,30 +12,30 @@
 #include <random>
 #include <algorithm>
 
-LearnerWidget::LearnerWidget(QWidget *parent) : QWidget(parent), currentQuestion(nullptr)
+LearnerWidget::LearnerWidget(const std::filesystem::path& project, QWidget *parent) : 
+    QWidget(parent), currentQuestion(nullptr)
 {
+    QGridLayout *mainLayout = new QGridLayout(this);
 
-    map = new MapWidget(":/Data/WorldMap.png", QSize(15, 15), true, this);
-//    sizePolicy.setVerticalPolicy(QSizePolicy::Maximum);
- //   sizePolicy.setHorizontalPolicy(QSizePolicy::Maximum);
-  //  map->setSizePolicy(sizePolicy);
+    QString associatedImage = QString::fromStdString(project.string()); 
+    associatedImage.remove(".json");
+    associatedImage.append(".png");
+    map = new MapWidget(associatedImage, QSize(15, 15), false, this);
+    mainLayout->addWidget(map, 0, 0, 1, 2, Qt::AlignCenter);
+
     taskDescription = new QLabel(this);
     taskDescription->setText("Drücke Enter, oder den \"Weiter\"-Knopf um zu beginnen...");
-//    sizePolicy.setVerticalPolicy(QSizePolicy::Minimum);
- //   sizePolicy.setHorizontalPolicy(QSizePolicy::Minimum);
-  //  taskDescription->setSizePolicy(sizePolicy);
+    mainLayout->addWidget(taskDescription, 1, 0, 1, 2);
  
     answerLine = new QLineEdit(this);
-    acceptButton = new QPushButton(tr("Weiter"));
-
-    QGridLayout *mainLayout = new QGridLayout(this);
-    mainLayout->addWidget(map, 0, 0, 1, 2, Qt::AlignCenter);
-    mainLayout->addWidget(taskDescription, 1, 0, 1, 2);
-
+    connect(answerLine, SIGNAL(returnPressed()), this, SLOT(onInputSubmitted()));
     mainLayout->addWidget(answerLine, 2, 0);
+
+    acceptButton = new QPushButton(tr("Weiter")); 
+    connect(acceptButton, SIGNAL(released()), this, SLOT(onInputSubmitted()));
     mainLayout->addWidget(acceptButton, 2, 1);
 
-    QFile configFile(":/Data/configData.json");
+    QFile configFile(QString::fromStdWString(project));
     configFile.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream textStream(&configFile);
     std::stringstream dataStream;
@@ -43,71 +43,131 @@ LearnerWidget::LearnerWidget(QWidget *parent) : QWidget(parent), currentQuestion
     dataStream >> configData;
 
     QVBoxLayout* menuLayout = new QVBoxLayout(this);
-    useCities = new QCheckBox(this);
-    useCities->setText("Städte");
-    useCities->setChecked(true);
-    useSeaOceans = new QCheckBox(this);
-    useSeaOceans->setText("Meere & Meeresteile");
-    useSeaOceans->setChecked(true);
-    useIslandPeninsulas = new QCheckBox(this);
-    useIslandPeninsulas->setText("Inseln & Halbinseln");
-    useIslandPeninsulas->setChecked(true);
-    useMountainRanges = new QCheckBox(this);
-    useMountainRanges->setText("Gebirge");
-    useMountainRanges->setChecked(true);
-    useRivers = new QCheckBox(this);
-    useRivers->setText("Flüsse");
-    useRivers->setChecked(true);
-    useContinents = new QCheckBox(this);
-    useContinents->setText("Kontinente");
-    useContinents->setChecked(true);
-    advancedRiverQuestions = new QCheckBox(this);
-    advancedRiverQuestions->setText("Flüsse Advanced");
-    advancedRiverQuestions->setChecked(false);
-    advancedCityQuestions = new QCheckBox(this);
-    advancedCityQuestions->setText("Städte Advanced");
-    advancedCityQuestions->setChecked(false);
-
-
+    progressInfo = new QLabel(this);
+    menuLayout->addWidget(progressInfo, Qt::AlignTop);
 
     restartButton = new QPushButton(this);
     restartButton->setText("Neustarten");
+    connect(restartButton, SIGNAL(released()), this, SLOT(onRestart()));
+    menuLayout->addWidget(restartButton, Qt::AlignTop);
 
-    progressInfo = new QLabel(this);
+    if(jsonFormatUtils::containsQuestionRegarding(configData, jsonFormatUtils::Stadt)){
+        useCities = new QCheckBox(this);
+        useCities->setText("Städte");
+        useCities->setChecked(true);
+        connect(useCities, &QPushButton::clicked, this, &LearnerWidget::onCitiesToggled);
+        menuLayout->addWidget(useCities, Qt::AlignBottom);
+    } else useCities = nullptr;
 
-    menuLayout->addWidget(progressInfo);
-    menuLayout->addSpacing(300);
-    menuLayout->addWidget(restartButton);
-    menuLayout->addWidget(useCities);
-    menuLayout->addWidget(useSeaOceans);
-    menuLayout->addWidget(useIslandPeninsulas);
-    menuLayout->addWidget(useMountainRanges);
-    menuLayout->addWidget(useRivers);
-    menuLayout->addWidget(useContinents);
-    menuLayout->addWidget(advancedCityQuestions);
-    menuLayout->addWidget(advancedRiverQuestions);
+    if(jsonFormatUtils::containsQuestionRegarding(configData, jsonFormatUtils::Staat) ||
+            jsonFormatUtils::containsQuestionRegarding(configData, jsonFormatUtils::Bundesstaat)){
+        useStates = new QCheckBox(this);
+        useStates->setText("(Bundes-)Staaten");
+        useStates->setChecked(true);
+        connect(useStates, &QPushButton::clicked, this, &LearnerWidget::onStatesToggled);
+        menuLayout->addWidget(useStates, Qt::AlignBottom);
+
+    } else useStates = nullptr;
+
+    
+    if(jsonFormatUtils::containsQuestionRegarding(configData, jsonFormatUtils::Meeresteil) ||
+            jsonFormatUtils::containsQuestionRegarding(configData, jsonFormatUtils::Ozean)){
+        useSeaOceans = new QCheckBox(this);
+        useSeaOceans->setText("Ozeane und Meeresteile");
+        useSeaOceans->setChecked(true);
+        connect(useSeaOceans, &QPushButton::clicked, this, &LearnerWidget::onSeaOceansToggled);
+        menuLayout->addWidget(useSeaOceans, Qt::AlignBottom);
+    } else useSeaOceans = nullptr;
+
+
+    if(jsonFormatUtils::containsQuestionRegarding(configData, jsonFormatUtils::See)){
+        useLakes = new QCheckBox(this);
+        useLakes->setText("Seen");
+        useLakes->setChecked(true);
+        connect(useLakes, &QPushButton::clicked, this, &LearnerWidget::onLakesToggled);
+        menuLayout->addWidget(useLakes, Qt::AlignBottom);
+
+    } else useLakes = nullptr;
+    
+    if(jsonFormatUtils::containsQuestionRegarding(configData, jsonFormatUtils::Fluss)){
+        useRivers = new QCheckBox(this);
+        useRivers->setText("Flüsse");
+        useRivers->setChecked(true);
+        connect(useRivers, &QPushButton::clicked, this, &LearnerWidget::onRiversToggled);
+        menuLayout->addWidget(useRivers, Qt::AlignBottom);
+
+    } else useRivers = nullptr;
+
+    if(jsonFormatUtils::containsQuestionRegarding(configData, jsonFormatUtils::Region)){
+        useRegions = new QCheckBox(this);
+        useRegions->setText("Regionen");
+        useRegions->setChecked(true);
+        connect(useRegions, &QPushButton::clicked, this, &LearnerWidget::onRegionsToggled);
+        menuLayout->addWidget(useRegions, Qt::AlignBottom);
+
+    } else useRegions = nullptr;
+
+    if(jsonFormatUtils::containsQuestionRegarding(configData, jsonFormatUtils::Insel) ||
+            jsonFormatUtils::containsQuestionRegarding(configData, jsonFormatUtils::Halbinsel)){
+        useIslandPeninsulas = new QCheckBox(this);
+        useIslandPeninsulas->setText("Inseln und Halbinseln");
+        useIslandPeninsulas->setChecked(true);
+        connect(useIslandPeninsulas, &QPushButton::clicked, this, &LearnerWidget::onIslandPeninsulasToggled);
+        menuLayout->addWidget(useIslandPeninsulas, Qt::AlignBottom);
+
+    } else useIslandPeninsulas = nullptr;
+
+    if(jsonFormatUtils::containsQuestionRegarding(configData, jsonFormatUtils::Gebirge) ||
+            jsonFormatUtils::containsQuestionRegarding(configData, jsonFormatUtils::Gebirgskette)){
+        useMountainRangesMountains = new QCheckBox(this);
+        useMountainRangesMountains->setText("Gebirge und Gebirgsketten");
+        useMountainRangesMountains->setChecked(true);
+        connect(useMountainRangesMountains, &QPushButton::clicked, this, &LearnerWidget::onMountainRangesToggled);
+        menuLayout->addWidget(useMountainRangesMountains, Qt::AlignBottom);
+
+    } else useMountainRangesMountains = nullptr;
+
+    if(jsonFormatUtils::containsQuestionRegarding(configData, jsonFormatUtils::Kontinent)){
+        useContinents = new QCheckBox(this);
+        useContinents->setText("Kontinente");
+        useContinents->setChecked(true);
+        connect(useContinents, &QPushButton::clicked, this, &LearnerWidget::onContinentsToggled);
+        menuLayout->addWidget(useContinents, Qt::AlignBottom);
+
+    } else useContinents = nullptr;
+
+    if(jsonFormatUtils::containsQuestionRegarding(configData, jsonFormatUtils::Fluss)){
+        advancedRiverQuestions = new QCheckBox(this);
+        advancedRiverQuestions->setText("Flüsse Advanced");
+        advancedRiverQuestions->setChecked(false);
+        connect(advancedRiverQuestions, &QPushButton::clicked, this, &LearnerWidget::onRiverAdvancedToggled);
+        menuLayout->addWidget(advancedRiverQuestions, Qt::AlignBottom);
+
+    } else advancedRiverQuestions = nullptr;
+
+    if(jsonFormatUtils::containsQuestionRegarding(configData, jsonFormatUtils::Stadt)){
+        advancedCityQuestions = new QCheckBox(this);
+        advancedCityQuestions->setText("Städte Advanced");
+        advancedCityQuestions->setChecked(false);
+        connect(advancedCityQuestions, &QPushButton::clicked, this, &LearnerWidget::onCityAdvancedToggled);
+        menuLayout->addWidget(advancedCityQuestions, Qt::AlignBottom);
+
+    } else advancedCityQuestions = nullptr;
+
+    if(jsonFormatUtils::containsQuestionRegarding(configData, jsonFormatUtils::Bundesstaat)){
+        advancedStateQuestions = new QCheckBox(this);
+        advancedStateQuestions->setText("Bundesstaaten Advanced");
+        advancedStateQuestions->setChecked(false);
+        connect(advancedStateQuestions, &QPushButton::clicked, this, &LearnerWidget::onStateAdvancedToggled);
+        menuLayout->addWidget(advancedStateQuestions, Qt::AlignBottom);
+
+    } else advancedStateQuestions = nullptr;
+
+    toggleType({SUPPORTED_TYPES}, true);
 
     mainLayout->addLayout(menuLayout, 0, 2, 3, 1);
-
-    toggleType({"Continent", "City", "Sea", "Ocean", "River", "MountainRange", "Island", "Peninsula"}, true);
-
-    connect(restartButton, SIGNAL(released()), this, SLOT(onRestart()));
-
-    connect(useCities, SIGNAL(clicked(bool)), this, SLOT(onCitiesToggled()));
-    connect(useSeaOceans, SIGNAL(clicked(bool)), this, SLOT(onSeaOceansToggled()));
-    connect(useIslandPeninsulas, SIGNAL(clicked(bool)), this, SLOT(onIslandPeninsulasToggled()));
-    connect(useMountainRanges, SIGNAL(clicked(bool)), this, SLOT(onMountainRangesToggled()));
-    connect(useRivers, SIGNAL(clicked(bool)), this, SLOT(onRiversToggled()));
-    connect(useContinents, SIGNAL(clicked(bool)), this, SLOT(onContinentsToggled()));
-    connect(advancedCityQuestions, SIGNAL(clicked(bool)), this, SLOT(onCityAdvancedToggled()));
-    connect(advancedRiverQuestions, SIGNAL(clicked(bool)), this, SLOT(onRiverAdvancedToggled()));
-
     setLayout(mainLayout);
     setWindowTitle(tr("Geography-Learner"));
-
-    connect(answerLine, SIGNAL(returnPressed()), this, SLOT(onInputSubmitted()));
-    
-    connect(acceptButton, SIGNAL(released()), this, SLOT(onInputSubmitted()));
 }
 
 LearnerWidget::~LearnerWidget() {
@@ -154,12 +214,13 @@ void LearnerWidget::validateInput(){
 
     std::string input = answerLine->text().toStdString();
     if(std::find(temporary.begin(), temporary.end(), currentQuestion) != temporary.end()){
-        std::string type = jsonFormatUtils::getType(configData, currentQuestion);
-        if(type == "City"){
-            std::vector<std::string> states = getCurrentQuestion()["State"].template get<std::vector<std::string>>();
-            if(states[0] != input){
-                if(!jsonFormatUtils::existsCoNamed(configData, input, states[0], "Nation")){
-                    taskDescription->setText(QString::fromStdString("Falsch. Eine richtige Antwort wäre " + states[0]));
+        uint8_t type = jsonFormatUtils::getSupportedTypesIndex(jsonFormatUtils::getType(configData, currentQuestion));
+        if(type == jsonFormatUtils::Stadt || type == jsonFormatUtils::Bundesstaat){
+            std::string state = getCurrentQuestion()["liegtInStaat"].template get<std::string>();
+            if(state != input){
+                if(!jsonFormatUtils::existsCoNamed(configData, input, state, jsonFormatUtils::Bundesstaat) &&
+                        !jsonFormatUtils::existsCoNamed(configData, input, state, jsonFormatUtils::Staat)){
+                    taskDescription->setText(QString::fromStdString("Falsch. Eine richtige Antwort wäre " + state));
                     taskDescription->setStyleSheet("QLabel { color : red; }");
                     currentQuestion = nullptr;
                 }
@@ -171,12 +232,13 @@ void LearnerWidget::validateInput(){
                 generateQuestion();
             }
         }
-        else if(type == "River"){
-            std::string flowsInto = getCurrentQuestion()["FlowsInto"].template get<std::string>();
+        else if(type == jsonFormatUtils::Fluss){
+            std::string flowsInto = getCurrentQuestion()["mündetIn"].template get<std::string>();
             if(flowsInto != input){
-                if(!jsonFormatUtils::existsCoNamed(configData, input, flowsInto, "River") &&
-                        !jsonFormatUtils::existsCoNamed(configData, input, flowsInto, "Ocean") &&
-                        !jsonFormatUtils::existsCoNamed(configData, input, flowsInto, "Sea")){
+                if(!jsonFormatUtils::existsCoNamed(configData, input, flowsInto, jsonFormatUtils::Fluss) &&
+                        !jsonFormatUtils::existsCoNamed(configData, input, flowsInto, jsonFormatUtils::See) &&
+                        !jsonFormatUtils::existsCoNamed(configData, input, flowsInto, jsonFormatUtils::Meeresteil) &&
+                        !jsonFormatUtils::existsCoNamed(configData, input, flowsInto, jsonFormatUtils::Ozean)){
                     taskDescription->setText(QString::fromStdString("Falsch. Eine richtige Antwort wäre " + flowsInto));
                     taskDescription->setStyleSheet("QLabel { color : red; }");
                     currentQuestion = nullptr;
@@ -212,7 +274,6 @@ void LearnerWidget::validateInput(){
 void LearnerWidget::toggleType(std::vector<std::string> types, bool include)
 {
     std::vector<json*> foundInstances;
-    if(std::find(types.begin(), types.end(), "Island") != types.end()) types.push_back("IslandRegion");
     for(const std::string& type : types){
         std::vector<json*> newInstances = jsonFormatUtils::getAllOfType(configData, type);
         foundInstances.insert(foundInstances.end(), newInstances.begin(), newInstances.end());
@@ -227,6 +288,7 @@ void LearnerWidget::toggleType(std::vector<std::string> types, bool include)
             if(pendingIt != allPending.end()) allPending.erase(pendingIt);
         }
         if(include){
+            if((*instance)["istMetaelement"].template get<bool>()) continue;
             if(instanceIt == allUsed.end()) allUsed.push_back(instance);
             if(pendingIt == allPending.end()) allPending.push_back(instance);
         }
@@ -241,7 +303,8 @@ void LearnerWidget::toggleAdvancedType(const std::vector<std::string>& types, bo
     for(const std::string& type : types){
         std::vector<json*> newInstances = jsonFormatUtils::getAllOfType(configData, type);
         for(json* instance : newInstances){
-            if(instance == nullptr || (!instance->contains("State") && !instance->contains("FlowsInto"))) continue;
+            if(instance == nullptr || !(*instance)["istMetaelement"].template get<bool>() &&
+                    (!instance->contains("liegtInStaat") && !instance->contains("mündetIn"))) continue;
             auto it = findAsTemporary(type, instance);
             json* found;
             if(include){
@@ -281,23 +344,26 @@ void LearnerWidget::generateQuestion()
     std::uniform_int_distribution<size_t> Distribution(0, allPending.size() - 1);
     size_t chosenIndex = Distribution(RandomGenerator);
     currentQuestion = allPending[chosenIndex];
- 
-    std::string type = jsonFormatUtils::getType(configData, currentQuestion);
+
+    uint8_t type = jsonFormatUtils::getSupportedTypesIndex(jsonFormatUtils::getType(configData, currentQuestion));
     if(std::find(temporary.begin(), temporary.end(), currentQuestion) != temporary.end()){
         taskDescription->setStyleSheet("QLabel { color : blue; }");
         answerLine->setText("");
 
         map->setSelectorColor(QColor(0, 0, 0, 0)); //make invisible
-        if(type == "City"){
-            std::vector<std::string> states = getCurrentQuestion()["State"].template get<std::vector<std::string>>();
+        if(type == jsonFormatUtils::Stadt || type == jsonFormatUtils::Bundesstaat){
+            std::string staat = getCurrentQuestion()["liegtInStaat"].template get<std::string>();
+
+            bool inBundesstaat = jsonFormatUtils::existsElementWithNameInTypeset(getCurrentQuestion(), staat,
+                    {jsonFormatUtils::supportedTypes[jsonFormatUtils::Bundesstaat]});
             std::string name = "Staat";
-            if(states.size() > 1) name = "Bundesstaat";
+            if(inBundesstaat) name = "Bundesstaat";
             taskDescription->setText(QString::fromStdString("In welchem " + name + " liegt " +
                         getCurrentQuestion()["Name"].template get<std::vector<std::string>>()[0] + "?"));   
         }
-        else if(type == "River"){
-            std::string flowsInto = getCurrentQuestion()["FlowsInto"].template get<std::string>();
-            taskDescription->setText(QString::fromStdString("In welchen Fluss/welches Meer fliesst der folgende Fluss: " +
+        else if(type == jsonFormatUtils::Fluss){
+            std::string flowsInto = getCurrentQuestion()["mündetIn"].template get<std::string>();
+            taskDescription->setText(QString::fromStdString("In welches Gewässer mündet der folgende Fluss: " +
                         getCurrentQuestion()["Name"].template get<std::vector<std::string>>()[0] + "?")); 
         }
         else{
@@ -305,48 +371,13 @@ void LearnerWidget::generateQuestion()
         }
     }
     else{
-        std::string name;
-        if(type == "City"){
-            name = "die Stadt, die";
-            map->setSelectorColor(QColor(255,20,147));
-        }
-        else if(type == "Continent"){
-            name = "der Kontinent, der";
-            map->setSelectorColor(QColor(255,215,0));
-        }
-        else if(type == "Peninsula"){
-            name = "die Halbinsel, die";
-            map->setSelectorColor(QColor(102,205,170));
-        }
-        else if(type == "Island"){
-            name = "die Insel, die";
-            map->setSelectorColor(QColor(138,43,226));
-        }
-        else if(type == "IslandRegion"){
-            name = "die Inselregion, die";
-            map->setSelectorColor(QColor(138,43,226));
-        }
-        else if(type == "Ocean"){
-            name = "der Ozean, der";
-            map->setSelectorColor(QColor(0,0,205));
-        }
-        else if(type == "Sea"){
-            name = "der Meeresteil, der";
-            map->setSelectorColor(QColor(30,144,255));
-        }
-        else if(type == "River"){
-            name = "der Fluss, der";
-            map->setSelectorColor(QColor(0,191,255));
-        }
-        else if(type == "MountainRange"){
-            name = "das Gebirge, das";
-            map->setSelectorColor(QColor(255,140,0));
-        }
+        map->setSelectorColor(jsonFormatUtils::getAssociatedColor(type));
         taskDescription->setStyleSheet("QLabel { color : black; }");
         answerLine->setText("");
 
 
-        taskDescription->setText(QString::fromStdString(std::string("Wie heisst ") + name + " sich an der markierten Position befindet?"));
+        taskDescription->setText(QString::fromStdString(std::string("Wie heisst ") + 
+                    jsonFormatUtils::getWording(type) + " sich an der markierten Position befindet?"));
         std::vector<double> position = (*currentQuestion)["Position"].template get<std::vector<double>>();
         map->setSelectorPos(QPointF(position[0], position[1]));
     }

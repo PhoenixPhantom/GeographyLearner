@@ -43,12 +43,17 @@ namespace jsonFormatUtils{
     std::string getType(const json& information, json const* entry);
     json& getNamed(json& target, const std::string& name, const std::string& type = "");
     json& createUnique(json& target, const std::string& name, const std::string& type, unsigned int num = 0);
+    [[deprecated]]
     bool existsCoNamed(json& target, const std::string& name1, const std::string& name2,
             const std::string& type = "");
+    bool existsCoNamed(json& target, const std::string& name1, const std::string& name2,
+            uint8_t type = (-1));
+
     std::vector<json*> getAllOfType(json& target, const std::string& type);
 
     static const std::vector<std::string> supportedTypes({SUPPORTED_TYPES});
     inline const uint8_t legacyFlag = 0b10000000;
+    bool containsQuestionRegarding(const json& target, SupportedTypes type);
     uint8_t getSupportedTypesIndex(const std::string& type);
     QColor getAssociatedColor(uint8_t typeIndex);
     std::string getWording(uint8_t typeIndex);
