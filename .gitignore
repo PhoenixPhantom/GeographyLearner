@@ -1,0 +1,14 @@
+build/*
+nbuild
+packages/*
+.cache
+.git
+.qt
+.rcc
+.vs
+out
+Gl.conf
+CMakeSettings.json
+
+
+
