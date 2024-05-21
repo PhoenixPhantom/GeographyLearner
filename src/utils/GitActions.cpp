@@ -107,7 +107,11 @@ static int fetchhead_ref_cb(const char *name, const char *url, const git_oid *oi
     if ( is_merge )
     {
         FetchheadData* fetchData = (FetchheadData*)payload;
+#if _WIN32
         strcpy_s( fetchData->branchToMerge, 100, name );
+#else
+        std::strncpy(fetchData->branchToMerge, name, 100);
+#endif
         memcpy( &fetchData->branchOidToMerge, oid, sizeof( git_oid ) );
     }
     return 0;

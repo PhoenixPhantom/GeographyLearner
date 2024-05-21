@@ -340,9 +340,9 @@ void ProjectSelectorWidget::loadRepo(){
     appDataLocation = appdata;
     appDataLocation /= "GeographyLearner";
 #elif __APPLE__
-    repoLocation = "~/Library/Application Support/GeographyLearner";
+    appDataLocation = "~/Library/Application Support/GeographyLearner";
 #else //most likely __linux__
-    repoLocation = "~/.GeographyLearner";
+    appDataLocation = "~/.GeographyLearner";
 #endif
 
     std::filesystem::path repoLocation = appDataLocation / "Repo";

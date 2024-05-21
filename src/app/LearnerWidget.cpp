@@ -35,7 +35,7 @@ LearnerWidget::LearnerWidget(const std::filesystem::path& project, QWidget *pare
     connect(acceptButton, SIGNAL(released()), this, SLOT(onInputSubmitted()));
     mainLayout->addWidget(acceptButton, 2, 1);
 
-    QFile configFile(QString::fromStdWString(project));
+    QFile configFile(QString::fromStdString(project.string()));
     configFile.open(QIODevice::ReadOnly | QIODevice::Text);
     QTextStream textStream(&configFile);
     std::stringstream dataStream;
