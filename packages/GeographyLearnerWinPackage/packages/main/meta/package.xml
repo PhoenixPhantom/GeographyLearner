@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Package>
+    <DisplayName>GeographyLearner Core</DisplayName>
+    <Description>Installiere den GeographyLearner</Description>
+    <Version>0.1.0-1</Version>
+    <ReleaseDate>2024-05-18</ReleaseDate>
+    <Default>true</Default>
+    <Script>installscript.js</Script>
+    <UserInterfaces>
+        <UserInterface>targetwidget.ui</UserInterface>
+        <UserInterface>installationwidget.ui</UserInterface>
+        <UserInterface>readytoinstallwidget.ui</UserInterface>
+    </UserInterfaces>
+</Package>
