@@ -260,7 +260,13 @@ zugängliche Webseite des GeographyLearners geladen und diese Nachricht wird nic
 
     std::string gitPath;
     QString activePaths = getenv("PATH");
+#if _WIN32
+    //windows splitting
     QStringList paths = activePaths.split(";");
+#else
+    //linux splitting most likely also works for MACOS
+    QStringList paths = activePaths.split(":");
+#endif
     for(const QString& path : paths){
         std::filesystem::path localPath = path.toStdWString();
         if(!std::filesystem::is_directory(localPath)){
