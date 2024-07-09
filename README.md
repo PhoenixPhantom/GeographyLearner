@@ -55,6 +55,30 @@ Unterstützte Plattformen:
   
 </details>
 
+<details><summary>Sind gewisse externe Programme vorausgesetzt?</summary>
+  
+  Die Schülerversion des GeographyLearners __funtioniert komplett eigenständig__ und macht somit von keinen externen Applikationen Gebrauch.
+  
+  <details><summary>Und für die Lehrerversion?</summary>
+    
+  Für die Lehrerversion des Geographylearners, ist jedoch das Vorhandensein mehrerer externer Applikationen nötig, um das Hochladen bearbeiteter Lernsets zu ermöglichen
+  (__WICHTIG: Diese Programme müssen normalerweise nicht manuell installiert werden sie werden bei Bedarf automatisch installiert__ ):
+  * [Das command-line tool 'git'](https://git-scm.com/downloads)
+  * [Das command-line tool 'gh' (github CLI)]("https://cli.github.com/)
+
+  Allerdings ist eine __manuelle Anmeldung__ mit dem tool `gh` notwendig. Um die Anmeldung durchzuführen, öffne ein Terminal (Auf Windows: suche nach "powershell"; Auf MacOS: drücke `command + space` und suche nach "Terminal"). Die folgenden Schritte sind nun plattformunabhängig:
+  * Gib `gh auth login`ein (und drücke Enter)
+  * Wähle `GitHub.com` (nutze die Hoch und Runter Tasten, um den Eintrag zu markieren und drücke Enter)
+  * Wähle `HTTPS` (wie oben)
+  * Gib `Y` ein (und drücke Enter)
+  * Wähle `Login with a web browser` aus (wie oben)
+  * Kopiere den Code, der im Terminal angezeigt wird und drücke Enter
+  * Melde dich auf der nun geöffneten Webseite an
+  * Füge den kopierten Code in das Feld für die Geräteaktivierung ein; fahre fort.
+  * Authorisiere die Aktion
+  </details>
+</details>
+
 ## Geistiges Eigentum
 Der GeographyLearner ist ein C++20 basiertes Programm und verwendet für Darstellungszwecke 
 das Grafikframework Qt. Einige der verwendeten grafischen Elemente sind wurden als externe 
