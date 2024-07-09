@@ -64,7 +64,7 @@ Unterstützte Plattformen:
   Für die Lehrerversion des Geographylearners, ist jedoch das Vorhandensein mehrerer externer Applikationen nötig, um das Hochladen bearbeiteter Lernsets zu ermöglichen
   (__WICHTIG: Diese Programme müssen normalerweise nicht manuell installiert werden sie werden bei Bedarf automatisch installiert__ ):
   * [Das command-line tool 'git'](https://git-scm.com/downloads)
-  * [Das command-line tool 'gh' (github CLI)]("https://cli.github.com/)
+  * [Das command-line tool 'gh' (github CLI)](https://cli.github.com/)
 
   Allerdings ist eine __manuelle Anmeldung__ mit dem tool `gh` notwendig. Um die Anmeldung durchzuführen, öffne ein Terminal (Auf Windows: suche nach "powershell"; Auf MacOS: drücke `command + space` und suche nach "Terminal"). Die folgenden Schritte sind nun plattformunabhängig:
   * Gib `gh auth login`ein (und drücke Enter)
