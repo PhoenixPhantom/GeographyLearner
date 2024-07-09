@@ -59,7 +59,7 @@ Unterstützte Plattformen:
   
   Die Schülerversion des GeographyLearners __funtioniert komplett eigenständig__ und macht somit von keinen externen Applikationen Gebrauch.
   
-  <details><summary>Und für die Lehrerversion?</summary>
+  <details><summary><h5>Und für die Lehrerversion?</h5></summary>
     
   Für die Lehrerversion des Geographylearners, ist jedoch das Vorhandensein mehrerer externer Applikationen nötig, um das Hochladen bearbeiteter Lernsets zu ermöglichen
   (__WICHTIG: Diese Programme müssen normalerweise nicht manuell installiert werden sie werden bei Bedarf automatisch installiert__ ):
