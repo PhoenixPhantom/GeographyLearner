@@ -143,10 +143,12 @@ Component.prototype.teacherInstallToggled = function (checked) {
 Component.prototype.onPasswordAccepted = function (){
     var widget = gui.pageWidgetByObjectName("DynamicInstallationWidget");
     if(widget != null){
-        //This is a terrible way to do password auth, but it's only there so people aren't by the edit options confused.
+        //This is generally a most terrible way to do password auth, but it's only there so people aren't confused by the edit options.
         //Having access to the Editor doesn't enable anyone to upload anything but only to easily edit 
         //the sets they lear locally.
-        if(widget.passwordGroup.password.text === "phoenixSoftwareWin") widget.complete = true;
+
+//the old password was phoenixSoftwareWin
+        if(widget.passwordGroup.password.text === "geoLearnPasswdWin2024") widget.complete = true;
         else{
             widget.passwordGroup.password.text = "";
             widget.complete = false;

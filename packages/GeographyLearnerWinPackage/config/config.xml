@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Installer>
     <Name>GeographyLearner</Name>
-    <Version>0.2.0</Version>
+    <Version>0.3.0</Version>
     <Title>GeographyLearner Installer</Title>
     <Publisher>PhantomPhoenix</Publisher>
     <StartMenuDir>GeographyLearner</StartMenuDir>
