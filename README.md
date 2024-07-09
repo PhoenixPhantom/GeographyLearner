@@ -21,6 +21,8 @@ Unterstützte Plattformen:
 * [Windows](https://raw.githubusercontent.com/PhoenixPhantom/GeographyLearner/master/Installer/GeographyLearnerInstaller.exe)
   
 <details><summary>Kann der GeographyLearner auch für Mac, IOS oder Android gebraucht werden?</summary>
+<dl>
+  <dd>
 
 
   Der GeographyLearner ist __zurzeit leider nur für Windows__ direkt als Downloadlink erhältlich.
@@ -29,7 +31,9 @@ Unterstützte Plattformen:
   Die Ressourcen sind auf dieser Seite vorhanden und können für alle dieser Plattformen *lokal kompilliert* werden.
 
   <details><summary><h5>Lokal kompilieren</h5></summary>
-  
+  <dl>
+  <dd>
+    
 1. Lade das vollständige `GeographyLearner` Repository herunter 
 2. Lade den [Qt Creator](https://www.qt.io/download) auf das zu verwendende Gerät herunter & installiere die Applikation (die Standardinstallation reicht aus)
 3. Wähle eines der folgenden:
@@ -51,15 +55,22 @@ Unterstützte Plattformen:
          2. Führe `cmake --build build` aus
       6. Die ausführbare Datei befindet sich nun unter 'build/GeographyLearner'
 
+  </dd>
+</dl>
 </details>
-  
+  </dd>
+</dl> 
 </details>
 
 <details><summary>Sind gewisse externe Programme vorausgesetzt?</summary>
+<dl>
+  <dd>
   
   Die Schülerversion des GeographyLearners __funtioniert komplett eigenständig__ und macht somit von keinen externen Applikationen Gebrauch.
   
   <details><summary><h5>Und für die Lehrerversion?</h5></summary>
+  <dl>
+  <dd>
     
   Für die Lehrerversion des Geographylearners, ist jedoch das Vorhandensein mehrerer externer Applikationen nötig, um das Hochladen bearbeiteter Lernsets zu ermöglichen
   (__WICHTIG: Diese Programme müssen normalerweise nicht manuell installiert werden sie werden bei Bedarf automatisch installiert__ ):
@@ -76,7 +87,11 @@ Unterstützte Plattformen:
   * Melde dich auf der nun geöffneten Webseite an
   * Füge den kopierten Code in das Feld für die Geräteaktivierung ein; fahre fort.
   * Authorisiere die Aktion
+    </dd>
+</dl>
   </details>
+  </dd>
+</dl>
 </details>
 
 ## Geistiges Eigentum
