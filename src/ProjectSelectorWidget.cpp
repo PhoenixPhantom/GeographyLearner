@@ -11,7 +11,6 @@
 #include "utils/GitActions.h"
 
 #include <algorithm>
-#include <cstdio>
 #include <cstdlib>
 #include <filesystem>
 #include <fstream>
@@ -22,8 +21,13 @@
 #include <qnamespace.h>
 #include <qpainter.h>
 #if _WIN32
+#include <cstdio>
 #include <ShlObj.h>
+#elif __APPLE__
+#include <glob.h>
+#else
 #endif
+#include <QProcess>
 #include <qboxlayout.h>
 #include <qlabel.h>
 #include <qlineedit.h>
@@ -193,6 +197,56 @@ void ProjectSelectorWidget::onOpenSet(int index){
 
 
 #if MAKE_EDITOR
+//btw. this IS bad style
+bool installCommand(QWidget* parent, const std::string& command){
+    int rval = -1;
+#if __WIN32__ || __APPLE__
+#if __APPLE__
+    rval = system("/opt/homebrew/bin/brew --version");
+    if(rval != 0) {
+        QMessageBox::StandardButton result = QMessageBox::warning(parent, parent->tr("Fehlende Komponente"),
+            parent->tr("Um die fehlende Komponente installieren zu können, wird ‘brew‘ benötigt. \
+Soll die Applikation installiert werden?"),
+            QMessageBox::Cancel | QMessageBox::Ok, QMessageBox::Ok);
+        if (result != QMessageBox::Ok) return false;
+        rval = system("/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"");
+        if (rval != 0) {
+            QMessageBox::critical(parent, parent->tr("Installation fehlgeschlagen"),
+                                  parent->tr("‘Brew‘ konnte nicht installiert werden. Als Alternative wird die Manuelle Installation \
+der benötigten Komponenten über die Webseite des GeographyLearners unter der Sektion Download im Dropdown zu den externen \
+Programmen empfohlen."));
+            return false;
+        }
+    }
+    rval = system(("/opt/homebrew/bin/brew install " + command).c_str());
+#elif __WIN32__
+    rval = system("cmd.exe -c \"winget --version\"");
+    if(rval != 0) {
+        QMessageBox::critical(parent, parent->tr("Fehlende Komponente"),
+                              parent->tr("wie bitte?! Was für ein Windows verwendest du? (Installiere WinGet um vortzufahren)"),
+                              QMessageBox::Ok, QMessageBox::Ok);
+        return false;
+    }
+    rval = system(("cmd.exe -c \"winget install " + command + "\"").c_str())
+#endif
+    if(rval != 0) {
+        QMessageBox::critical(parent, parent->tr("Installation fehlgeschlagen"),
+                              "‘" + (command.c_str() + parent->tr("‘ konnte nicht installiert werden. \
+Alternativ können die Benötigten Komponenten über die Links auf der Seite des GeographyLearner \
+unter der Sektion Download im Dropdown zu den externen Programmen gefunden und installiert werden.")));
+        return false;
+    }
+
+#else
+    QMessageBox::critical(parent, parent->tr("Fehlende Komponente"),
+                          parent->tr("Um fortfahren zu können wird ‘") + command + tr("‘ benötig. \
+Die Links zu den benötigten Komponenten können auf der Seite des GeographyLearners unter der Sektion \
+Download im Dropdown zu den externen Programmen gefunden und installiert werden."));
+#endif
+
+    return rval == 0;
+}
+
 void ProjectSelectorWidget::onPublishAll(){
     GitManager::GitError err;
     git_strarray strarray;
@@ -203,13 +257,19 @@ void ProjectSelectorWidget::onPublishAll(){
 
     if(!gitManager.repoLoaded()){
         loadRepo();
-        if(!gitManager.repoLoaded()) return;
+        if(!gitManager.repoLoaded()) {
+            delete[] strarray.strings;
+            return;
+        }
     }
 
     if (err = gitManager.gitAdd(&strarray, true); err != GitManager::Success) {
         showError(err);
+        delete[] strarray.strings;
         return;
     }
+
+    delete[] strarray.strings;
 
     bool ok;
     QString commitMessage = 
@@ -239,17 +299,21 @@ Continue:
     }
 
     if(showWarning){
-        if(QMessageBox::warning(this, tr("Uploadwarnung"), 
-                    tr("ACHTUNG: Wenn du fortfahrst, werden all deine Änderungen auf die ÖFFENTLICH \
-zugängliche Webseite des GeographyLearners geladen und diese Nachricht wird nicht mehr angezeigt wrden."))
-                != QMessageBox::Ok) return;
-        std::ofstream stream(configPath);
-        stream << "UW: 0";
-        stream.close();
+        if(QMessageBox::StandardButton response = QMessageBox::warning(this, tr("Uploadwarnung"),
+            tr("Wenn du fortfahrst, werden all deine Änderungen auf die öffentlich \
+zugängliche Webseite des GeographyLearners geladen. (Bei ‘ignorieren‘ wird die Nachricht beim Nächsten Upload wieder angezeigt werden)"),
+                QMessageBox::Cancel | QMessageBox::Ok | QMessageBox::Ignore);
+                response == QMessageBox::Ok){
+            std::ofstream stream(configPath);
+            stream << "UW: 0";
+            stream.close();
+        }
+        else if(response != QMessageBox::Ignore) return;
     }
 
     if (err = gitManager.gitCommit("GLEditor: " + commitMessage.toStdString()); err != GitManager::Success) {
         if(err == GitManager::Commit){
+            //still seems to have problems and potentially doesn't resolve even simple conflicts
             err = gitManager.gitMerge(true);
         }
         if(err != GitManager::Success){
@@ -264,9 +328,14 @@ zugängliche Webseite des GeographyLearners geladen und diese Nachricht wird nic
     //windows splitting
     QStringList paths = activePaths.split(";");
 #else
-    //linux splitting most likely also works for MACOS
+    //linux and MacOS use the same splitting in the PATH env variable
     QStringList paths = activePaths.split(":");
 #endif
+#if __APPLE__
+    //somehow homebrew installations are not in the path (even though they can be accessed normally)
+    activePaths += ":/usr/local/bin";
+#endif
+
     for(const QString& path : paths){
         std::filesystem::path localPath = path.toStdWString();
         if(!std::filesystem::is_directory(localPath)){
@@ -282,25 +351,79 @@ zugängliche Webseite des GeographyLearners geladen und diese Nachricht wird nic
 
 loopEnd:
 
+
     if(gitPath.empty()){
         activePaths.replace(";", "\n");
-        QMessageBox::critical(this, windowTitle(), tr("Git installation wurde NICHT GEFUNDEN. \n PATH=") +
-activePaths + tr("\nStelle sicher, dass git installiert ist und der Installationsordner \
-in der PATH-Variable des Computers vorhanden ist."), QMessageBox::Close, QMessageBox::Close);
+#if __WIN32__ || __APPLE__
+        QMessageBox::StandardButton result = QMessageBox::warning(this, tr("Fehlende Komponente"),
+            tr("Die benötigte Komponente ‘git‘ wurde nicht gefunden. Soll sie installiert werden?"),
+            QMessageBox::Cancel | QMessageBox::Ok, QMessageBox::Ok);
+        if (result != QMessageBox::Ok) return;
+#endif
+        if(!installCommand(this, "git")) return;
+
+        qDebug() << "Git installation wurde NICHT GEFUNDEN. \n PATH=" + activePaths;
         return;
     }
 
     QString string = QString::fromStdString(learningSetsPath.parent_path().parent_path().string());
+    if (string.contains(" ")) {
+        string = "\'" + string + "\'";
+    }
+
 #if _WIN32
-    //windows is the only platform that uses stupid \ in pathnames
+    //windows is the only platform that uses stupid backslashes (\) in pathnames
     string.replace("\\", "\\\\");
 #endif
-    system(("\"" + QString::fromStdString(gitPath) + "\" -C " + string + " push").toUtf8());
-    //There seem to be constant errors with libgit2::push (maybe due to GitHub?)
+    //There seem to be constant errors with libgit2::push (most likely due to GitHub's unique auth system)
     /*    if(err = gitManager.gitPush(); err != GitManager::Success){
           showError(err);
           return;
           }*/
+
+    //if it works it doesn't matter how, so we can skip all of the next steps
+    int rval = system(("\"" + QString::fromStdString(gitPath) + "\" -C " + string + " push").toUtf8());
+    if (rval == 0){
+        QMessageBox::information(this, tr("Fertig"), tr("Die Synchronisation war erfolgreich."), QMessageBox::Ok, QMessageBox::Ok);
+        return;
+    }
+
+    //if it doesn't work it's most likely because the user's not logged in
+    std::string githubCLIPath;
+
+    for(const QString& path : paths){
+        std::filesystem::path localPath = path.toStdWString();
+        if(!std::filesystem::is_directory(localPath)){
+            continue;
+        }
+        for(const std::filesystem::path& potentialGitFile :
+             std::filesystem::directory_iterator(localPath)){
+            if(potentialGitFile.stem() != "gh") continue;
+            githubCLIPath = potentialGitFile.string();
+            goto loop2End;
+        }
+    }
+
+loop2End:
+    if(githubCLIPath.empty()){
+        activePaths.replace(";", "\n");
+#if __WIN32__ || __APPLE__
+        QMessageBox::StandardButton result = QMessageBox::warning(this, tr("Fehlende Komponente"),
+            tr("Die benötigte Komponente ‘github cli (gh)‘ wurde nicht gefunden. Soll sie installiert werden?"),
+            QMessageBox::Cancel | QMessageBox::Ok, QMessageBox::Ok);
+        if (result != QMessageBox::Ok) return;
+#endif
+        if(!installCommand(this, "gh")) return;
+
+        qDebug() << "Github CLI (gh) installation wurde NICHT GEFUNDEN. \n PATH=" + activePaths;
+        return;
+    }
+
+    QMessageBox::warning(this, tr("Login nötig"), tr("Besuche die Webseite des GeographyLearners, gehe zur Sektion 'Download' \
+und öffne das Dropdown zu den externen Programmen, um eine vereinfachte Anmeldeanleitung für die Github CLI zu finden."), QMessageBox::Ok, QMessageBox::Ok);
+
+finish:
+    QMessageBox::information(this, tr("Upload fehlgeschlagen"), tr("Der Versuchte Upload ist fehlgeschlagen."), QMessageBox::Ok, QMessageBox::Ok);
 }
 
 void ProjectSelectorWidget::onCreateNew(){
@@ -340,7 +463,16 @@ void ProjectSelectorWidget::loadRepo(){
     appDataLocation = appdata;
     appDataLocation /= "GeographyLearner";
 #elif __APPLE__
-    appDataLocation = "~/Library/Application Support/GeographyLearner";
+    //this expands the given path to lead to what the tilde symbol actually means (the home dir)
+    glob_t globbuf;
+    if(glob("~/Library/Application Support/", GLOB_TILDE, NULL, &globbuf) == 0){
+        char** v = globbuf.gl_pathv; //list of matched pathnames
+        char* expandedPath = v[0]; //number of matched pathnames, gl_pathc == 1
+        appDataLocation = expandedPath;
+        globfree(&globbuf);
+    }
+    appDataLocation /= "GeographyLearner";
+
 #else //most likely __linux__
     appDataLocation = "~/.GeographyLearner";
 #endif
@@ -351,6 +483,7 @@ void ProjectSelectorWidget::loadRepo(){
     }
     std::string pathToRepo = repoLocation.string();
     if(!gitManager.repoLoaded()){
+        //NOTE: this is the path that leads to craches
         if(GitManager::GitError err = gitManager.readRepo(pathToRepo, repoUrl); err != GitManager::Success){
             showError(err);
         }

@@ -7,7 +7,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 
-find_package(Qt6 REQUIRED COMPONENTS Widgets)
+find_package(Qt6 REQUIRED COMPONENTS Quick Widgets)
 
 #add_compile_options(-D EDITDATA="../../Data/configData.json")
 set(CMAKE_AUTORCC ON)
@@ -26,10 +26,11 @@ if(WIN32)
     include_directories(${CMAKE_CURRENT_LIST_DIR}/libs/libgit2/include)
     #include_directories(${CMAKE_CURRENT_LIST_DIR}/libs/)
 elseif(APPLE)
-    message(WARNING "This CMake script has not yet been configured to work for apple devices \n
-            If you have libgit2 installed and both direct access to the library files and the 
-            header files are given in your PATH this warning can be ignored. \n Alternatively the paths
-            can also be provided using -DCMAKE_PREFIX_PATH=path/to/your/library/and/header/files")
+    set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${CMAKE_CURRENT_LIST_DIR}/libs/libgit2/macos/lib/)
+    configure_file(${CMAKE_CURRENT_LIST_DIR}/libs/libgit2/macos/lib/libgit2.1.8.1.dylib ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
+    include_directories(${CMAKE_CURRENT_LIST_DIR}/libs/libgit2/include)
+
+    message(WARNING "This CMake script has not yet been thorgroughly tested on macos.")
 elseif(UNIX)
     message(WARNING "This CMake script has not yet been configured to work for linux \n
             If you have libgit2 installed and both direct access to the library files and the 
@@ -54,12 +55,24 @@ qt_add_resources(GeographyLearner "resources"
 
 qt_finalize_target(GeographyLearner)
 
-target_link_libraries(GeographyLearner PUBLIC
-    Qt6::Widgets
-    ${LibGit2}
+target_link_libraries(GeographyLearner
+    PRIVATE Qt6::Widgets
+    PRIVATE Qt6::Quick
+    PRIVATE ${LibGit2}
 )
 
 set_target_properties(GeographyLearner PROPERTIES
+    MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION}
+    MACOSX_BUNDLE_SHORT_VERSION_STRING ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR}
     WIN32_EXECUTABLE ON
     MACOSX_BUNDLE ON
 )
+
+if(APPLE)
+    include(GNUInstallDirs)
+    install(TARGETS GeographyLearner
+        BUNDLE DESTINATION .
+        LIBRARY DESTINATION ${CMAKE_INSTALL_LIBDIR}
+        RUNTIME DESTINATION ${CMAKE_INSTALL_BINDIR}
+    )
+endif()

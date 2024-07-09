@@ -367,6 +367,7 @@ static GitManager::GitError createMergeCommit(git_repository *repo, git_index *i
 
 cleanup:
     free(parents);
+    free(msg);
     if(err < 0) return GitManager::Commit;
     return GitManager::Success;
 }
@@ -411,7 +412,7 @@ GitManager::GitError GitManager::readRepo(const std::string& repoPath, const std
     if(repo == nullptr){
         if(git_repository_open_ext(nullptr, repoPath.c_str(), GIT_REPOSITORY_OPEN_NO_SEARCH, nullptr) != 0){
             //repo doesn't even exist yet: clone
-            return gitClone(repoUrl, repoPath);
+            return gitClone(repoUrl, repoPath); //NOTE: this line on mac leads to craches
         }
         else{
             int error = git_repository_open(&repo, repoPath.c_str());
@@ -440,7 +441,7 @@ GitManager::GitError GitManager::gitClone(const std::string& url, const std::str
         repo = nullptr;
     }
 
-    int error = git_clone(&repo, url.c_str(), cloneToLocation.c_str(), &cloneOpts);
+    int error = git_clone(&repo, url.c_str(), cloneToLocation.c_str(), &cloneOpts); //NOTE: this line on MacOS induces a crash
     if(error < 0) return Clone;
     return Success;
 }
@@ -470,7 +471,7 @@ GitManager::GitError GitManager::gitMerge(bool shouldCommit, const std::vector<s
     }
 
     if (analysis & GIT_MERGE_ANALYSIS_UP_TO_DATE) {
-        debugLog("Already up-to-date\n");
+        debugLog("Already up-to-date");
         return Success;
     }
     else if (analysis & GIT_MERGE_ANALYSIS_UNBORN || (analysis & GIT_MERGE_ANALYSIS_FASTFORWARD &&
@@ -478,9 +479,9 @@ GitManager::GitError GitManager::gitMerge(bool shouldCommit, const std::vector<s
         //Fast-forward
         const git_oid *target_oid;
         if (analysis & GIT_MERGE_ANALYSIS_UNBORN) {
-            debugLog("Unborn\n");
+            debugLog("Unborn");
         } else {
-            debugLog("Fast-forward\n");
+            debugLog("Fast-forward");
         }
 
         // Since this is a fast-forward, there can be only one merge head
@@ -499,7 +500,7 @@ GitManager::GitError GitManager::gitMerge(bool shouldCommit, const std::vector<s
         checkoutOpts.gitOptions.checkout_strategy = GIT_CHECKOUT_FORCE|GIT_CHECKOUT_ALLOW_CONFLICTS;
 
         if (preference & GIT_MERGE_PREFERENCE_FASTFORWARD_ONLY) {
-            debugLog("Fast-forward is preferred, but only a merge is possible\n");
+            debugLog("Fast-forward is preferred, but only a merge is possible");
             return Merge;
         }
 
@@ -523,7 +524,7 @@ GitManager::GitError GitManager::gitMerge(bool shouldCommit, const std::vector<s
     }
     else if (!opts.no_commit) {
         if(GitError err = createMergeCommit(repo, index, &opts); err != Success) return err;
-        debugLog("Merge made\n");
+        debugLog("Merge made");
     }
 
     return Success;
@@ -603,7 +604,6 @@ GitManager::GitError GitManager::gitCommit(const std::string& commitMessage) con
 
     GitError returnError = Success;
     int error = git_revparse_single(&parent, repo, "HEAD");
-    debugLog("printy statement");
 
     if (error == GIT_ENOTFOUND) {
         debugLog("HEAD not found. Creating first commit\n");
