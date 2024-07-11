@@ -19,7 +19,7 @@ da aufgrunde von limitationen des verwendeten Grafik-Frameworks die normale Schr
 ## Download
 Unterstützte Plattformen:
 * [Windows](https://raw.githubusercontent.com/PhoenixPhantom/GeographyLearner/master/Installer/GeographyLearnerInstallerWin.exe)
-* [MacOS](https://raw.githubusercontent.com/PhoenixPhantom/GeographyLearner/master/Installer/GeographyLearnerInstallerMacOS.app)
+* [MacOS](https://raw.githubusercontent.com/PhoenixPhantom/GeographyLearner/master/Installer/GeographyLearnerInstallerMacOS.zip)
   
 <details><summary>Kann der GeographyLearner auch für Mac, IOS oder Android gebraucht werden?</summary>
 <dl>
