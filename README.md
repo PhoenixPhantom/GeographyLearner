@@ -18,25 +18,27 @@ da aufgrunde von limitationen des verwendeten Grafik-Frameworks die normale Schr
 
 ## Download
 Unterstützte Plattformen:
-* [Windows](https://raw.githubusercontent.com/PhoenixPhantom/GeographyLearner/master/Installer/GeographyLearnerInstaller.exe)
+* [Windows](https://raw.githubusercontent.com/PhoenixPhantom/GeographyLearner/master/Installer/GeographyLearnerInstallerWin.exe)
+* [MacOS](https://raw.githubusercontent.com/PhoenixPhantom/GeographyLearner/master/Installer/GeographyLearnerInstallerMacOS.app)
   
 <details><summary>Kann der GeographyLearner auch für Mac, IOS oder Android gebraucht werden?</summary>
 <dl>
   <dd>
 
 
-  Der GeographyLearner ist __zurzeit leider nur für Windows__ direkt als Downloadlink erhältlich.
+  Der GeographyLearner ist __zurzeit leider nur für Windows und neue MacOS versionen__ direkt als Downloadlink erhältlich.
   
   Grundsätzlich ist die Antwort aber *ja*.
   Die Ressourcen sind auf dieser Seite vorhanden und können für alle dieser Plattformen *lokal kompilliert* werden.
 
-  <details><summary><h5>Lokal kompilieren</h5></summary>
+  <details><summary>Lokal kompilieren</summary>
   <dl>
   <dd>
     
 1. Lade das vollständige `GeographyLearner` Repository herunter 
 2. Lade den [Qt Creator](https://www.qt.io/download) auf das zu verwendende Gerät herunter & installiere die Applikation (die Standardinstallation reicht aus)
-3. Wähle eines der folgenden:
+3. (für Linux: Lade libgit2 herunter (`apt install libgit2-dev` auf Ubuntu))
+4. Wähle eines der folgenden:
    * Grafische Installation
       1. Öffne die Qt Creator app
       2. Öffne ein existierendes Projekt, indem du die `CMakeLists.txt` datei aus dem Repository auswählst
@@ -44,7 +46,7 @@ Unterstützte Plattformen:
       4. Im `Build`-Menu wähle `Build Project`
       5. Die ausführbare Datei befindet sich nun unter 'build/\[Compilername\]/GeographyLearner'
    * Installation über die Command Line (NICHT EMPFOHLEN)
-      1. Öffne ein terminal, das Zugang zur Qt installation und dem zur Installation passenden C++ Compiler hat
+      1. Öffne ein Terminal, das Zugang zur Qt installation und dem zur Installation passenden C++ Compiler hat
       2. Versichere dich, das `CMake` installiert ist
       3. Wechsle in den `GeographyLearner`-Ordner 
       4. Ist `ninja` installiert:
@@ -68,7 +70,7 @@ Unterstützte Plattformen:
   
   Die Schülerversion des GeographyLearners __funtioniert komplett eigenständig__ und macht somit von keinen externen Applikationen Gebrauch.
   
-  <details><summary><h5>Und für die Lehrerversion?</h5></summary>
+  <details><summary>Und für die Lehrerversion?</summary>
   <dl>
   <dd>
     
