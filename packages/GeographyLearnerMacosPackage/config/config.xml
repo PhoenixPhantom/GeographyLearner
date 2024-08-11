@@ -5,6 +5,8 @@
     <Title>GeographyLearner Installer</Title>
     <Publisher>PhantomPhoenix</Publisher>
     <StartMenuDir>GeographyLearner</StartMenuDir>
+    <AllowSpaceInPath>true</AllowSpaceInPath>
+    <TargetDir>@ApplicationsDir@/GeographyLearner</TargetDir>
 
     <InstallerWindowIcon>Globe</InstallerWindowIcon>
     <InstallerApplicationIcon>Globe</InstallerApplicationIcon>

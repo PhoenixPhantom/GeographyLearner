@@ -56,13 +56,7 @@ Component.prototype.installerLoaded = function () {
             widget.targetDirectory.textChanged.connect(this, Component.prototype.targetChanged);
 
             widget.windowTitle = "Installation Folder";
-            if (systemInfo.productType === "windows") {
-                widget.targetDirectory.text = Dir.toNativeSparator(installer.value("TargetDir"));
-            }
-            else {
-                // assume macos (also, this is only in the macos install script |-) )
-                widget.targetDirectory.text = "/Applications/GeographyLearner";
-            }
+            widget.targetDirectory.text = Dir.toNativeSparator(installer.value("TargetDir"));
         }
     }
 

@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Installer>
     <Name>GeographyLearner</Name>
-    <Version>0.3.0</Version>
+    <Version>1.3.1</Version>
     <Title>GeographyLearner Installer</Title>
     <Publisher>PhantomPhoenix</Publisher>
     <StartMenuDir>GeographyLearner</StartMenuDir>
-    <TargetDir>@HomeDir@/GeographyLearner</TargetDir>
-    <AdminTargetDir>@RootDir@/GeographyLearner</AdminTargetDir>
+    <AllowSpaceInPath>true</AllowSpaceInPath>
+    <TargetDir>@ApplicationsDir@/GeographyLearner</TargetDir>
 
     <InstallerWindowIcon>Globe</InstallerWindowIcon>
     <InstallerApplicationIcon>Globe</InstallerApplicationIcon>

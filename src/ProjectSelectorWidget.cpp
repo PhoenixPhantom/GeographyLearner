@@ -239,7 +239,7 @@ unter der Sektion Download im Dropdown zu den externen Programmen gefunden und i
 
 #else
     QMessageBox::critical(parent, parent->tr("Fehlende Komponente"),
-                          parent->tr("Um fortfahren zu können wird ‘") + command + tr("‘ benötig. \
+                          parent->tr("Um fortfahren zu können wird ‘") + command.c_str() + parent->tr("‘ benötig. \
 Die Links zu den benötigten Komponenten können auf der Seite des GeographyLearners unter der Sektion \
 Download im Dropdown zu den externen Programmen gefunden und installiert werden."));
 #endif
