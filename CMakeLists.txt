@@ -1,6 +1,6 @@
 cmake_minimum_required(VERSION 3.16)
 
-project(GeographyLearner VERSION 1.0.0 LANGUAGES CXX)
+project(GeographyLearner VERSION 1.3.0 LANGUAGES CXX)
 set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 
 set(CMAKE_CXX_STANDARD 20)
@@ -26,11 +26,11 @@ if(WIN32)
     include_directories(${CMAKE_CURRENT_LIST_DIR}/libs/libgit2/include)
     #include_directories(${CMAKE_CURRENT_LIST_DIR}/libs/)
 elseif(APPLE)
+    set(CMAKE_OSX_ARCHITECTURES "x86_64;arm64" CACHE INTERNAL "" FORCE)
     set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${CMAKE_CURRENT_LIST_DIR}/libs/libgit2/macos/lib/)
     configure_file(${CMAKE_CURRENT_LIST_DIR}/libs/libgit2/macos/lib/libgit2.1.8.1.dylib ${CMAKE_CURRENT_BINARY_DIR} COPYONLY)
     include_directories(${CMAKE_CURRENT_LIST_DIR}/libs/libgit2/include)
 
-    message(WARNING "This CMake script has not yet been thorgroughly tested on macos.")
 elseif(UNIX)
     message(WARNING "This CMake script has not yet been configured to work for linux \n
             If you have libgit2 installed and both direct access to the library files and the 

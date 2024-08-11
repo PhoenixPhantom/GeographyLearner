@@ -37,9 +37,7 @@ class ProjectSelectorWidget : public QWidget
 public:
     explicit ProjectSelectorWidget(QWidget* parent = nullptr);
     ~ProjectSelectorWidget();
-    inline static std::string repoUrl =// "https://github.com/libgit2/libgit2.git";
-    //"ssh://git@github.com:PhoenixPhantom/GeographyLearner.git";
-    "https://github.com/PhoenixPhantom/GeographyLearner.git";
+    inline static std::string repoUrl = "https://github.com/PhoenixPhantom/GeographyLearnerLearningSets.git";
  
 private slots:
     void onOpenSet(int index);

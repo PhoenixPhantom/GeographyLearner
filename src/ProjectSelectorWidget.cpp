@@ -494,7 +494,7 @@ void ProjectSelectorWidget::loadRepo(){
         }
     }
     
-    learningSetsPath = repoLocation / "Data/LearningSets";
+    learningSetsPath = repoLocation;
     if(!std::filesystem::exists(learningSetsPath)){
         QMessageBox::critical(this, windowTitle(), tr("Die Struktur der Daten entspricht nicht dem erwarteten Schema: \
 Keinerlei Daten konnten geladen werden..."), QMessageBox::Close, QMessageBox::Close);
