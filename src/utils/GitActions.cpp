@@ -1,4 +1,7 @@
 #include "GitActions.h"
+#include "git2/net.h"
+#include "git2/proxy.h"
+#include "git2/remote.h"
 #include "git2/repository.h"
 #include <cstring>
 #include <filesystem>
@@ -665,10 +668,9 @@ cleanup:
     return returnError;
 }
 
+int cb(git_cert*, int, const char*, void*){ return 0; };
 GitManager::GitError GitManager::gitPush() const{
     checkIsRepoSetup;
-    git_push_options options;
-    git_remote_callbacks callbacks;
     git_remote* remote = nullptr;
     char refspec[] = "refs/heads/master";
     char* prefspec = refspec;
@@ -680,28 +682,32 @@ GitManager::GitError GitManager::gitPush() const{
         return Lookup;
     }
 
-    if(git_remote_init_callbacks(&callbacks, GIT_REMOTE_CALLBACKS_VERSION) != 0){
-        debugLog("Error initializing remote callbacks");
-        return BadRepo;
-    }
+    git_remote_callbacks callbacks = GIT_REMOTE_CALLBACKS_INIT;
+    callbacks.credentials = credentialsHandler;
 
     AcquireCredsData data = { parentWidget };
-    callbacks.credentials = credentialsHandler;
     callbacks.payload = &data;
 
-    if(git_push_options_init(&options, GIT_PUSH_OPTIONS_VERSION ) != 0){
-        debugLog("Error initializing push");
-        return BadRepo;
-    }
+    git_proxy_options proxy_options = GIT_PROXY_OPTIONS_INIT;
+    proxy_options.payload = &data;
+    proxy_options.credentials = credentialsHandler;
+    proxy_options.certificate_check = cb;
+    proxy_options.type = GIT_PROXY_SPECIFIED;
+    proxy_options.url = "https://github.com/PhoenixPhantom/GeographyLearnerLearningSets.git";
+
+    int res = git_remote_connect(remote, GIT_DIRECTION_PUSH,
+            &callbacks, &proxy_options, nullptr);
+    if(res != 0) { return BadAccess; }
+    res = git_remote_add_push(repo, "origin", "refs/heads/master:refs/heads/master");
+    if(res != 0) { return Pull; }
+
+    git_push_options options = GIT_PUSH_OPTIONS_INIT;
     options.callbacks = callbacks;
 
-    if(int pusherr = git_remote_push(remote, &refspecs, &options); pusherr != 0){
-        //this can e.g. be an auth error
-        debugLog("Error pushing");
-        debugLog(QString::number(pusherr));
-        return Push;
-    }
+    res = git_remote_upload(remote, nullptr, &options);
+    if (res != 0){ return Push; }
+    git_remote_disconnect(remote);
+    git_remote_free(remote);
 
-    debugLog("pushed\n");
     return Success;
 }

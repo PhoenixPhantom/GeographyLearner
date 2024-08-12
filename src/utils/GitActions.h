@@ -54,7 +54,7 @@ struct CheckoutOptions{
 
 class GitManager{
     public:
-    enum GitError{
+    enum GitError : uint8_t {
         Success = 0,
         Open,
         Clone,

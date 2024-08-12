@@ -200,7 +200,7 @@ void ProjectSelectorWidget::onOpenSet(int index){
 //btw. this IS bad style
 bool installCommand(QWidget* parent, const std::string& command){
     int rval = -1;
-#if __WIN32__ || __APPLE__
+#if _WIN32 || __APPLE__
 #if __APPLE__
     rval = system("/opt/homebrew/bin/brew --version");
     if(rval != 0) {
@@ -219,7 +219,7 @@ Programmen empfohlen."));
         }
     }
     rval = system(("/opt/homebrew/bin/brew install " + command).c_str());
-#elif __WIN32__
+#elif _WIN32
     rval = system("cmd.exe -c \"winget --version\"");
     if(rval != 0) {
         QMessageBox::critical(parent, parent->tr("Fehlende Komponente"),
@@ -227,7 +227,7 @@ Programmen empfohlen."));
                               QMessageBox::Ok, QMessageBox::Ok);
         return false;
     }
-    rval = system(("cmd.exe -c \"winget install " + command + "\"").c_str())
+    rval = system(("cmd.exe -c \"winget install " + command + "\"").c_str());
 #endif
     if(rval != 0) {
         QMessageBox::critical(parent, parent->tr("Installation fehlgeschlagen"),
@@ -249,78 +249,26 @@ Download im Dropdown zu den externen Programmen gefunden und installiert werden.
 
 void ProjectSelectorWidget::onPublishAll(){
     GitManager::GitError err;
-    git_strarray strarray;
-    strarray.strings = new char*[1];
-    strarray.strings[0] = learningSetsPath.string().data();
-    strarray.count = 1;
-
-
     if(!gitManager.repoLoaded()){
         loadRepo();
         if(!gitManager.repoLoaded()) {
-            delete[] strarray.strings;
             return;
         }
     }
 
+    /*git_strarray strarray;
+    strarray.strings = new char*[1];
+    strarray.strings[0] = learningSetsPath.string().data();
+    strarray.count = 1;
+
+    //this doesn't seem to really work
     if (err = gitManager.gitAdd(&strarray, true); err != GitManager::Success) {
         showError(err);
         delete[] strarray.strings;
         return;
     }
 
-    delete[] strarray.strings;
-
-    bool ok;
-    QString commitMessage = 
-        QInputDialog::getText(this, tr("Beschreibung"),
-                tr("Beschreibe hier in wenigen Stichworten, was du seit dem letzten Hochladen \
-verändert hast\n(obligatorisch):"), QLineEdit::Normal, "", &ok);
-    if (!(ok && !commitMessage.isEmpty())) return;
-
-    std::filesystem::path configPath = learningSetsPath.parent_path().parent_path() / "GL.conf";
-    bool showWarning = true;
-    if(std::filesystem::exists(configPath)){
-        std::ifstream configFile(configPath);
-        char linebuff[6]; //2(key) + 2(': ') + 2(data)
-        while(!configFile.fail() && !configFile.eof()){
-            configFile.getline(linebuff, 6);
-            //ensure correct format
-            if(linebuff[2] != ':' || linebuff[3] != ' ') goto Continue;
-            //Upload warning
-            else if(linebuff[0] == 'U' && linebuff[1] == 'W'){
-                if(!showWarning) goto Continue;
-                showWarning = (linebuff[4] == '1');
-            }
-
-Continue:
-            memset(linebuff, 0, 6);
-        }
-    }
-
-    if(showWarning){
-        if(QMessageBox::StandardButton response = QMessageBox::warning(this, tr("Uploadwarnung"),
-            tr("Wenn du fortfahrst, werden all deine Änderungen auf die öffentlich \
-zugängliche Webseite des GeographyLearners geladen. (Bei ‘ignorieren‘ wird die Nachricht beim Nächsten Upload wieder angezeigt werden)"),
-                QMessageBox::Cancel | QMessageBox::Ok | QMessageBox::Ignore);
-                response == QMessageBox::Ok){
-            std::ofstream stream(configPath);
-            stream << "UW: 0";
-            stream.close();
-        }
-        else if(response != QMessageBox::Ignore) return;
-    }
-
-    if (err = gitManager.gitCommit("GLEditor: " + commitMessage.toStdString()); err != GitManager::Success) {
-        if(err == GitManager::Commit){
-            //still seems to have problems and potentially doesn't resolve even simple conflicts
-            err = gitManager.gitMerge(true);
-        }
-        if(err != GitManager::Success){
-            showError(err);
-            return;
-        }
-    }
+    delete[] strarray.strings;*/
 
     std::string gitPath;
     QString activePaths = getenv("PATH");
@@ -354,7 +302,7 @@ loopEnd:
 
     if(gitPath.empty()){
         activePaths.replace(";", "\n");
-#if __WIN32__ || __APPLE__
+#if _WIN32 || __APPLE__
         QMessageBox::StandardButton result = QMessageBox::warning(this, tr("Fehlende Komponente"),
             tr("Die benötigte Komponente ‘git‘ wurde nicht gefunden. Soll sie installiert werden?"),
             QMessageBox::Cancel | QMessageBox::Ok, QMessageBox::Ok);
@@ -366,7 +314,7 @@ loopEnd:
         return;
     }
 
-    QString string = QString::fromStdString(learningSetsPath.parent_path().parent_path().string());
+    QString string = QString::fromStdString(learningSetsPath.string());
     if (string.contains(" ")) {
         string = "\'" + string + "\'";
     }
@@ -376,17 +324,78 @@ loopEnd:
     string.replace("\\", "\\\\");
 #endif
     //There seem to be constant errors with libgit2::push (most likely due to GitHub's unique auth system)
-    /*    if(err = gitManager.gitPush(); err != GitManager::Success){
+    /*if(err = gitManager.gitPush(); err != GitManager::Success){
           showError(err);
           return;
-          }*/
+    }*/
+    int rval = system(("\"" + QString::fromStdString(gitPath) + "\" -C " + string + " add *").toUtf8());
+    
 
-    //if it works it doesn't matter how, so we can skip all of the next steps
-    int rval = system(("\"" + QString::fromStdString(gitPath) + "\" -C " + string + " push").toUtf8());
     if (rval == 0){
-        QMessageBox::information(this, tr("Fertig"), tr("Die Synchronisation war erfolgreich."), QMessageBox::Ok, QMessageBox::Ok);
+
+        bool ok;
+        QString commitMessage = 
+            QInputDialog::getText(this, tr("Beschreibung"),
+                    tr("Beschreibe hier in wenigen Stichworten, was du seit dem letzten Hochladen \
+verändert hast\n(obligatorisch):"), QLineEdit::Normal, "", &ok);
+                            if (!(ok && !commitMessage.isEmpty())) return;
+
+                            std::filesystem::path configPath = learningSetsPath.parent_path().parent_path() / "GL.conf";
+                            bool showWarning = true;
+                            if(std::filesystem::exists(configPath)){
+                                std::ifstream configFile(configPath);
+                                char linebuff[6]; //2(key) + 2(': ') + 2(data)
+                                while(!configFile.fail() && !configFile.eof()){
+                                    configFile.getline(linebuff, 6);
+                                    //ensure correct format
+                                    if(linebuff[2] != ':' || linebuff[3] != ' ') goto Continue;
+                                    //Upload warning
+                                    else if(linebuff[0] == 'U' && linebuff[1] == 'W'){
+                                        if(!showWarning) goto Continue;
+                                        showWarning = (linebuff[4] == '1');
+                                    }
+
+Continue:
+                                    memset(linebuff, 0, 6);
+                                }
+                            }
+
+                            if(showWarning){
+                                if(QMessageBox::StandardButton response = QMessageBox::warning(this, tr("Uploadwarnung"),
+                                            tr("Wenn du fortfahrst, werden all deine Änderungen auf die öffentlich \
+                                                zugängliche Webseite des GeographyLearners geladen. (Bei ‘ignorieren‘ wird die Nachricht beim Nächsten Upload wieder angezeigt werden)"),
+                                            QMessageBox::Cancel | QMessageBox::Ok | QMessageBox::Ignore);
+                                        response == QMessageBox::Ok){
+                                    std::ofstream stream(configPath);
+                                    stream << "UW: 0";
+                                    stream.close();
+                                }
+                                else if(response != QMessageBox::Ignore) return;
+                            }
+
+        if (err = gitManager.gitCommit("GLEditor: " + commitMessage.toStdString()); err != GitManager::Success) {
+            if(err == GitManager::Commit){
+                //still seems to have problems and potentially doesn't resolve even simple conflicts
+                err = gitManager.gitMerge(true);
+            }
+            if(err != GitManager::Success){
+                showError(err);
+                return;
+            }
+        }
+
+        //if it works it doesn't matter how, so we can skip all of the next steps
+        rval = system(("\"" + QString::fromStdString(gitPath) + "\" -C " + string + " push https://github.com/PhoenixPhantom/GeographyLearnerLearningSets.git").toUtf8());
+        if (rval == 0){
+            QMessageBox::information(this, tr("Fertig"), tr("Die Synchronisation war erfolgreich."), QMessageBox::Ok, QMessageBox::Ok);
+            return;
+        }
+    }
+    else {
+        QMessageBox::information(this, tr("Fehler"), tr("Die Änderungen können nicht übernommen werden."), QMessageBox::Ok, QMessageBox::Ok);
         return;
     }
+
 
     //if it doesn't work it's most likely because the user's not logged in
     std::string githubCLIPath;
@@ -407,7 +416,7 @@ loopEnd:
 loop2End:
     if(githubCLIPath.empty()){
         activePaths.replace(";", "\n");
-#if __WIN32__ || __APPLE__
+#if _WIN32 || __APPLE__
         QMessageBox::StandardButton result = QMessageBox::warning(this, tr("Fehlende Komponente"),
             tr("Die benötigte Komponente ‘github cli (gh)‘ wurde nicht gefunden. Soll sie installiert werden?"),
             QMessageBox::Cancel | QMessageBox::Ok, QMessageBox::Ok);
