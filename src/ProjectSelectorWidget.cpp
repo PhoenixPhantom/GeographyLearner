@@ -197,56 +197,6 @@ void ProjectSelectorWidget::onOpenSet(int index){
 
 
 #if MAKE_EDITOR
-//btw. this IS bad style
-bool installCommand(QWidget* parent, const std::string& command){
-    int rval = -1;
-#if _WIN32 || __APPLE__
-#if __APPLE__
-    rval = system("/opt/homebrew/bin/brew --version");
-    if(rval != 0) {
-        QMessageBox::StandardButton result = QMessageBox::warning(parent, parent->tr("Fehlende Komponente"),
-            parent->tr("Um die fehlende Komponente installieren zu können, wird ‘brew‘ benötigt. \
-Soll die Applikation installiert werden?"),
-            QMessageBox::Cancel | QMessageBox::Ok, QMessageBox::Ok);
-        if (result != QMessageBox::Ok) return false;
-        rval = system("/bin/bash -c \"$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)\"");
-        if (rval != 0) {
-            QMessageBox::critical(parent, parent->tr("Installation fehlgeschlagen"),
-                                  parent->tr("‘Brew‘ konnte nicht installiert werden. Als Alternative wird die Manuelle Installation \
-der benötigten Komponenten über die Webseite des GeographyLearners unter der Sektion Download im Dropdown zu den externen \
-Programmen empfohlen."));
-            return false;
-        }
-    }
-    rval = system(("/opt/homebrew/bin/brew install " + command).c_str());
-#elif _WIN32
-    rval = system("cmd.exe -c \"winget --version\"");
-    if(rval != 0) {
-        QMessageBox::critical(parent, parent->tr("Fehlende Komponente"),
-                              parent->tr("wie bitte?! Was für ein Windows verwendest du? (Installiere WinGet um vortzufahren)"),
-                              QMessageBox::Ok, QMessageBox::Ok);
-        return false;
-    }
-    rval = system(("cmd.exe -c \"winget install " + command + "\"").c_str());
-#endif
-    if(rval != 0) {
-        QMessageBox::critical(parent, parent->tr("Installation fehlgeschlagen"),
-                              "‘" + (command.c_str() + parent->tr("‘ konnte nicht installiert werden. \
-Alternativ können die Benötigten Komponenten über die Links auf der Seite des GeographyLearner \
-unter der Sektion Download im Dropdown zu den externen Programmen gefunden und installiert werden.")));
-        return false;
-    }
-
-#else
-    QMessageBox::critical(parent, parent->tr("Fehlende Komponente"),
-                          parent->tr("Um fortfahren zu können wird ‘") + command.c_str() + parent->tr("‘ benötig. \
-Die Links zu den benötigten Komponenten können auf der Seite des GeographyLearners unter der Sektion \
-Download im Dropdown zu den externen Programmen gefunden und installiert werden."));
-#endif
-
-    return rval == 0;
-}
-
 void ProjectSelectorWidget::onPublishAll(){
     GitManager::GitError err;
     if(!gitManager.repoLoaded()){
@@ -302,13 +252,9 @@ loopEnd:
 
     if(gitPath.empty()){
         activePaths.replace(";", "\n");
-#if _WIN32 || __APPLE__
-        QMessageBox::StandardButton result = QMessageBox::warning(this, tr("Fehlende Komponente"),
-            tr("Die benötigte Komponente ‘git‘ wurde nicht gefunden. Soll sie installiert werden?"),
-            QMessageBox::Cancel | QMessageBox::Ok, QMessageBox::Ok);
-        if (result != QMessageBox::Ok) return;
-#endif
-        if(!installCommand(this, "git")) return;
+    QMessageBox::critical(this, tr("Fehlende Komponente"), tr("Um fortfahren zu können wird ‘git‘ benötigt. \
+Die Links zu den benötigten Komponenten können auf der Seite des GeographyLearners unter der Sektion \
+Download im Dropdown zu den externen Programmen gefunden und installiert werden."));
 
         qDebug() << "Git installation wurde NICHT GEFUNDEN. \n PATH=" + activePaths;
         return;
@@ -338,101 +284,88 @@ loopEnd:
             QInputDialog::getText(this, tr("Beschreibung"),
                     tr("Beschreibe hier in wenigen Stichworten, was du seit dem letzten Hochladen \
 verändert hast\n(obligatorisch):"), QLineEdit::Normal, "", &ok);
-                            if (!(ok && !commitMessage.isEmpty())) return;
+        if (!(ok && !commitMessage.isEmpty())) return;
 
-                            std::filesystem::path configPath = learningSetsPath.parent_path().parent_path() / "GL.conf";
-                            bool showWarning = true;
-                            if(std::filesystem::exists(configPath)){
-                                std::ifstream configFile(configPath);
-                                char linebuff[6]; //2(key) + 2(': ') + 2(data)
-                                while(!configFile.fail() && !configFile.eof()){
-                                    configFile.getline(linebuff, 6);
-                                    //ensure correct format
-                                    if(linebuff[2] != ':' || linebuff[3] != ' ') goto Continue;
-                                    //Upload warning
-                                    else if(linebuff[0] == 'U' && linebuff[1] == 'W'){
-                                        if(!showWarning) goto Continue;
-                                        showWarning = (linebuff[4] == '1');
-                                    }
+        std::filesystem::path configPath = learningSetsPath.parent_path().parent_path() / "GL.conf";
+        bool showWarning = true;
+        if(std::filesystem::exists(configPath)){
+            std::ifstream configFile(configPath);
+            char linebuff[6]; //2(key) + 2(': ') + 2(data)
+            while(!configFile.fail() && !configFile.eof()){
+                configFile.getline(linebuff, 6);
+                //ensure correct format
+                if(linebuff[2] != ':' || linebuff[3] != ' ') goto Continue;
+                //Upload warning
+                else if(linebuff[0] == 'U' && linebuff[1] == 'W'){
+                    if(!showWarning) goto Continue;
+                    showWarning = (linebuff[4] == '1');
+                }
 
 Continue:
-                                    memset(linebuff, 0, 6);
-                                }
-                            }
-
-                            if(showWarning){
-                                if(QMessageBox::StandardButton response = QMessageBox::warning(this, tr("Uploadwarnung"),
-                                            tr("Wenn du fortfahrst, werden all deine Änderungen auf die öffentlich \
-                                                zugängliche Webseite des GeographyLearners geladen. (Bei ‘ignorieren‘ wird die Nachricht beim Nächsten Upload wieder angezeigt werden)"),
-                                            QMessageBox::Cancel | QMessageBox::Ok | QMessageBox::Ignore);
-                                        response == QMessageBox::Ok){
-                                    std::ofstream stream(configPath);
-                                    stream << "UW: 0";
-                                    stream.close();
-                                }
-                                else if(response != QMessageBox::Ignore) return;
-                            }
-
-        if (err = gitManager.gitCommit("GLEditor: " + commitMessage.toStdString()); err != GitManager::Success) {
-            if(err == GitManager::Commit){
-                //still seems to have problems and potentially doesn't resolve even simple conflicts
-                err = gitManager.gitMerge(true);
-            }
-            if(err != GitManager::Success){
-                showError(err);
-                return;
+                memset(linebuff, 0, 6);
             }
         }
 
-        //if it works it doesn't matter how, so we can skip all of the next steps
-        rval = system(("\"" + QString::fromStdString(gitPath) + "\" -C " + string + " push https://github.com/PhoenixPhantom/GeographyLearnerLearningSets.git").toUtf8());
-        if (rval == 0){
-            QMessageBox::information(this, tr("Fertig"), tr("Die Synchronisation war erfolgreich."), QMessageBox::Ok, QMessageBox::Ok);
+        if(showWarning){
+            if(QMessageBox::StandardButton response = QMessageBox::warning(this, tr("Uploadwarnung"),
+                        tr("Wenn du fortfahrst, werden all deine Änderungen auf die öffentlich \
+                            zugängliche Webseite des GeographyLearners geladen. (Bei ‘ignorieren‘ wird die Nachricht beim Nächsten Upload wieder angezeigt werden)"),
+                        QMessageBox::Cancel | QMessageBox::Ok | QMessageBox::Ignore);
+                    response == QMessageBox::Ok){
+                std::ofstream stream(configPath);
+                stream << "UW: 0";
+                stream.close();
+            }
+            else if(response != QMessageBox::Ignore) return;
+        }
+        rval = system(("\"" + QString::fromStdString(gitPath) + "\" -C " + string + " commit -m" + commitMessage).toUtf8());
+        if (rval != 0) {
+            QMessageBox::warning(this, tr("Login nötig"), tr("Besuche die Webseite des GeographyLearners, gehe zur Sektion 'Download' \
+                        und öffne das Dropdown zu den externen Programmen, um eine vereinfachte Anmeldeanleitung für die das git tool zu finden."), QMessageBox::Ok, QMessageBox::Ok);
             return;
+        }
+
+    }
+    else {
+        QMessageBox::information(this, tr("Fehler"), tr("Die Änderungen können nicht übernommen werden. (add changes failed)"), QMessageBox::Ok, QMessageBox::Ok);
+        return;
+    }
+
+
+    rval = system(("\"" + QString::fromStdString(gitPath) + "\" -C " + string + " push https://github.com/PhoenixPhantom/GeographyLearnerLearningSets.git").toUtf8());
+    if (rval == 0){
+        QMessageBox::information(this, tr("Fertig"), tr("Die Synchronisation war erfolgreich."), QMessageBox::Ok, QMessageBox::Ok);
+        return;
+    }
+    rval = system(("\"" + QString::fromStdString(gitPath) + "\" -C " + string + " pull https://github.com/PhoenixPhantom/GeographyLearnerLearningSets.git").toUtf8());
+    if (rval == 0){
+        QMessageBox::warning(this, tr("Merge"), tr("Es wurde eine mögliche Diskrepanz zwischen den loklen Lernsets\
+und denen auf der Webseite erkannt. (Falls nötig, DRÜCKE im folgenden Fenster \":\" dann \"q\" und dann ENTER um fortzufahren)"), QMessageBox::Ok, QMessageBox::Ok);
+   rval = system(("\"" + QString::fromStdString(gitPath) + "\" -C " + string + " merge").toUtf8());
+        if (rval == 0){
+            rval = system(("\"" + QString::fromStdString(gitPath) + "\" -C " + string + " push https://github.com/PhoenixPhantom/GeographyLearnerLearningSets.git").toUtf8());
+            if (rval == 0){
+                QMessageBox::information(this, tr("Fertig"), tr("Die Synchronisation war erfolgreich. (Verschiedene Versionen wurden kombiniert)"), QMessageBox::Ok, QMessageBox::Ok);
+                return;
+            }
+            else {
+                QMessageBox::warning(this, tr("Login nötig"), tr("Besuche die Webseite des GeographyLearners, gehe zur Sektion 'Download' \
+und öffne das Dropdown zu den externen Programmen, um eine vereinfachte Anmeldeanleitung für die das git tool zu finden."), QMessageBox::Ok, QMessageBox::Ok);
+            }
+        }
+        else {
+            QMessageBox::warning(this, tr("Unvereinbare änderungen"), tr("Der jetzige Zustand der Lernsets ist unvereinbar mit dem auf der Webseite.\
+Kontaktiere den Entwickler des Programmes für Hilfe."));
         }
     }
     else {
-        QMessageBox::information(this, tr("Fehler"), tr("Die Änderungen können nicht übernommen werden."), QMessageBox::Ok, QMessageBox::Ok);
-        return;
+        QMessageBox::warning(this, tr("Keine Verbindung"), tr("Es kann keine Verbindung mit dem Zielspeicher hergestellt werden.\
+KMöglicherweise ist der Computer nicht mit dem Internet verbunden oder eine alte Version des Learners wird verwendet."));
     }
 
 
-    //if it doesn't work it's most likely because the user's not logged in
-    std::string githubCLIPath;
-
-    for(const QString& path : paths){
-        std::filesystem::path localPath = path.toStdWString();
-        if(!std::filesystem::is_directory(localPath)){
-            continue;
-        }
-        for(const std::filesystem::path& potentialGitFile :
-             std::filesystem::directory_iterator(localPath)){
-            if(potentialGitFile.stem() != "gh") continue;
-            githubCLIPath = potentialGitFile.string();
-            goto loop2End;
-        }
-    }
-
-loop2End:
-    if(githubCLIPath.empty()){
-        activePaths.replace(";", "\n");
-#if _WIN32 || __APPLE__
-        QMessageBox::StandardButton result = QMessageBox::warning(this, tr("Fehlende Komponente"),
-            tr("Die benötigte Komponente ‘github cli (gh)‘ wurde nicht gefunden. Soll sie installiert werden?"),
-            QMessageBox::Cancel | QMessageBox::Ok, QMessageBox::Ok);
-        if (result != QMessageBox::Ok) return;
-#endif
-        if(!installCommand(this, "gh")) return;
-
-        qDebug() << "Github CLI (gh) installation wurde NICHT GEFUNDEN. \n PATH=" + activePaths;
-        return;
-    }
-
-    QMessageBox::warning(this, tr("Login nötig"), tr("Besuche die Webseite des GeographyLearners, gehe zur Sektion 'Download' \
-und öffne das Dropdown zu den externen Programmen, um eine vereinfachte Anmeldeanleitung für die Github CLI zu finden."), QMessageBox::Ok, QMessageBox::Ok);
-
-finish:
     QMessageBox::information(this, tr("Upload fehlgeschlagen"), tr("Der Versuchte Upload ist fehlgeschlagen."), QMessageBox::Ok, QMessageBox::Ok);
+    return;
 }
 
 void ProjectSelectorWidget::onCreateNew(){
