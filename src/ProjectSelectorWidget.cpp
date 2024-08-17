@@ -230,8 +230,7 @@ void ProjectSelectorWidget::onPublishAll(){
     QStringList paths = activePaths.split(":");
 #endif
 #if __APPLE__
-    //somehow homebrew installations are not in the path (even though they can be accessed normally)
-    activePaths += ":/usr/local/bin";
+    activePaths = "/usr/bin:" + activePaths;
 #endif
 
     for(const QString& path : paths){
@@ -261,10 +260,6 @@ Download im Dropdown zu den externen Programmen gefunden und installiert werden.
     }
 
     QString string = QString::fromStdString(learningSetsPath.string());
-    if (string.contains(" ")) {
-        string = "\'" + string + "\'";
-    }
-
 #if _WIN32
     //windows is the only platform that uses stupid backslashes (\) in pathnames
     string.replace("\\", "\\\\");
@@ -274,8 +269,20 @@ Download im Dropdown zu den externen Programmen gefunden und installiert werden.
           showError(err);
           return;
     }*/
+#if _WIN32
+    if (string.contains(" ")) {
+        string = "\'" + string + "\'";
+    }
     int rval = system(("\"" + QString::fromStdString(gitPath) + "\" -C " + string + " add *").toUtf8());
-    
+#else
+    int rval = system(("\"" + QString::fromStdString(gitPath) + "\" -C \'" + string + "\' add \'" + string + "/*\'").toUtf8());
+    if (string.contains(" ")) {
+        string = "\'" + string + "\'";
+    }
+#endif
+
+
+
 
     if (rval == 0){
 
@@ -318,7 +325,7 @@ Continue:
             }
             else if(response != QMessageBox::Ignore) return;
         }
-        rval = system(("\"" + QString::fromStdString(gitPath) + "\" -C " + string + " commit -m" + commitMessage).toUtf8());
+        rval = system(("\"" + QString::fromStdString(gitPath) + "\" -C " + string + " commit -m \"" + commitMessage + "\"").toUtf8());
         if (rval != 0) {
             QMessageBox::warning(this, tr("Login nötig"), tr("Besuche die Webseite des GeographyLearners, gehe zur Sektion 'Download' \
                         und öffne das Dropdown zu den externen Programmen, um eine vereinfachte Anmeldeanleitung für die das git tool zu finden."), QMessageBox::Ok, QMessageBox::Ok);
