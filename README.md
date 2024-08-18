@@ -90,21 +90,23 @@ Unterstützte Plattformen:
     
   Für die Editor-Version des Geographylearners, ist jedoch das Vorhandensein einer externen Applikation nötig, um das Hochladen bearbeiteter Lernsets zu ermöglichen. : [Das command-line tool 'git'](https://git-scm.com/downloads)
 
-
   Allerdings ist eine __manuelle Anmeldung__ mit dem tool `git` notwendig.
-  Auf MacOS:
-	* drücke `command + space` und suche nach "Terminal"
-  Auf Windows:
-	* drücke die Windowstaste und suche nach "powershell"
   
-  Dann:
-	* Gib `git config --global user.name ???` ein und drücke Enter (??? == Dein Name)
-	* Gib `git config --global user.email ???` ein und drücke Enter (??? == Deine mail oder "-")
-	* Gib `git config --global github.user PhantomPhoenix` ein und drücke Enter
-	* Gib `git config --global github.token ***`ein und drücke Enter (*** == Token-Passwort (wird von mir manuell Zugestellt))
+  Auf MacOS:
+  * drücke `command + space` und suche nach "Terminal"
+ 
+  Auf Windows:
+  * drücke die Windowstaste und suche nach "powershell"
+
+  Dann gib die folgenden Befehle ein und drücke nach jedem Enter:
+  * `git config --global user.name ???` (??? == Dein Name)
+  * `git config --global user.email ???` (??? == Deine mail oder "-")
+  * `git config --global github.user PhantomPhoenix`
+  * `git config --global github.token ***` (*** == Token-Passwort (wird von mir manuell Zugestellt))
+    
     </dd>
 </dl>
-  </details>
+</details>
   </dd>
 </dl>
 </details>
