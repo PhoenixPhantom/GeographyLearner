@@ -22,7 +22,7 @@ Unterstützte Plattformen:
 * [Windows](https://raw.githubusercontent.com/PhoenixPhantom/GeographyLearner/master/Installer/GeographyLearnerInstallerWin.exe)
 * [MacOS (M* Prozessoren)](https://raw.githubusercontent.com/PhoenixPhantom/GeographyLearner/master/Installer/Macos/GeographyLearnerInstaller.app)
 * [MacOS (legacy)](https://raw.githubusercontent.com/PhoenixPhantom/GeographyLearner/master/Installer/Macos/GeographyLearner.dmg)  
-* <details><summary>Bearbeitungsprogramm</summary>
+<details><summary>Bearbeitungsprogramm</summary>
 <dl>
   <dd>
 	Für Windows und die neueren MacOS versionen kann der Editor über den normalen
