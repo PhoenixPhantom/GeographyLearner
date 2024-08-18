@@ -19,18 +19,19 @@ da aufgrunde von limitationen des verwendeten Grafik-Frameworks die normale Schr
 
 ## Download
 Unterstützte Plattformen:
-* [Windows](https://raw.githubusercontent.com/PhoenixPhantom/GeographyLearner/master/Installer/GeographyLearnerInstallerWin.exe)
-* [MacOS (M* Prozessoren)](https://raw.githubusercontent.com/PhoenixPhantom/GeographyLearner/master/Installer/Macos/GeographyLearnerInstaller.app)
-* [MacOS (legacy)](https://raw.githubusercontent.com/PhoenixPhantom/GeographyLearner/master/Installer/Macos/GeographyLearner.dmg)  
-<details><summary>Bearbeitungsprogramm</summary>
+* [Windows](https://raw.githubusercontent.com/PhoenixPhantom/GeographyLearner/master/Installer/Windows/GeographyLearnerInstaller.exe)
+* [MacOS](https://raw.githubusercontent.com/PhoenixPhantom/GeographyLearner/master/Installer/Macos/GeographyLearner.dmg)  
+<details><summary>Der GeographyLearnerEditor</summary>
 <dl>
   <dd>
-	Für Windows und die neueren MacOS versionen kann der Editor über den normalen
-	Link heruntergeladen warden und dann im Installer ausgewählt warden.
-	Für ältere MacOS Versionen kann
+
+	Für Windows kann der Editor über den normalen Link heruntergeladen warden und dann im Installer ausgewählt warden.
+    
+	Für MacOS kann
 	[dieser Link](https://raw.githubusercontent.com/PhoenixPhantom/GeographyLearner/master/Installer/Macos/GeographyLearnerEditor.dmg)
 	verwendet warden.
-	In allen Fallen ist ein Passwort nötig, welches ich bei Nachfrage angeben werde.
+	In beiden Fallen ist ein Passwort nötig, welches ich bei Nachfrage angeben werde.
+
   </dd>
 </dl>
 </details>
