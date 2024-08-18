@@ -260,10 +260,6 @@ Download im Dropdown zu den externen Programmen gefunden und installiert werden.
     }
 
     QString string = QString::fromStdString(learningSetsPath.string());
-#if _WIN32
-    //windows is the only platform that uses stupid backslashes (\) in pathnames
-    string.replace("\\", "\\\\");
-#endif
     //There seem to be constant errors with libgit2::push (most likely due to GitHub's unique auth system)
     /*if(err = gitManager.gitPush(); err != GitManager::Success){
           showError(err);
@@ -273,6 +269,8 @@ Download im Dropdown zu den externen Programmen gefunden und installiert werden.
     if (string.contains(" ")) {
         string = "\'" + string + "\'";
     }
+    //windows is the only platform that uses stupid backslashes (\) in pathnames
+    string.replace("\\", "\\\\");
     int rval = system(("\"" + QString::fromStdString(gitPath) + "\" -C " + string + " add *").toUtf8());
 #else
     int rval = system(("\"" + QString::fromStdString(gitPath) + "\" -C \'" + string + "\' add \'" + string + "/*\'").toUtf8());
@@ -316,7 +314,7 @@ Continue:
         if(showWarning){
             if(QMessageBox::StandardButton response = QMessageBox::warning(this, tr("Uploadwarnung"),
                         tr("Wenn du fortfahrst, werden all deine Änderungen auf die öffentlich \
-                            zugängliche Webseite des GeographyLearners geladen. (Bei ‘ignorieren‘ wird die Nachricht beim Nächsten Upload wieder angezeigt werden)"),
+zugängliche Webseite des GeographyLearners geladen. (Bei ‘ignorieren‘ wird die Nachricht beim Nächsten Upload wieder angezeigt werden)"),
                         QMessageBox::Cancel | QMessageBox::Ok | QMessageBox::Ignore);
                     response == QMessageBox::Ok){
                 std::ofstream stream(configPath);
@@ -327,8 +325,10 @@ Continue:
         }
         rval = system(("\"" + QString::fromStdString(gitPath) + "\" -C " + string + " commit -m \"" + commitMessage + "\"").toUtf8());
         if (rval != 0) {
-            QMessageBox::warning(this, tr("Login nötig"), tr("Besuche die Webseite des GeographyLearners, gehe zur Sektion 'Download' \
-                        und öffne das Dropdown zu den externen Programmen, um eine vereinfachte Anmeldeanleitung für die das git tool zu finden."), QMessageBox::Ok, QMessageBox::Ok);
+            QMessageBox::warning(this, tr("Änderungen nicht übernommen"), tr("Keine Änderungen wurden übernommen. Möglicherweise \
+Beexistiert kein Unterschied zwischen den lokalen Lernsets und denen auf der Webseite, oder du bist nicht eingeloggt. \
+Im zweiten Fall, besuche die Webseite des GeographyLearners, gehe zur Sektion 'Download' \
+und öffne das Dropdown zu den externen Programmen, um eine vereinfachte Anmeldeanleitung für die das git tool zu finden."), QMessageBox::Ok, QMessageBox::Ok);
             return;
         }
 

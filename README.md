@@ -2,6 +2,7 @@
 Es gibt verschiedene Varianten, sich auf Toppografieprüfungen vorzubereiten und diese Applikation ist eine Option, dies zu tun.
 Die Geography-Learner app wurde spezifisch kreiert, um die Grundzüge der Welttoppografie zu lernen und wiederholen.
 [Direkt zu den Downloads](#Download)
+
 ## Aufgabentypen
 Unterstützt werden die "typischen" Toppografiefragen, bei denen ein Punkt gegeben ist und der Name der Ortschaft, der Insel,
 des Meeres, des Kontinentes, des Flusses oder des Gebirges eingegeben werden müssen.
@@ -19,9 +20,22 @@ da aufgrunde von limitationen des verwendeten Grafik-Frameworks die normale Schr
 ## Download
 Unterstützte Plattformen:
 * [Windows](https://raw.githubusercontent.com/PhoenixPhantom/GeographyLearner/master/Installer/GeographyLearnerInstallerWin.exe)
-* [MacOS](https://raw.githubusercontent.com/PhoenixPhantom/GeographyLearner/master/Installer/GeographyLearnerInstallerMacOS.zip)
-  
-<details><summary>Kann der GeographyLearner auch für Mac, IOS oder Android gebraucht werden?</summary>
+* [MacOS (M* prozessoren)](https://raw.githubusercontent.com/PhoenixPhantom/GeographyLearner/master/Installer/Macos/GeographyLearnerInstaller.app)
+* [MacOS (legacy)](https://raw.githubusercontent.com/PhoenixPhantom/GeographyLearner/master/Installer/Macos/GeographyLearner.dmg)  
+* <details><summary>Bearbeitungsprogramm</summary>
+<dl>
+  <dd>
+	Für Windows und die neueren MacOS versionen kann der Editor über den normalen
+	Link heruntergeladen warden und dann im Installer ausgewählt warden.
+	Für ältere MacOS Versionen kann
+	[dieser Link](https://raw.githubusercontent.com/PhoenixPhantom/GeographyLearner/master/Installer/Macos/GeographyLearnerEditor.dmg)
+	verwendet warden.
+	In allen Fallen ist ein Passwort nötig, welches ich bei Nachfrage angeben werde.
+  </dd>
+</dl>
+</details>
+
+<details><summary>Kann der GeographyLearner auch auf den Linux, IOS und/oder Android Plattformen gebraucht werden?</summary>
 <dl>
   <dd>
 
@@ -29,7 +43,7 @@ Unterstützte Plattformen:
   Der GeographyLearner ist __zurzeit leider nur für Windows und neue MacOS versionen__ direkt als Downloadlink erhältlich.
   
   Grundsätzlich ist die Antwort aber *ja*.
-  Die Ressourcen sind auf dieser Seite vorhanden und können für alle dieser Plattformen *lokal kompilliert* werden.
+  Die Ressourcen sind auf dieser Seite vorhanden und können für diese Plattformen *lokal kompilliert* werden.
 
   <details><summary>Lokal kompilieren</summary>
   <dl>
@@ -68,27 +82,26 @@ Unterstützte Plattformen:
 <dl>
   <dd>
   
-  Die Schülerversion des GeographyLearners __funtioniert komplett eigenständig__ und macht somit von keinen externen Applikationen Gebrauch.
+  Die Learner-Version des GeographyLearners __funtioniert komplett eigenständig__ und macht somit von keinen externen Applikationen Gebrauch.
   
-  <details><summary>Und für die Lehrerversion?</summary>
+  <details><summary>Und für die Editor-Version?</summary>
   <dl>
   <dd>
     
-  Für die Lehrerversion des Geographylearners, ist jedoch das Vorhandensein mehrerer externer Applikationen nötig, um das Hochladen bearbeiteter Lernsets zu ermöglichen
-  (__WICHTIG: Diese Programme müssen normalerweise nicht manuell installiert werden sie werden bei Bedarf automatisch installiert__ ):
-  * [Das command-line tool 'git'](https://git-scm.com/downloads)
-  * [Das command-line tool 'gh' (github CLI)](https://cli.github.com/)
+  Für die Editor-Version des Geographylearners, ist jedoch das Vorhandensein einer externen Applikation nötig, um das Hochladen bearbeiteter Lernsets zu ermöglichen. : [Das command-line tool 'git'](https://git-scm.com/downloads)
 
-  Allerdings ist eine __manuelle Anmeldung__ mit dem tool `gh` notwendig. Um die Anmeldung durchzuführen, öffne ein Terminal (Auf Windows: suche nach "powershell"; Auf MacOS: drücke `command + space` und suche nach "Terminal"). Die folgenden Schritte sind nun plattformunabhängig:
-  * Gib `gh auth login`ein (und drücke Enter)
-  * Wähle `GitHub.com` (nutze die Hoch und Runter Tasten, um den Eintrag zu markieren und drücke Enter)
-  * Wähle `HTTPS` (wie oben)
-  * Gib `Y` ein (und drücke Enter)
-  * Wähle `Login with a web browser` aus (wie oben)
-  * Kopiere den Code, der im Terminal angezeigt wird und drücke Enter
-  * Melde dich auf der nun geöffneten Webseite an
-  * Füge den kopierten Code in das Feld für die Geräteaktivierung ein; fahre fort.
-  * Authorisiere die Aktion
+
+  Allerdings ist eine __manuelle Anmeldung__ mit dem tool `git` notwendig.
+  Auf MacOS:
+	* drücke `command + space` und suche nach "Terminal"
+  Auf Windows:
+	* drücke die Windowstaste und suche nach "powershell"
+  
+  Dann:
+	* Gib `git config --global user.name ???` ein und drücke Enter (??? == Dein Name)
+	* Gib `git config --global user.email ???` ein und drücke Enter (??? == Deine mail oder "-")
+	* Gib `git config --global github.user PhantomPhoenix` ein und drücke Enter
+	* Gib `git config --global github.token ***`ein und drücke Enter (*** == Token-Passwort (wird von mir manuell Zugestellt))
     </dd>
 </dl>
   </details>
@@ -103,6 +116,8 @@ Dateien beschafft und sind [hier](Data/Attributions.md) explizit aufgelistet.
 Ausserdem wird die [nlohmann json](https://github.com/nlohmann/json?tab=readme-ov-file) 
 Bibliothek für Speicherzwecke und die [libgit2](https://github.com/libgit2/libgit2?tab=readme-ov-file) 
 Bibliothek für Interaktionen mit Git verwendet.
+Da libgit2 manchmal schwierig zu verwenden ist,
+habe ich mich entschieden es in einigen Fällen durch das Command-Line-Tool [`git`](https://git-scm.com/downloads) zu ersetzen.
 
 ## Verbesserungen
 Sollte eine gebräuchliche Antwort nicht akzeptiert sein, oder ein anderer Fehler gefunden werden,

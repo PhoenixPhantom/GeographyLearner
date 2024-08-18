@@ -9,6 +9,6 @@ packages/GeographyLearnerWinPackage/packages/main/data/*
 out
 Gl.conf
 CMakeSettings.json
-
+.apikey
 
 
