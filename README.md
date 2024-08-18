@@ -20,7 +20,7 @@ da aufgrunde von limitationen des verwendeten Grafik-Frameworks die normale Schr
 ## Download
 Unterstützte Plattformen:
 * [Windows](https://raw.githubusercontent.com/PhoenixPhantom/GeographyLearner/master/Installer/GeographyLearnerInstallerWin.exe)
-* [MacOS (M* prozessoren)](https://raw.githubusercontent.com/PhoenixPhantom/GeographyLearner/master/Installer/Macos/GeographyLearnerInstaller.app)
+* [MacOS (M* Prozessoren)](https://raw.githubusercontent.com/PhoenixPhantom/GeographyLearner/master/Installer/Macos/GeographyLearnerInstaller.app)
 * [MacOS (legacy)](https://raw.githubusercontent.com/PhoenixPhantom/GeographyLearner/master/Installer/Macos/GeographyLearner.dmg)  
 * <details><summary>Bearbeitungsprogramm</summary>
 <dl>
