@@ -92,18 +92,25 @@ Unterstützte Plattformen:
   Für die Editor-Version des Geographylearners, ist jedoch das Vorhandensein einer externen Applikation nötig, um das Hochladen bearbeiteter Lernsets zu ermöglichen. : [Das command-line tool 'git'](https://git-scm.com/downloads)
 
   Allerdings ist eine __manuelle Anmeldung__ mit dem tool `git` notwendig.
+
+  __ACHTUNG:__ Die folgenden Schritte können nur durchgeführt warden, wenn der GeographyLearner bereits installiert und verwendet wurde.
   
   Auf MacOS:
   * drücke `command + space` und suche nach "Terminal"
- 
+  * gib `cd ~/Library/'Application Support'/GeographyLearner/Repo && git push` ein und drücke Enter
+  * im Terminal wird nun nacheinander nach dem Nutzernamen und dem Passwort gefragt
+  * der Nutzername ist 'PhoenixPhantom'
+  * das Passwort wird von mir auf Anfrage zugestellt
+  * Nun sollte etwas wie "Everything up-to-date" im Terminal-Fenster stehen
+  * Schliesse das Terminal fenster
+
   Auf Windows:
   * drücke die Windowstaste und suche nach "powershell"
-
-  Dann gib die folgenden Befehle ein und drücke nach jedem Enter:
-  * `git config --global user.name ???` (??? == Dein Name)
-  * `git config --global user.email ???` (??? == Deine mail oder "-")
-  * `git config --global github.user PhantomPhoenix`
-  * `git config --global github.token ***` (*** == Token-Passwort (wird von mir manuell Zugestellt))
+  * gib `cd $env:LOCALAPPDATA\GeographyLearner\Repo && git push` ein und drücke Enter
+  * im auftauchenden Fenster wähle "Token"
+  * gib das Token-Passwort ein (wird von mir auf Anfrage zugestellt)
+  * Nun sollte etwas wie "Everything up-to-date" im "powershell"-Fenster stehen
+  * Schliesse das "powershell" fenster
     
     </dd>
 </dl>

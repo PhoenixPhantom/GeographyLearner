@@ -266,18 +266,15 @@ Download im Dropdown zu den externen Programmen gefunden und installiert werden.
           return;
     }*/
 #if _WIN32
-    if (string.contains(" ")) {
-        string = "\'" + string + "\'";
-    }
+    
     //windows is the only platform that uses stupid backslashes (\) in pathnames
     string.replace("\\", "\\\\");
-    int rval = system(("\"" + QString::fromStdString(gitPath) + "\" -C " + string + " add *").toUtf8());
-#else
+#endif
+
     int rval = system(("\"" + QString::fromStdString(gitPath) + "\" -C \'" + string + "\' add \'" + string + "/*\'").toUtf8());
     if (string.contains(" ")) {
         string = "\'" + string + "\'";
     }
-#endif
 
 
 
@@ -326,12 +323,11 @@ zugängliche Webseite des GeographyLearners geladen. (Bei ‘ignorieren‘ wird 
         rval = system(("\"" + QString::fromStdString(gitPath) + "\" -C " + string + " commit -m \"" + commitMessage + "\"").toUtf8());
         if (rval != 0) {
             QMessageBox::warning(this, tr("Änderungen nicht übernommen"), tr("Keine Änderungen wurden übernommen. Möglicherweise \
-Beexistiert kein Unterschied zwischen den lokalen Lernsets und denen auf der Webseite, oder du bist nicht eingeloggt. \
+existiert kein Unterschied zwischen den lokalen Lernsets und denen auf der Webseite, oder du bist nicht eingeloggt. \
 Im zweiten Fall, besuche die Webseite des GeographyLearners, gehe zur Sektion 'Download' \
-und öffne das Dropdown zu den externen Programmen, um eine vereinfachte Anmeldeanleitung für die das git tool zu finden."), QMessageBox::Ok, QMessageBox::Ok);
-            return;
+und öffne das Dropdown zu den externen Programmen, um eine vereinfachte Anmeldeanleitung für das git tool zu finden."), QMessageBox::Ok, QMessageBox::Ok);
+            goto reset_commits;
         }
-
     }
     else {
         QMessageBox::information(this, tr("Fehler"), tr("Die Änderungen können nicht übernommen werden. (add changes failed)"), QMessageBox::Ok, QMessageBox::Ok);
@@ -357,7 +353,7 @@ und denen auf der Webseite erkannt. (Falls nötig, DRÜCKE im folgenden Fenster 
             }
             else {
                 QMessageBox::warning(this, tr("Login nötig"), tr("Besuche die Webseite des GeographyLearners, gehe zur Sektion 'Download' \
-und öffne das Dropdown zu den externen Programmen, um eine vereinfachte Anmeldeanleitung für die das git tool zu finden."), QMessageBox::Ok, QMessageBox::Ok);
+und öffne das Dropdown zu den externen Programmen, um eine vereinfachte Anmeldeanleitung für das git tool zu finden."), QMessageBox::Ok, QMessageBox::Ok);
             }
         }
         else {
@@ -372,6 +368,9 @@ KMöglicherweise ist der Computer nicht mit dem Internet verbunden oder eine alt
 
 
     QMessageBox::information(this, tr("Upload fehlgeschlagen"), tr("Der Versuchte Upload ist fehlgeschlagen."), QMessageBox::Ok, QMessageBox::Ok);
+
+reset_commits:
+    rval = system(("\"" + QString::fromStdString(gitPath) + "\" -C " + string + " reset --soft origin").toUtf8());
     return;
 }
 
